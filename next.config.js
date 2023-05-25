@@ -25,6 +25,18 @@ const nextConfig = {
           options: {
             typescript: true,
             icon: true,
+            svgo: true,
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: { removeViewBox: false },
+                  },
+                },
+              ],
+            },
+            titleProp: true,
           },
         },
       ],

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Header from '@/components/layout/Header';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import ButtonLink from '@/components/links/ButtonLink';
@@ -25,7 +26,7 @@ export default function HomePage() {
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
-
+      <Header />
       <main>
         <section className='bg-white'>
           <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12 text-center'>
