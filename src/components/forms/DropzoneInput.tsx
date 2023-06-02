@@ -5,6 +5,7 @@ import { Accept, FileRejection, useDropzone } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import FilePreview from '@/components/forms/FilePreview';
+import Typography from '@/components/typography/Typography';
 
 import { FileWithPreview } from '@/types/dropzone';
 
@@ -12,9 +13,10 @@ type DropzoneInputProps = {
   accept?: Accept;
   helperText?: string;
   id: string;
-  label: string;
+  label: string | null;
   maxFiles?: number;
   readOnly?: boolean;
+  hideError?: boolean;
   validation?: Record<string, unknown>;
 };
 
@@ -26,6 +28,7 @@ export default function DropzoneInput({
   maxFiles = 1,
   validation,
   readOnly,
+  hideError = false,
 }: DropzoneInputProps) {
   const {
     control,
@@ -36,6 +39,7 @@ export default function DropzoneInput({
     formState: { errors },
   } = useFormContext();
   const error = get(errors, id);
+  const withLabel = label !== null;
 
   //#region  //*=========== Error Focus ===========
   const dropzoneRef = React.useRef<HTMLDivElement>(null);
@@ -45,9 +49,14 @@ export default function DropzoneInput({
   }, [error]);
   //#endregion  //*======== Error Focus ===========
 
-  const [files, setFiles] = React.useState<FileWithPreview[]>(
-    getValues(id) || []
-  );
+  //#region  //*=========== Sync Files With RHF ===========
+  const fileValue = getValues(id);
+  const [files, setFiles] = React.useState<FileWithPreview[]>(fileValue || []);
+
+  React.useEffect(() => {
+    setFiles(fileValue);
+  }, [fileValue]);
+  //#endregion  //*======== Sync Files With RHF ===========
 
   const onDrop = React.useCallback(
     <T extends File>(acceptedFiles: T[], rejectedFiles: FileRejection[]) => {
@@ -128,16 +137,23 @@ export default function DropzoneInput({
 
   return (
     <div>
-      <label className='block text-sm font-normal text-gray-700' htmlFor={id}>
-        {label}
-      </label>
+      {withLabel && (
+        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+          {label}
+        </Typography>
+      )}
 
       {readOnly && !(files?.length > 0) ? (
-        <div className='divide-y divide-gray-300 rounded-md border border-gray-300 py-3 pl-3 pr-4 text-sm'>
+        <div className='mt-1 divide-y divide-gray-300 rounded-lg border border-gray-300 py-3 pl-3 pr-4 text-sm'>
           No file uploaded
         </div>
       ) : files?.length >= maxFiles ? (
-        <ul className='mt-1 divide-y divide-gray-300 rounded-md border border-gray-300'>
+        <ul
+          className={clsx([
+            'divide-y divide-gray-300 rounded-lg border border-gray-300',
+            withLabel && 'mt-1',
+          ])}
+        >
           {files.map((file, index) => (
             <FilePreview
               key={index}
@@ -155,17 +171,20 @@ export default function DropzoneInput({
           render={({ field }) => (
             <>
               <div
-                className='focus:ring-dark-400 group mt-1 focus:outline-none'
+                className={clsx([
+                  'focus:ring-dark-400 group focus:outline-none',
+                  withLabel && 'mt-1',
+                ])}
                 {...getRootProps()}
                 ref={dropzoneRef}
               >
                 <input {...field} {...getInputProps()} />
                 <div
                   className={clsx(
-                    'w-full cursor-pointer rounded border-2 border-dashed border-gray-300 px-2 py-8',
+                    'w-full cursor-pointer rounded-lg px-2 py-8',
                     error
-                      ? 'border-red-500 group-focus:border-red-500'
-                      : 'group-focus:border-primary-500'
+                      ? 'dropzone-border-dash-error border-red-500 group-focus:border-red-500'
+                      : 'dropzone-border-dash group-focus:border-primary-500'
                   )}
                 >
                   <div className='space-y-1 text-center'>
@@ -193,18 +212,18 @@ export default function DropzoneInput({
                 </div>
               </div>
 
-              <div className='mt-1'>
-                {helperText !== '' && (
-                  <p className='text-xs text-gray-500'>{helperText}</p>
-                )}
-                {error && (
-                  <p className='text-sm text-red-500'>
-                    {error.message?.toString()}
-                  </p>
-                )}
-              </div>
+              {helperText && (
+                <Typography variant='c1' color='secondary' className='mt-1'>
+                  {helperText}
+                </Typography>
+              )}
+              {!hideError && error && (
+                <Typography variant='c1' color='danger' className='mt-1'>
+                  {error?.message?.toString()}
+                </Typography>
+              )}
               {!readOnly && !!files?.length && (
-                <ul className='mt-1 divide-y divide-gray-300 rounded-md border border-gray-300'>
+                <ul className='mt-1 divide-y divide-gray-300 rounded-lg border border-gray-300'>
                   {files.map((file, index) => (
                     <FilePreview
                       key={index}

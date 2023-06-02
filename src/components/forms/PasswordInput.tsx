@@ -1,11 +1,14 @@
 import clsx from 'clsx';
+import get from 'lodash.get';
 import { useState } from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
+import Typography from '@/components/typography/Typography';
+
 export type PasswordInputProps = {
   /** Input label */
-  label: string;
+  label: string | null;
   /**
    * id to be initialized with React Hook Form,
    * must be the same with the pre-defined types.
@@ -26,6 +29,7 @@ export type PasswordInputProps = {
   hideError?: boolean;
   /** Manual validation using RHF, it is encouraged to use yup resolver instead */
   validation?: RegisterOptions;
+  containerClassName?: string;
 } & React.ComponentPropsWithoutRef<'input'>;
 
 export default function PasswordInput({
@@ -34,7 +38,10 @@ export default function PasswordInput({
   helperText,
   id,
   readOnly = false,
+  hideError,
   validation,
+  disabled,
+  containerClassName,
   ...rest
 }: PasswordInputProps) {
   const {
@@ -42,15 +49,20 @@ export default function PasswordInput({
     formState: { errors },
   } = useFormContext();
 
+  const error = get(errors, id);
+  const withLabel = label !== null;
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
   return (
-    <div>
-      <label htmlFor={id} className='block text-sm font-normal text-gray-700'>
-        {label}
-      </label>
-      <div className='relative mt-1'>
+    <div className={containerClassName}>
+      {withLabel && (
+        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+          {label}
+        </Typography>
+      )}
+      <div className={clsx('relative', withLabel && 'mt-1')}>
         <input
           {...register(id, validation)}
           {...rest}
@@ -58,13 +70,15 @@ export default function PasswordInput({
           name={id}
           id={id}
           readOnly={readOnly}
+          disabled={disabled}
           className={clsx(
-            readOnly
-              ? 'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0'
-              : errors[id]
-              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-              : 'focus:border-primary-500 focus:ring-primary-500 border-gray-300',
-            'block w-full rounded-md shadow-sm'
+            'flex w-full rounded-lg shadow-sm',
+            'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
+            'pr-10',
+            'focus:border-primary-500 focus:ring-primary-500 border-gray-300',
+            (readOnly || disabled) &&
+              'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
+            error && 'border-red-500 focus:border-red-500 focus:ring-red-500'
           )}
           placeholder={placeholder}
           aria-describedby={id}
@@ -73,23 +87,25 @@ export default function PasswordInput({
         <button
           onClick={togglePassword}
           type='button'
-          className='focus:ring-primary-500 absolute inset-y-0 right-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none focus:ring'
+          className='focus:ring-primary-500 absolute right-0 top-1/2 mr-3 flex -translate-y-1/2 items-center rounded-lg p-1 focus:outline-none focus:ring'
         >
           {showPassword ? (
-            <HiEyeOff className='cursor-pointer text-xl text-gray-500 hover:text-gray-600' />
+            <HiEyeOff className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl' />
           ) : (
-            <HiEye className='cursor-pointer text-xl text-gray-500 hover:text-gray-600' />
+            <HiEye className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl' />
           )}
         </button>
       </div>
-      <div className='mt-1'>
-        {helperText && <p className='text-xs text-gray-500'>{helperText}</p>}
-        {errors[id] && (
-          <span className='text-sm text-red-500'>
-            {errors[id]?.message as unknown as string}
-          </span>
-        )}
-      </div>
+      {helperText && (
+        <Typography variant='c1' color='secondary' className='mt-1'>
+          {helperText}
+        </Typography>
+      )}
+      {!hideError && error && (
+        <Typography variant='c1' color='danger' className='mt-1'>
+          {error?.message?.toString()}
+        </Typography>
+      )}
     </div>
   );
 }

@@ -1,33 +1,22 @@
 import * as React from 'react';
 
-import UnstyledLink from '@/components/links/UnstyledLink';
+import { useUser } from '@/contexts/AuthContext';
 
-import Logo from '~/images/logo.svg';
+import LoadingComponent from './headercomponent/LoadingComponent';
 
-// const links = [
-//   { href: '/', label: 'Route 1' },
-//   { href: '/', label: 'Route 2' },
-// ];
+interface Props {
+  children?: React.ReactElement | null;
+}
 
-export default function Header() {
+export default function Header({ children }: Props) {
+  const { loading, setLoading } = useUser();
+  setLoading(false);
+
   return (
-    <header className='sticky top-0 z-50 bg-white'>
-      <div className='layout flex h-14 items-center justify-center'>
-        <UnstyledLink href='/' className='font-bold hover:text-gray-600'>
-          <Logo className='h-48 w-48' />
-        </UnstyledLink>
-        {/* <nav>
-          <ul className='flex items-center justify-between space-x-4'>
-            {links.map(({ href, label }) => (
-              <li key={`${href}${label}`}>
-                <UnstyledLink href={href} className='hover:text-gray-600'>
-                  {label}
-                </UnstyledLink>
-              </li>
-            ))}
-          </ul>
-        </nav> */}
-      </div>
+    <header className='sticky top-0 z-50 w-full border-gray-100 bg-white shadow-sm'>
+      <section className='layout flex h-14  items-center justify-between'>
+        {loading ? <LoadingComponent /> : children}
+      </section>
     </header>
   );
 }
