@@ -1,3 +1,4 @@
+import { Amplify } from 'aws-amplify';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Router from 'next/router';
@@ -9,6 +10,10 @@ import '@/styles/colors.css';
 import '@/styles/nprogress.css';
 
 import AuthContext, { ProtectRoute } from '@/contexts/AuthContext';
+
+import awsExports from '../aws-exports';
+
+Amplify.configure({ ...awsExports, ssr: true });
 
 // EXPANSION CHANGES: 3 lines below
 Router.events.on('routeChangeStart', nProgress.start);
