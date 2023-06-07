@@ -9,6 +9,8 @@ import '@/styles/globals.css';
 import '@/styles/colors.css';
 import '@/styles/nprogress.css';
 
+import { Toaster } from '@/components/ui/toaster';
+
 import AuthContext, { ProtectRoute } from '@/contexts/AuthContext';
 
 import awsExports from '../aws-exports';
@@ -40,12 +42,16 @@ export function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return Boolean(authProps) ? (
     <AuthContext>
       <ProtectRoute>
+        <Toaster />
         <Component {...pageProps} />
       </ProtectRoute>
     </AuthContext>
   ) : (
     <AuthContext>
-      <Component {...pageProps} />
+      <>
+        <Toaster />
+        <Component {...pageProps} />
+      </>
     </AuthContext>
   );
 }

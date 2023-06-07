@@ -1,8 +1,10 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 
+import clsxm from '@/lib/clsxm';
+
 export default function Document() {
   return (
-    <Html lang='en'>
+    <Html lang='en' suppressHydrationWarning>
       <Head>
         <link
           rel='preload'
@@ -12,7 +14,7 @@ export default function Document() {
           crossOrigin='anonymous'
         />
       </Head>
-      <body>
+      <body className={clsxm('min-h-screen bg-white font-sans antialiased')}>
         <Main />
         <NextScript />
       </body>
