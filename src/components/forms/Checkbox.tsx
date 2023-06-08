@@ -3,9 +3,9 @@ import get from 'lodash.get';
 import * as React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import Typography from '@/components/typography/Typography';
+import Typography from '@src/components/typography/Typography';
 
 enum CheckboxSize {
   'sm',

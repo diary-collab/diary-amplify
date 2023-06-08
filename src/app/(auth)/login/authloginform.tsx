@@ -1,23 +1,21 @@
+'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// interface LoginFormProps {
-//   // children: React.ReactNode;
-// }
 
 import { login } from '@utils/AuthUtils';
+import { Dispatch, SetStateAction } from 'react';
+// import usePush from '@utils/UsePush';
 // import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import logger from '@/lib/logger';
+import logger from '@src/lib/logger';
 
-import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
-import PasswordInput from '@/components/forms/PasswordInput';
-import { toast } from '@/components/ui/use-toast';
+import Button from '@src/components/buttons/Button';
+import Input from '@src/components/forms/Input';
+import PasswordInput from '@src/components/forms/PasswordInput';
+import { toast } from '@src/components/ui/use-toast';
 
-import { useUser } from '@/contexts/AuthContext';
-
-import { FormFields } from '@/types';
-import { SignInWithEmailAndPassword } from '@/types/user-auth';
+import { FormFields } from '@src/types';
+import { SignInWithEmailAndPassword } from '@src/types/user-auth';
 
 const AuthLoginfields: FormFields[] = [
   {
@@ -44,23 +42,29 @@ const AuthLoginfields: FormFields[] = [
   },
 ];
 
-export default function LoginForm() {
-  const { setUser, setAuthenticated, setLoading } = useUser();
+interface LoginFormProps {
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function LoginForm({ loading, setLoading }: LoginFormProps) {
+  // const push = usePush();
 
   const methods = useForm<SignInWithEmailAndPassword>({
     mode: 'onTouched',
   });
 
   async function onSubmit(data: SignInWithEmailAndPassword) {
+    setLoading(true);
     logger({ data });
 
     const signInResult = await login(data.email, data.password);
 
     setLoading(false);
-    setUser(signInResult.user ?? null);
+    // setUser(signInResult.user ?? null);
 
     if (!signInResult?.success) {
-      setAuthenticated(false);
+      // setAuthenticated(false);
       return toast({
         title: 'Something went wrong.',
         description:
@@ -70,12 +74,14 @@ export default function LoginForm() {
       });
     }
 
-    setAuthenticated(true);
+    // setAuthenticated(true);
 
-    return toast({
-      title: 'Check your email',
-      description: 'We sent you a login link. Be sure to check your spam too.',
-    });
+    // return toast({
+    //   title: 'Check your email',
+    //   description: 'We sent you a login link. Be sure to check your spam too.',
+    // });
+
+    // push('/dashboard');
   }
   const { handleSubmit } = methods;
 
@@ -119,7 +125,9 @@ export default function LoginForm() {
           )
         )}
 
-        <Button type='submit'>Submit</Button>
+        <Button type='submit' isLoading={loading}>
+          Submit
+        </Button>
       </form>
     </FormProvider>
   );

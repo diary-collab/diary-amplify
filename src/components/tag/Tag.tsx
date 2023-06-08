@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconType } from 'react-icons';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 const TAG_SIZE = ['sm', 'base'] as const;
 type TagSize = (typeof TAG_SIZE)[number];

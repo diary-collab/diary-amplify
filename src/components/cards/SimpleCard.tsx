@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 const CARD_SIZE = ['sm', 'base'] as const;
 type CardSize = (typeof CARD_SIZE)[number];

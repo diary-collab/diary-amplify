@@ -16,12 +16,24 @@
     "baseUrl": ".",
     "paths": {
       "@utils/*": ["./src/utils/*"],
-      "@/*": ["./src/*"],
+      "@src/*": ["./src/*"],
+      "@/*": ["./*"],
       "~/*": ["./public/*"]
     },
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+    // ".contentlayer/generated"
+  ],
   "exclude": ["node_modules"],
   "moduleResolution": ["node_modules", ".next", "node"]
 }

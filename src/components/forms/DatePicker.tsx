@@ -6,9 +6,9 @@ import { HiOutlineCalendar } from 'react-icons/hi';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import Typography from '@/components/typography/Typography';
+import Typography from '@src/components/typography/Typography';
 
 type DatePickerProps = {
   validation?: RegisterOptions;

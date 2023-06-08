@@ -10,9 +10,9 @@ import Lightbox from 'react-image-lightbox-rotation';
 
 import 'react-image-lightbox-rotation/style.css';
 
-import UnstyledLink from '@/components/links/UnstyledLink';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
-import { FileWithPreview } from '@/types/dropzone';
+import { FileWithPreview } from '@src/types/dropzone';
 
 type FilePreviewProps = {
   file: FileWithPreview;

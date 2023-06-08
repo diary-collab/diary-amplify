@@ -2,12 +2,12 @@ import { Dialog, Transition } from '@headlessui/react';
 import * as React from 'react';
 import { HiOutlineX } from 'react-icons/hi';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import IconButton from '@/components/buttons/IconButton';
-import Typography from '@/components/typography/Typography';
+import IconButton from '@src/components/buttons/IconButton';
+import Typography from '@src/components/typography/Typography';
 
-import { ExtractProps } from '@/types/helper';
+import { ExtractProps } from '@src/types/helper';
 
 type ModalProps = {
   className?: string;

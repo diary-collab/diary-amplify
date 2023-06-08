@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
-import logger from '@/lib/logger';
+import logger from '@src/lib/logger';
 
-import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
-import Layout from '@/components/layout/Layout';
-import Seo from '@/components/Seo';
+import Button from '@src/components/buttons/Button';
+import Input from '@src/components/forms/Input';
+import Layout from '@src/components/layout/Layout';
 
 type BoilerplateForm = {
   name: string;
@@ -30,7 +29,7 @@ export default function FormBoilerplate() {
 
   return (
     <Layout>
-      <Seo templateTitle='Form Sandbox' />
+      {/* <Seo templateTitle='Form Sandbox' /> */}
 
       <section className=''>
         <div className='layout min-h-screen py-20'>

@@ -1,8 +1,8 @@
+'use client';
+import useDialogStore from '@src/store/useDialogStore';
 import * as React from 'react';
 
-import BaseDialog from '@/components/dialog/BaseDialog';
-
-import useDialogStore from '@/store/useDialogStore';
+import BaseDialog from '@src/components/dialog/BaseDialog';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   //#region  //*=========== Store ===========

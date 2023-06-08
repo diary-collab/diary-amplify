@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get, useFormState } from 'react-hook-form';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 type ErrorMessageProps = {
   id: string;

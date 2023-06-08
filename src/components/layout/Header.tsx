@@ -1,6 +1,5 @@
+import { useUser } from '@src/contexts/AuthContext';
 import * as React from 'react';
-
-import { useUser } from '@/contexts/AuthContext';
 
 import LoadingComponent from './headercomponent/LoadingComponent';
 import UnauthenticatedHeaderComponent from './headercomponent/rightheadercomponent/UnauthenticatedHeaderComponent';
