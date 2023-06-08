@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 
-import { LoginResult } from '@/types/user-auth';
+import { LoginResult } from '@src/types/user-auth';
 
 export async function login(
   email: string,

@@ -4,10 +4,10 @@ import * as React from 'react';
 import { Accept, FileRejection, useDropzone } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import FilePreview from '@/components/forms/FilePreview';
-import Typography from '@/components/typography/Typography';
+import FilePreview from '@src/components/forms/FilePreview';
+import Typography from '@src/components/typography/Typography';
 
-import { FileWithPreview } from '@/types/dropzone';
+import { FileWithPreview } from '@src/types/dropzone';
 
 type DropzoneInputProps = {
   accept?: Accept;

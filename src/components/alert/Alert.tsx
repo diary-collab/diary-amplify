@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Balancer from 'react-wrap-balancer';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 const alertVariant = [
   'primary',

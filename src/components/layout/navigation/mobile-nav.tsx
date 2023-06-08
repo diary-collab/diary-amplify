@@ -1,12 +1,13 @@
+import { siteConfig } from '@src/config/site';
 import Link from 'next/link';
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
-import { useLockBody } from '@/hooks/use-lock-body';
+import { clsxm } from '@src/lib/utils';
+import { useLockBody } from '@src/hooks/use-lock-body';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@src/components/icons';
 
-import { MainNavItem } from '@/types';
+import { MainNavItem } from '@src/types';
 
 interface MobileNavProps {
   items: MainNavItem[];
@@ -25,7 +26,7 @@ export function MobileNav({ items, children }: MobileNavProps) {
       <div className='bg-popover text-popover-foreground relative z-20 grid gap-6 rounded-md p-4 shadow-md'>
         <Link href='/' className='flex items-center space-x-2'>
           <Icons.logo />
-          <span className='font-bold'>`siteConfig.name`</span>
+          <span className='font-bold'>{siteConfig.name}</span>
         </Link>
         <nav className='grid grid-flow-row auto-rows-max text-sm'>
           {items.map((item, index) => (

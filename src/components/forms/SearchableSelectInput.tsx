@@ -4,9 +4,9 @@ import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import Select, { components, MultiValue, StylesConfig } from 'react-select';
 
-import Typography from '@/components/typography/Typography';
+import Typography from '@src/components/typography/Typography';
 
-import { ExtractProps } from '@/types/helper';
+import { ExtractProps } from '@src/types/helper';
 
 export type SearchableSelectInputProps = {
   label: string | null;

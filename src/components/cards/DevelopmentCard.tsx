@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import SimpleCard from '@/components/cards/SimpleCard';
-import Typography from '@/components/typography/Typography';
+import SimpleCard from '@src/components/cards/SimpleCard';
+import Typography from '@src/components/typography/Typography';
 
 type DevelopmentCardProps = React.ComponentPropsWithoutRef<'div'>;
 

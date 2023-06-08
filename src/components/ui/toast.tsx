@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -27,7 +27,7 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-background border',
+        default: 'bg-primary-500 border',
         destructive:
           'group destructive border-destructive bg-destructive text-destructive-foreground',
       },

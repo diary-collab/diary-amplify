@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { IconType } from 'react-icons';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
 import UnstyledLink, {
   UnstyledLinkProps,
-} from '@/components/links/UnstyledLink';
+} from '@src/components/links/UnstyledLink';
 
 const IconLinkVariant = [
   'primary',

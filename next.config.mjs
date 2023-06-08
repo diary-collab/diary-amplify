@@ -1,11 +1,19 @@
 /** @type {import('next').NextConfig} */
+// import { withContentlayer } from 'next-contentlayer';
+import './env.mjs';
+
 const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
 
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
+
+  experimental: {
+    appDir: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
+  },
 
   // Uncoment to add domain whitelist
   // images: {
@@ -46,4 +54,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

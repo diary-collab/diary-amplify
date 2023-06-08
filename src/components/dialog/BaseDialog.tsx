@@ -1,3 +1,4 @@
+'use client';
 import { Dialog, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import * as React from 'react';
@@ -8,7 +9,7 @@ import {
   HiOutlineX,
 } from 'react-icons/hi';
 
-import Button from '@/components/buttons/Button';
+import Button from '@src/components/buttons/Button';
 
 type BaseDialogProps = {
   /** Maintained by useDialogStore */

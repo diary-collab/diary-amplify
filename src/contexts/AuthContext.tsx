@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CognitoUser } from '@aws-amplify/auth';
 // import usePush from '@utils/UsePush';
-import { Auth, Hub, Logger } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -13,7 +13,9 @@ import {
   useState,
 } from 'react';
 
-import PrivateRoute from '@/components/protectedroute/PrivateRoute';
+import logger from '@src/lib/logger';
+
+import PrivateRoute from '@src/components/protectedroute/PrivateRoute';
 
 interface UserContextType {
   user: CognitoUser | null;
@@ -45,10 +47,11 @@ export default function AuthContext(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function checkUser() {
     setLoading(true);
-    const logger = new Logger('My-Logger');
+    // const logger = new Logger('My-Logger');
+    logger('trigger user check');
 
     try {
-      logger.info(username);
+      logger(username);
       const amplifyUser = await Auth.currentAuthenticatedUser();
       setUser(amplifyUser);
       setAuthenticated(true);
@@ -64,23 +67,20 @@ export default function AuthContext(
 
   useEffect(() => {
     checkUser();
-  }, [checkUser]);
+  });
+
+  useEffect(() => {
+    logger('trigger user hub');
+    const listener = () => {
+      // checkUser();
+    };
+
+    Hub.listen('auth', listener);
+  });
 
   useEffect(() => {
     // console.log("loading-ganti: ", loading);
   }, [loading]);
-
-  useEffect(() => {
-    const logger = new Logger('My-Logger');
-
-    const listener = (data: { payload: { event: any } }) => {
-      logger.info('the Auth module is configured', data.payload.event);
-
-      checkUser();
-    };
-
-    Hub.listen('auth', listener);
-  }, [checkUser]);
 
   return (
     <UserContext.Provider

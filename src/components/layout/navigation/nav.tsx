@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@src/components/icons';
 
-import { SidebarNavItem } from '@/types';
+import { SidebarNavItem } from '@src/types';
 
 interface DashboardNavProps {
   items: SidebarNavItem[];
@@ -23,6 +23,8 @@ export function DashboardNav({ items }: DashboardNavProps) {
   return (
     <nav className='grid items-start gap-2'>
       {items.map((item, index) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const Icon = Icons[item.icon || 'arrowRight'];
         return (
           item.href && (

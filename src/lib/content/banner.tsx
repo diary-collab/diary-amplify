@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import PrimaryLink from '@/components/links/PrimaryLink';
+import PrimaryLink from '@src/components/links/PrimaryLink';
 
 export const BANNER_CONTENT: (() => React.ReactNode)[] = [
   () => (

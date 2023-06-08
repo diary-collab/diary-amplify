@@ -5,11 +5,11 @@ import Slider, { CustomArrowProps, Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import clsxm from '@/lib/clsxm';
-import { BANNER_CONTENT } from '@/lib/content/banner';
+import { BANNER_CONTENT } from '@src/lib/content/banner';
+import { clsxm } from '@src/lib/utils';
 
-import IconButton from '@/components/buttons/IconButton';
-import Typography from '@/components/typography/Typography';
+import IconButton from '@src/components/buttons/IconButton';
+import Typography from '@src/components/typography/Typography';
 
 type BannerProps = React.ComponentPropsWithoutRef<'div'>;
 

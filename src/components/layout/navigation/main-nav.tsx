@@ -1,17 +1,18 @@
 'use client';
 
+import { siteConfig } from '@src/config/site';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import * as React from 'react';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@src/components/icons';
 
 import { MobileNav } from './mobile-nav';
 
-// import { siteConfig } from "@/config/site"
-import { MainNavItem } from '@/types';
+// import { siteConfig } from "@src/config/site"
+import { MainNavItem } from '@src/types';
 
 interface MainNavProps {
   items?: MainNavItem[];
@@ -27,7 +28,7 @@ export function MainNav({ items, children }: MainNavProps) {
       <Link href='/' className='hidden items-center space-x-2 md:flex'>
         <Icons.logo />
         <span className='hidden font-bold sm:inline-block'>
-          `siteConfig.name`
+          {siteConfig.name}
         </span>
       </Link>
       {items?.length ? (

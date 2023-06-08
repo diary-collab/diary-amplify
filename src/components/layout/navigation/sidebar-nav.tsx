@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import clsxm from '@/lib/clsxm';
+import { clsxm } from '@src/lib/utils';
 
-import { SidebarNavItem } from '@/types';
+import { SidebarNavItem } from '@src/types';
 
 export interface DocsSidebarNavProps {
   items: SidebarNavItem[];
