@@ -5,6 +5,7 @@ import '@src/styles/globals.css';
 import { clsxm } from '@src/lib/utils';
 
 import { Analytics } from '@src/components/analytics';
+import { ThemeProvider } from '@src/components/theme-provider';
 // import { ThemeProvider } from '@src/components/theme-provider';
 import { Toaster } from '@src/components/ui/toaster';
 
@@ -76,17 +77,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={clsxm(
-          'min-h-screen bg-white font-sans antialiased'
+          'bg-background min-h-screen font-sans antialiased'
           // fontSans.variable
           // fontHeading.variable
         )}
       >
-        {/* <ThemeProvider attribute='class' defaultTheme='light' enableSystem> */}
-        {children}
-        <Analytics />
-        <Toaster />
-        {/* <TailwindIndicator /> */}
-        {/* </ThemeProvider> */}
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='light'
+          enableSystem={false}
+        >
+          {children}
+          <Analytics />
+          <Toaster />
+          {/* <TailwindIndicator /> */}
+        </ThemeProvider>
       </body>
     </html>
   );

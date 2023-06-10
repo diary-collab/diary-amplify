@@ -1,15 +1,14 @@
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
-import UnderlineLink from '@src/components/links/UnderlineLink';
 
 export default function Dashboard() {
   const content = false;
   return (
     <DashboardShell>
-      <DashboardHeader heading='Posts' text='Create and manage posts.'>
+      <DashboardHeader heading='Pages' text='Create and manage diary page.'>
         {/* <PostCreateButton /> */}
-        Add Post
+        Add Page
       </DashboardHeader>
       <div>
         {content ? (
@@ -28,10 +27,6 @@ export default function Dashboard() {
           </EmptyPlaceholder>
         )}
       </div>
-      <footer className='absolute bottom-2 text-gray-700'>
-        © {new Date().getFullYear()} By{' '}
-        <UnderlineLink href='/'>Azzam</UnderlineLink>
-      </footer>
     </DashboardShell>
   );
 }

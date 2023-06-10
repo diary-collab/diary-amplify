@@ -2,10 +2,10 @@ import {
   type Icon as LucideIcon,
   AlertTriangle,
   ArrowRight,
+  BookLock,
   Check,
   ChevronLeft,
   ChevronRight,
-  Command,
   CreditCard,
   File,
   FileText,
@@ -29,7 +29,7 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
-  logo: Command,
+  logo: BookLock,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,

@@ -2,9 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { HiOutlineSearch, HiOutlineXCircle } from 'react-icons/hi';
 
+import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
+import Input from '@src/components/forms/Input';
 import { Icons } from '@src/components/icons';
 
 import { SidebarNavItem } from '@src/types';
@@ -13,8 +17,22 @@ interface DashboardNavProps {
   items: SidebarNavItem[];
 }
 
+type DashboardSideNavForm = {
+  searchquery?: string | null;
+};
+
 export function DashboardNav({ items }: DashboardNavProps) {
   const path = usePathname();
+
+  const methods = useForm<DashboardSideNavForm>({
+    mode: 'onTouched',
+  });
+  const { handleSubmit } = methods;
+
+  async function onSubmit(data: DashboardSideNavForm) {
+    logger(data);
+    return;
+  }
 
   if (!items?.length) {
     return null;
@@ -22,6 +40,23 @@ export function DashboardNav({ items }: DashboardNavProps) {
 
   return (
     <nav className='grid items-start gap-2'>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            id='search'
+            label='Search'
+            placeholder='Search something...'
+            validation={{ required: 'Search must be filled' }}
+            // helperText='This is a helper text'
+            leftIcon={HiOutlineSearch}
+            rightNode={
+              <button type='button' className='p-1'>
+                <HiOutlineXCircle className='text-typo-icons text-xl' />
+              </button>
+            }
+          />
+        </form>
+      </FormProvider>
       {items.map((item, index) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

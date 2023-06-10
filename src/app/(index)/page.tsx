@@ -3,7 +3,7 @@ import UnderlineLink from '@src/components/links/UnderlineLink';
 
 export default function IndexPage() {
   return (
-    <section className='bg-white'>
+    <section className='bg-background'>
       <div className='layout relative flex min-h-screen flex-col items-center justify-center text-center'>
         {/* <Logo className='text-5xl' /> */}
         <h1 className='-mt-24'>Diary Project</h1>

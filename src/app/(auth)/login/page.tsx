@@ -2,6 +2,7 @@
 
 import awsExports from '@src/aws-exports';
 import { Amplify } from 'aws-amplify';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/TextButton';
@@ -15,19 +16,21 @@ Amplify.configure({ ...awsExports, ssr: true });
 export default function LoginPage() {
   const [loading, setLoading] = useState<boolean>(false);
   return (
-    <div className='relative flex min-h-screen flex-row items-center justify-center bg-white text-center'>
+    <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
       {/* <section> */}
       <div className='container flex h-screen w-screen flex-col items-center justify-center'>
-        <TextButton
-          disabled={loading}
-          variant='basic'
-          className='absolute left-4 top-4 md:left-8 md:top-8'
-        >
-          <>
-            <Icons.chevronLeft className='mr-2 h-4 w-4' />
-            Back
-          </>
-        </TextButton>
+        <Link href='/'>
+          <TextButton
+            disabled={loading}
+            variant='basic'
+            className='absolute left-4 top-4 md:left-8 md:top-8'
+          >
+            <>
+              <Icons.chevronLeft className='mr-2 h-4 w-4' />
+              Back
+            </>
+          </TextButton>
+        </Link>
         <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
           <div className='flex flex-col space-y-2 text-center'>
             <Icons.logo className='mx-auto h-6 w-6' />

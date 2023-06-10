@@ -9,6 +9,7 @@ export default {
     './ui/**/*.{ts,tsx}',
     './content/**/*.{md,mdx}',
   ],
+  darkMode: ['class'],
   theme: {
     extend: {
       fontFamily: {

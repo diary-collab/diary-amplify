@@ -1,5 +1,7 @@
 import { MainNav } from '@src/components/layout/navigation/main-nav';
 import { DashboardNav } from '@src/components/layout/navigation/nav';
+import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
+import { SiteFooter } from '@src/components/layout/site-footer';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -38,32 +40,34 @@ const dashboardConfig = {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className='flex min-h-screen flex-col space-y-6'>
-      <header className='bg-background sticky top-0 z-40 border-b'>
-        <div className='container flex h-16 items-center justify-between py-4'>
+    <div className='flex min-h-screen flex-col'>
+      <header className='bg-background sticky top-0 z-40 w-full border-b'>
+        <div className='container flex h-16 min-w-full items-center justify-between py-4'>
           <MainNav items={dashboardConfig.mainNav} />
-          {/* <UserAccountNav
+          <UserAccountNav
             user={{
-              name: user.name,
-              image: user.image,
-              email: user.email,
+              name: 'Azzam Hensem',
+              image: null,
+              email: 'azzam@hensem.com',
             }}
-          /> */}
+          />
         </div>
       </header>
-      <div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'>
-        <aside className='hidden w-[200px] flex-col md:flex'>
-          {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            <DashboardNav items={dashboardConfig.sidebarNav} />
-          }
+      <div className='container grid min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
+        <aside className='hidden w-[250px] flex-col border-r pr-2 md:flex'>
+          <div className='mt-6'>
+            {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              <DashboardNav items={dashboardConfig.sidebarNav} />
+            }
+          </div>
         </aside>
-        <main className='flex w-full flex-1 flex-col overflow-hidden'>
+        <main className='mx-0 mt-6 flex w-full flex-1 flex-col overflow-hidden md:mx-4'>
           {children}
         </main>
       </div>
-      {/* <SiteFooter className="border-t" /> */}
+      <SiteFooter className='border-t' />
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function Navbar() {
   };
 
   return (
-    <Disclosure as='nav' className='border-gray-700 bg-white shadow-sm'>
+    <Disclosure as='nav' className='bg-background border-gray-700 shadow-sm'>
       {({ open }) => (
         <>
           <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
@@ -58,7 +58,7 @@ export default function Navbar() {
               <div className='hidden sm:ml-6 sm:flex sm:items-center'>
                 <Menu as='div' className='relative ml-3'>
                   <div>
-                    <Menu.Button className='flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2'>
+                    <Menu.Button className='bg-background flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2'>
                       <span className='sr-only'>Open user menu</span>
                       <div className='h-8 w-8 rounded-full bg-black' />
                     </Menu.Button>
@@ -72,7 +72,7 @@ export default function Navbar() {
                     leaveFrom='transform opacity-100 scale-100'
                     leaveTo='transform opacity-0 scale-95'
                   >
-                    <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                    <Menu.Items className='bg-background absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                       {user ? (
                         <Menu.Item>
                           {({ active }) => (
@@ -111,7 +111,7 @@ export default function Navbar() {
                 </Menu>
               </div>
               <div className='-mr-2 flex items-center sm:hidden'>
-                <Disclosure.Button className='inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2'>
+                <Disclosure.Button className='bg-background inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2'>
                   <span className='sr-only'>Open main menu</span>
                   {open ? (
                     <XMarkIcon className='block h-6 w-6' aria-hidden='true' />

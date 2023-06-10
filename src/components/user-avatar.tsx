@@ -1,0 +1,30 @@
+// import { User } from "@prisma/client"
+
+// import { CognitoUser } from "@aws-amplify/auth";
+import { AvatarProps } from '@radix-ui/react-avatar';
+
+import { Icons } from '@src/components/icons';
+import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
+
+export interface User {
+  image?: string | null;
+  name?: string | null;
+}
+interface UserAvatarProps extends AvatarProps {
+  user: Pick<User, 'image' | 'name'>;
+}
+
+export function UserAvatar({ user, ...props }: UserAvatarProps) {
+  return (
+    <Avatar {...props}>
+      {user.image ? (
+        <AvatarImage alt='Picture' src={user.image} />
+      ) : (
+        <AvatarFallback>
+          <span className='sr-only'>{user.name}</span>
+          <Icons.user className='h-4 w-4' />
+        </AvatarFallback>
+      )}
+    </Avatar>
+  );
+}
