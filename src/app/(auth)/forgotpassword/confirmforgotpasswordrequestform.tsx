@@ -86,37 +86,38 @@ export default function ConfirmForgotPasswordForm({
         description: message,
         variant: 'default',
       });
+    }
+
+    //masuk kesini udah pasti gak sukses
+    if (
+      message?.includes('Verification code provided is not valid') &&
+      attempt < 3
+    ) {
+      setAttempt(attempt + 1);
+      return toast({
+        title: 'Uh-Oh!',
+        description: `${message} (attmepts: ${attempt + 1}/3)`,
+        variant: 'destructive',
+      });
+    } else if (
+      (message?.includes('Verification code provided is not valid') &&
+        attempt >= 3) ||
+      message?.includes('Too many unsuccessful attempts')
+    ) {
+      setAttempt(0);
+      setRequestSent(false);
+      return toast({
+        title: 'Uh-Oh!',
+        description:
+          'Too many unsuccessful attempts, please make another reset password request!',
+        variant: 'destructive',
+      });
     } else {
-      if (
-        message?.includes('Verification code provided is not valid') &&
-        attempt < 3
-      ) {
-        setAttempt(attempt + 1);
-        return toast({
-          title: 'Uh-Oh!',
-          description: `${message} (attmepts: ${attempt + 1}/3)`,
-          variant: 'destructive',
-        });
-      } else if (
-        (message?.includes('Verification code provided is not valid') &&
-          attempt >= 3) ||
-        message?.includes('Too many unsuccessful attempts')
-      ) {
-        setAttempt(0);
-        setRequestSent(false);
-        return toast({
-          title: 'Uh-Oh!',
-          description:
-            'Too many unsuccessful attempts, please make another reset password request!',
-          variant: 'destructive',
-        });
-      } else {
-        return toast({
-          title: 'Uh-Oh!',
-          description: `${message} (attmepts: ${attempt}/3)`,
-          variant: 'destructive',
-        });
-      }
+      return toast({
+        title: 'Uh-Oh!',
+        description: `${message} (attmepts: ${attempt}/3)`,
+        variant: 'destructive',
+      });
     }
   }
   const { handleSubmit, setValue } = methods;
