@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CognitoUser } from '@aws-amplify/auth';
 // import usePush from '@utils/UsePush';

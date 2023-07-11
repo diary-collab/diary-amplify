@@ -4,12 +4,12 @@ import * as React from 'react';
 import { clsxm } from '@src/lib/utils';
 
 import { Icons } from '@src/components/icons';
-import { ModeToggle } from '@src/components/mode-toggle';
+// import { ModeToggle } from '@src/components/mode-toggle';
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
     <footer className={clsxm(className)}>
-      <div className='container flex flex-col items-center justify-between gap-4 py-6 md:h-16 md:flex-row md:py-0'>
+      <div className='container flex flex-col items-center justify-between gap-4 py-6 md:h-12 md:flex-row md:py-0'>
         <div className='flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0'>
           <Icons.logo />
           <p className='text-center text-sm leading-loose md:text-left'>
@@ -25,7 +25,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             .
           </p>
         </div>
-        <ModeToggle />
+        {/* <ModeToggle /> */}
       </div>
     </footer>
   );

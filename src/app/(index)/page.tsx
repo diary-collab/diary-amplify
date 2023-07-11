@@ -1,5 +1,5 @@
 import ButtonLink from '@src/components/links/ButtonLink';
-import UnderlineLink from '@src/components/links/UnderlineLink';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
 export default function IndexPage() {
   return (
@@ -35,7 +35,7 @@ export default function IndexPage() {
 
         <footer className='absolute bottom-2 text-gray-700'>
           © {new Date().getFullYear()} By{' '}
-          <UnderlineLink href='/'>Azzam</UnderlineLink>
+          <UnstyledLink href='/'>Azzam</UnstyledLink>
         </footer>
       </div>
     </section>

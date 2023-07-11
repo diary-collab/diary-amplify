@@ -1,3 +1,9 @@
+import { dashboardConfig } from '@src/config/dashboard';
+import { redirect } from 'next/navigation';
+
+import logger from '@src/lib/logger';
+import { useamplifyauth } from '@src/hooks/use-auth';
+
 import { MainNav } from '@src/components/layout/navigation/main-nav';
 import { DashboardNav } from '@src/components/layout/navigation/nav';
 import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
@@ -7,59 +13,39 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const dashboardConfig = {
-  mainNav: [
-    {
-      title: 'Documentation',
-      href: '/docs',
-    },
-    {
-      title: 'Support',
-      href: '/support',
-      disabled: true,
-    },
-  ],
-  sidebarNav: [
-    {
-      title: 'Posts',
-      href: '/dashboard',
-      icon: 'post',
-    },
-    {
-      title: 'Billing',
-      href: '/dashboard/billing',
-      icon: 'billing',
-    },
-    {
-      title: 'Settings',
-      href: '/dashboard/settings',
-      icon: 'settings',
-    },
-  ],
-};
+export default async function DashboardLayout({
+  children,
+}: DashboardLayoutProps) {
+  const userattributes = await useamplifyauth();
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  if (!userattributes) {
+    redirect('/login');
+  }
+
+  logger('authent: ' + JSON.stringify(userattributes, null, 4));
+
   return (
-    <div className='flex min-h-screen flex-col'>
-      <header className='bg-background sticky top-0 z-40 w-full border-b'>
-        <div className='container flex h-16 min-w-full items-center justify-between py-4'>
+    <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
+      <header className='bg-background sticky top-0 z-40 min-w-full border-b shadow-md'>
+        <div className='mx-8 flex h-12 items-center justify-between py-4 md:mx-10 lg:mx-12'>
           <MainNav items={dashboardConfig.mainNav} />
           <UserAccountNav
             user={{
-              name: 'Azzam Hensem',
+              name: userattributes.name,
               image: null,
-              email: 'azzam@hensem.com',
+              email: userattributes.email,
             }}
           />
         </div>
       </header>
-      <div className='container grid min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
+      <div className='container grid min-h-screen min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
         <aside className='hidden w-[250px] flex-col border-r pr-2 md:flex'>
           <div className='mt-6'>
             {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               //@ts-ignore
-              <DashboardNav items={dashboardConfig.sidebarNav} />
+              // prettier-ignore
+              <DashboardNav items={dashboardConfig.sidebarNav}/>
             }
           </div>
         </aside>
@@ -67,7 +53,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {children}
         </main>
       </div>
-      <SiteFooter className='border-t' />
+      <SiteFooter className='bg-background sticky bottom-0 z-40 mt-8 w-full border-t' />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
   Image,
   Laptop,
   Loader2,
+  LucideCalendarCheck,
   LucideProps,
   Moon,
   MoreVertical,
@@ -69,4 +70,5 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  today: LucideCalendarCheck,
 };

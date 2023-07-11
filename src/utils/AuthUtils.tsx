@@ -1,22 +1,55 @@
 import { Auth } from 'aws-amplify';
 
-import { LoginResult } from '@src/types/user-auth';
+import {
+  AuthRequestResult,
+  RegisterNewUserRequest,
+  SignInWithEmailAndPassword,
+} from '@src/types/user-auth';
 
-export async function login(
-  email: string,
-  password: string
-): Promise<LoginResult> {
+export async function signInWithEmailAndPassword(
+  data: SignInWithEmailAndPassword
+): Promise<AuthRequestResult> {
   // return { success: true, data: "sukses" } as returnData;
   try {
-    await Auth.signIn(email, password);
+    await Auth.signIn(data.email, data.password);
     const currentUser = await Auth.currentAuthenticatedUser();
 
-    return { success: true, user: currentUser } as LoginResult;
+    return { success: true, user: currentUser } as AuthRequestResult;
   } catch (err: unknown) {
     return {
       success: false,
       errorMessage: 'Combination of email and password not found!',
-    } as LoginResult;
+    } as AuthRequestResult;
+  }
+}
+
+export async function register(
+  data: RegisterNewUserRequest
+): Promise<AuthRequestResult> {
+  const username = data.username;
+  const nickname = data.nickname;
+  const password = data.password;
+  const email = data.email;
+  const name = data.fullname;
+
+  try {
+    const { user } = await Auth.signUp({
+      username,
+      password,
+      attributes: {
+        email, // optional
+        nickname,
+        name, // optional - E.164 number convention
+      },
+      autoSignIn: {
+        // optional - enables auto sign in after user is confirmed
+        enabled: true,
+      },
+    });
+
+    return { user: user, success: true } as AuthRequestResult;
+  } catch (error) {
+    return { success: false, errorMessage: error } as AuthRequestResult;
   }
 }
 

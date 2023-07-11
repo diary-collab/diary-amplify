@@ -1,13 +1,13 @@
 'use client';
 
 import { siteConfig } from '@src/config/site';
-import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
 import { Icons } from '@src/components/icons';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import { MobileNav } from './mobile-nav';
 
@@ -25,16 +25,16 @@ export function MainNav({ items, children }: MainNavProps) {
 
   return (
     <div className='flex gap-6 md:gap-10'>
-      <Link href='/' className='hidden items-center space-x-2 md:flex'>
+      <UnstyledLink href='/' className='hidden items-center space-x-2 md:flex'>
         <Icons.logo />
         <span className='hidden font-bold sm:inline-block'>
           {siteConfig.name}
         </span>
-      </Link>
+      </UnstyledLink>
       {items?.length ? (
         <nav className='hidden gap-6 md:flex'>
           {items?.map((item, index) => (
-            <Link
+            <UnstyledLink
               key={index}
               href={item.disabled ? '#' : item.href}
               className={clsxm(
@@ -46,7 +46,7 @@ export function MainNav({ items, children }: MainNavProps) {
               )}
             >
               {item.title}
-            </Link>
+            </UnstyledLink>
           ))}
         </nav>
       ) : null}

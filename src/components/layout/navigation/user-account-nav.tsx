@@ -1,8 +1,9 @@
 'use client';
 
+import { logout } from '@utils/AuthUtils';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { User } from 'next-auth';
-import { signOut } from 'next-auth/react';
 
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -50,11 +52,14 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className='cursor-pointer'
-          onSelect={(event) => {
+          onSelect={async (event) => {
             event.preventDefault();
-            signOut({
-              callbackUrl: `${window.location.origin}/login`,
-            });
+            await logout();
+            router.push('/login');
+            // signOut({
+
+            //   callbackUrl: `${window.location.origin}/login`,
+            // });
           }}
         >
           Sign out

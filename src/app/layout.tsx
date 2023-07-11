@@ -1,7 +1,11 @@
+// import awsExports from '@src/aws-exports';
 import { siteConfig } from '@src/config/site';
+// import { Amplify, Auth } from 'aws-amplify';
+import '@amplify/amplifyconfigure';
 
 import '@src/styles/globals.css';
 
+import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
 import { Analytics } from '@src/components/analytics';
@@ -20,8 +24,11 @@ import { Toaster } from '@src/components/ui/toaster';
 //   variable: '--font-heading',
 // });
 
+// Amplify.configure({ ...awsExports, ssr: true });
+
 interface RootLayoutProps {
   children: React.ReactNode;
+  needauthenticate: boolean;
 }
 
 export const metadata = {
@@ -71,7 +78,11 @@ export const metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+  needauthenticate,
+}: RootLayoutProps) {
+  logger('authenticated: ' + needauthenticate);
   return (
     <html lang='en' suppressHydrationWarning>
       <head />

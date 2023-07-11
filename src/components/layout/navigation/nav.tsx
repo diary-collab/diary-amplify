@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { HiOutlineSearch, HiOutlineXCircle } from 'react-icons/hi';
 
 import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
-import Input from '@src/components/forms/Input';
+import DatePicker from '@src/components/forms/DatePicker';
 import { Icons } from '@src/components/icons';
 
 import { SidebarNavItem } from '@src/types';
@@ -18,16 +18,25 @@ interface DashboardNavProps {
 }
 
 type DashboardSideNavForm = {
-  searchquery?: string | null;
+  datequery?: Date | null;
 };
 
 export function DashboardNav({ items }: DashboardNavProps) {
+  const [datequerystate, setDateQueryState] = useState<Date | null>(new Date());
+
+  useEffect(() => {
+    // if (!datequery) {
+    //   logger('null');
+    // }
+    logger(datequerystate);
+  }, [datequerystate]);
+
   const path = usePathname();
 
   const methods = useForm<DashboardSideNavForm>({
     mode: 'onTouched',
   });
-  const { handleSubmit } = methods;
+  const { setValue, handleSubmit } = methods;
 
   async function onSubmit(data: DashboardSideNavForm) {
     logger(data);
@@ -39,19 +48,26 @@ export function DashboardNav({ items }: DashboardNavProps) {
   }
 
   return (
-    <nav className='grid items-start gap-2'>
+    <nav className='fixed z-10 grid items-start gap-2 overflow-auto'>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            id='search'
-            label='Search'
-            placeholder='Search something...'
-            validation={{ required: 'Search must be filled' }}
-            // helperText='This is a helper text'
-            leftIcon={HiOutlineSearch}
+          <DatePicker
+            id='datequery'
+            name='datequery'
+            placeholder='Select date'
+            label='Search diary based on date..'
+            withPortal
+            defaultValue={new Date().toISOString()}
+            todayButton='Today'
+            customState={setDateQueryState}
             rightNode={
-              <button type='button' className='p-1'>
-                <HiOutlineXCircle className='text-typo-icons text-xl' />
+              <button
+                onClick={() => {
+                  datequerystate && new Date();
+                  setValue('datequery', new Date());
+                }}
+              >
+                <Icons.today className='h-4 w-4' />
               </button>
             }
           />

@@ -8,13 +8,12 @@ import TextButton from '@src/components/buttons/TextButton';
 import { Icons } from '@src/components/icons';
 import UnstyledLink from '@src/components/links/UnstyledLink';
 
-import LoginForm from './authloginform';
+import RegisterForm from './authregisterform';
 
 Amplify.configure({ ...awsExports, ssr: true });
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [loading, setLoading] = useState<boolean>(false);
-
   return (
     <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
       {/* <section> */}
@@ -35,28 +34,21 @@ export default function LoginPage() {
           <div className='flex flex-col space-y-2 text-center'>
             <Icons.logo className='mx-auto h-6 w-6' />
             <h1 className='text-2xl font-semibold tracking-tight'>
-              Welcome back
+              Start your journey here
             </h1>
             <p className='text-muted-foreground text-sm'>
-              Enter your email to sign in to your account
+              Make your account first, discover us later
             </p>
           </div>
 
           <div className='text-muted-foreground px-8 text-center text-sm'>
-            <LoginForm loading={loading} setLoading={setLoading} />
+            <RegisterForm loading={loading} setLoading={setLoading} />
             <p className='text-muted-foreground mt-4 px-8 text-center text-sm'>
               <UnstyledLink
-                href='/'
+                href='/login'
                 className='hover:text-brand underline underline-offset-4'
               >
-                Reset your password
-              </UnstyledLink>
-              <p></p>
-              <UnstyledLink
-                href='/register'
-                className='hover:text-brand underline underline-offset-4'
-              >
-                Don&apos;t have an account? Sign Up!
+                Have an account? Login
               </UnstyledLink>
             </p>
           </div>
@@ -72,5 +64,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-LoginPage.needauthenticate = true;
