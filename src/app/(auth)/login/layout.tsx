@@ -1,14 +1,22 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
+import { useamplifyauth } from '@src/hooks/use-auth';
+
+interface AuthLayoutProps {
+  children: React.ReactNode;
+}
 export const metadata: Metadata = {
   title: 'Login',
   description: 'Login to your account',
 };
 
-interface LoginLayoutProps {
-  children: React.ReactNode;
-}
+export default async function AuthLayout({ children }: AuthLayoutProps) {
+  const userattributes = await useamplifyauth();
 
-export default function LoginPageLayout({ children }: LoginLayoutProps) {
-  return <div>{children}</div>;
+  if (userattributes) {
+    redirect('/dashboard');
+  }
+
+  return <div className='min-h-screen'>{children}</div>;
 }

@@ -1,11 +1,11 @@
 import { siteConfig } from '@src/config/site';
-import Link from 'next/link';
 import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 import { useLockBody } from '@src/hooks/use-lock-body';
 
 import { Icons } from '@src/components/icons';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import { MainNavItem } from '@src/types';
 
@@ -23,14 +23,14 @@ export function MobileNav({ items, children }: MobileNavProps) {
         'animate-in slide-in-from-bottom-80 fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md md:hidden'
       )}
     >
-      <div className='bg-popover text-popover-foreground relative z-20 grid gap-6 rounded-md p-4 shadow-md'>
-        <Link href='/' className='flex items-center space-x-2'>
+      <div className='bg-background text-popover-foreground relative z-20 grid gap-6 rounded-md p-4 shadow-md'>
+        <UnstyledLink href='/' className='flex items-center space-x-2'>
           <Icons.logo />
           <span className='font-bold'>{siteConfig.name}</span>
-        </Link>
+        </UnstyledLink>
         <nav className='grid grid-flow-row auto-rows-max text-sm'>
           {items.map((item, index) => (
-            <Link
+            <UnstyledLink
               key={index}
               href={item.disabled ? '#' : item.href}
               className={clsxm(
@@ -39,7 +39,7 @@ export function MobileNav({ items, children }: MobileNavProps) {
               )}
             >
               {item.title}
-            </Link>
+            </UnstyledLink>
           ))}
         </nav>
         {children}

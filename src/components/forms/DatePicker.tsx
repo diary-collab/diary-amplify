@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import get from 'lodash.get';
+import { Dispatch, SetStateAction } from 'react';
 import ReactDatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
-import { HiOutlineCalendar } from 'react-icons/hi';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -23,6 +23,8 @@ type DatePickerProps = {
   /** Disable error style (not disabling error validation) */
   hideError?: boolean;
   containerClassName?: string;
+  rightNode?: React.ReactNode;
+  customState?: Dispatch<SetStateAction<Date | null>>;
 } & Omit<ReactDatePickerProps, 'onChange'>;
 
 export default function DatePicker({
@@ -38,6 +40,8 @@ export default function DatePicker({
   hideError = false,
   disabled,
   containerClassName,
+  customState,
+  rightNode,
   ...rest
 }: DatePickerProps) {
   const {
@@ -72,6 +76,9 @@ export default function DatePicker({
                 name={id}
                 onChange={onChange}
                 onBlur={onBlur}
+                onSelect={(data) => {
+                  customState && customState(data);
+                }}
                 selected={value ? new Date(value) : undefined}
                 className={clsx(
                   'flex w-full rounded-lg shadow-sm',
@@ -88,12 +95,17 @@ export default function DatePicker({
                 showYearDropdown
                 dropdownMode='select'
                 openToDate={value ? new Date(value) : defaultDate}
-                dateFormat='dd/MM/yyyy'
+                dateFormat='dd MMMM yyyy'
                 readOnly={readOnly}
                 disabled={disabled}
                 {...rest}
               />
-              <HiOutlineCalendar className='text-typo-icons pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 transform text-lg' />
+              {rightNode && (
+                <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+                  {rightNode}
+                </div>
+              )}
+              {/* <HiOutlineCalendar className='text-typo-icons pointer-events-none absolute right-8 top-1/2 block -translate-y-1/2 transform text-lg' /> */}
             </div>
             {helperText && (
               <Typography variant='c1' color='secondary' className='mt-1'>

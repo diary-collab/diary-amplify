@@ -11,7 +11,7 @@ export default function PrivateRoute({ success }: IPrivateRoute) {
   return (
     // <PrimaryLayout user={user}>
     <main
-      className={`flex  h-screen flex-col items-center justify-center ${'bg-white'}`}
+      className={`flex  h-screen flex-col items-center justify-center ${'bg-background'}`}
     >
       {success ? (
         <div>

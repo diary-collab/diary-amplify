@@ -1,7 +1,8 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { login } from '@utils/AuthUtils';
+import { signInWithEmailAndPassword } from '@utils/AuthUtils';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 // import usePush from '@utils/UsePush';
 // import { useState } from 'react';
@@ -48,7 +49,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ loading, setLoading }: LoginFormProps) {
-  // const push = usePush();
+  const router = useRouter();
 
   const methods = useForm<SignInWithEmailAndPassword>({
     mode: 'onTouched',
@@ -58,12 +59,12 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     setLoading(true);
     logger({ data });
 
-    const signInResult = await login(data.email, data.password);
+    const signInResult = await signInWithEmailAndPassword(data);
 
-    setLoading(false);
     // setUser(signInResult.user ?? null);
 
     if (!signInResult?.success) {
+      setLoading(false);
       // setAuthenticated(false);
       return toast({
         title: 'Something went wrong.',
@@ -81,13 +82,17 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     //   description: 'We sent you a login link. Be sure to check your spam too.',
     // });
 
-    // push('/dashboard');
+    router.refresh();
+    router.push('/dashboard');
   }
   const { handleSubmit } = methods;
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className='max-w-sm space-y-3'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='max-w-sm space-y-3 text-left'
+      >
         {AuthLoginfields.map((field) =>
           field.type === 'password' ? (
             <PasswordInput
@@ -95,6 +100,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
               id={field.id}
               label={field.labelText}
               type={field.type}
+              disabled={loading}
               validation={{
                 required: `${field.name} must be filled!`,
                 minLength: {
@@ -111,6 +117,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
               id={field.id}
               type={field.type}
               label={field.labelText}
+              disabled={loading}
               validation={{
                 required: `${field.name} must be filled!`,
                 pattern: {
@@ -125,8 +132,14 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
           )
         )}
 
-        <Button type='submit' isLoading={loading}>
-          Submit
+        <p></p>
+
+        <Button
+          type='submit'
+          isLoading={loading}
+          className='bg-primary-500 w-full items-center justify-center border text-center shadow-sm'
+        >
+          Login
         </Button>
       </form>
     </FormProvider>

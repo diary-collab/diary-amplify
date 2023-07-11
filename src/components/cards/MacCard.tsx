@@ -40,7 +40,7 @@ export default function MacCard({
           'bg-neutral-100 p-4',
           [
             mode === 'dark' && ['bg-neutral-100'],
-            mode === 'light' && ['bg-white'],
+            mode === 'light' && ['bg-background'],
           ],
           childrenClassName,
         ])}

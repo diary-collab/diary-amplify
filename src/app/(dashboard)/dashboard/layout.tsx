@@ -1,69 +1,59 @@
+import { dashboardConfig } from '@src/config/dashboard';
+import { redirect } from 'next/navigation';
+
+import logger from '@src/lib/logger';
+import { useamplifyauth } from '@src/hooks/use-auth';
+
 import { MainNav } from '@src/components/layout/navigation/main-nav';
 import { DashboardNav } from '@src/components/layout/navigation/nav';
+import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
+import { SiteFooter } from '@src/components/layout/site-footer';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const dashboardConfig = {
-  mainNav: [
-    {
-      title: 'Documentation',
-      href: '/docs',
-    },
-    {
-      title: 'Support',
-      href: '/support',
-      disabled: true,
-    },
-  ],
-  sidebarNav: [
-    {
-      title: 'Posts',
-      href: '/dashboard',
-      icon: 'post',
-    },
-    {
-      title: 'Billing',
-      href: '/dashboard/billing',
-      icon: 'billing',
-    },
-    {
-      title: 'Settings',
-      href: '/dashboard/settings',
-      icon: 'settings',
-    },
-  ],
-};
+export default async function DashboardLayout({
+  children,
+}: DashboardLayoutProps) {
+  const userattributes = await useamplifyauth();
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  if (!userattributes) {
+    redirect('/login');
+  }
+
+  logger('authent: ' + JSON.stringify(userattributes, null, 4));
+
   return (
-    <div className='flex min-h-screen flex-col space-y-6'>
-      <header className='bg-background sticky top-0 z-40 border-b'>
-        <div className='container flex h-16 items-center justify-between py-4'>
+    <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
+      <header className='bg-background sticky top-0 z-40 min-w-full border-b shadow-md'>
+        <div className='mx-8 flex h-12 items-center justify-between py-4 md:mx-10 lg:mx-12'>
           <MainNav items={dashboardConfig.mainNav} />
-          {/* <UserAccountNav
+          <UserAccountNav
             user={{
-              name: user.name,
-              image: user.image,
-              email: user.email,
+              name: userattributes.name,
+              image: null,
+              email: userattributes.email,
             }}
-          /> */}
+          />
         </div>
       </header>
-      <div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'>
-        <aside className='hidden w-[200px] flex-col md:flex'>
-          {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            <DashboardNav items={dashboardConfig.sidebarNav} />
-          }
+      <div className='container grid min-h-screen min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
+        <aside className='hidden w-[250px] flex-col border-r pr-2 md:flex'>
+          <div className='mt-6'>
+            {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              // prettier-ignore
+              <DashboardNav items={dashboardConfig.sidebarNav}/>
+            }
+          </div>
         </aside>
-        <main className='flex w-full flex-1 flex-col overflow-hidden'>
+        <main className='mx-0 mt-6 flex w-full flex-1 flex-col overflow-hidden md:mx-4'>
           {children}
         </main>
       </div>
-      {/* <SiteFooter className="border-t" /> */}
+      <SiteFooter className='bg-background sticky bottom-0 z-40 mt-8 w-full border-t' />
     </div>
   );
 }

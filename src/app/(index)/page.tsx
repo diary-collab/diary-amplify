@@ -1,9 +1,9 @@
 import ButtonLink from '@src/components/links/ButtonLink';
-import UnderlineLink from '@src/components/links/UnderlineLink';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
 export default function IndexPage() {
   return (
-    <section className='bg-white'>
+    <section className='bg-background'>
       <div className='layout relative flex min-h-screen flex-col items-center justify-center text-center'>
         {/* <Logo className='text-5xl' /> */}
         <h1 className='-mt-24'>Diary Project</h1>
@@ -35,7 +35,7 @@ export default function IndexPage() {
 
         <footer className='absolute bottom-2 text-gray-700'>
           © {new Date().getFullYear()} By{' '}
-          <UnderlineLink href='/'>Azzam</UnderlineLink>
+          <UnstyledLink href='/'>Azzam</UnstyledLink>
         </footer>
       </div>
     </section>

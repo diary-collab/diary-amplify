@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/TextButton';
 import { Icons } from '@src/components/icons';
-import UnderlineLink from '@src/components/links/UnderlineLink';
+import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import LoginForm from './authloginform';
 
@@ -14,20 +14,23 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 export default function LoginPage() {
   const [loading, setLoading] = useState<boolean>(false);
+
   return (
-    <div className='relative flex min-h-screen flex-row items-center justify-center bg-white text-center'>
+    <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
       {/* <section> */}
       <div className='container flex h-screen w-screen flex-col items-center justify-center'>
-        <TextButton
-          disabled={loading}
-          variant='basic'
-          className='absolute left-4 top-4 md:left-8 md:top-8'
-        >
-          <>
-            <Icons.chevronLeft className='mr-2 h-4 w-4' />
-            Back
-          </>
-        </TextButton>
+        <UnstyledLink href='/'>
+          <TextButton
+            disabled={loading}
+            variant='basic'
+            className='absolute left-4 top-4 md:left-8 md:top-8'
+          >
+            <>
+              <Icons.chevronLeft className='mr-2 h-4 w-4' />
+              Back
+            </>
+          </TextButton>
+        </UnstyledLink>
         <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
           <div className='flex flex-col space-y-2 text-center'>
             <Icons.logo className='mx-auto h-6 w-6' />
@@ -41,6 +44,21 @@ export default function LoginPage() {
 
           <div className='text-muted-foreground px-8 text-center text-sm'>
             <LoginForm loading={loading} setLoading={setLoading} />
+            <p className='text-muted-foreground mt-4 px-8 text-center text-sm'>
+              <UnstyledLink
+                href='/forgotpassword'
+                className='hover:text-brand underline underline-offset-4'
+              >
+                Reset your password
+              </UnstyledLink>
+              <p className='my-2'></p>
+              <UnstyledLink
+                href='/register'
+                className='hover:text-brand underline underline-offset-4'
+              >
+                Don&apos;t have an account? Sign Up!
+              </UnstyledLink>
+            </p>
           </div>
         </div>
       </div>
@@ -48,9 +66,11 @@ export default function LoginPage() {
       {/* <section> */}
       <footer className='absolute bottom-2 text-gray-700'>
         © {new Date().getFullYear()} By{' '}
-        <UnderlineLink href='/'>Azzam</UnderlineLink>
+        <UnstyledLink href='/'>Azzam</UnstyledLink>
       </footer>
       {/* </section> */}
     </div>
   );
 }
+
+LoginPage.needauthenticate = true;

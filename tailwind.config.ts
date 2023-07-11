@@ -9,6 +9,7 @@ export default {
     './ui/**/*.{ts,tsx}',
     './content/**/*.{md,mdx}',
   ],
+  darkMode: ['class'],
   theme: {
     extend: {
       fontFamily: {
@@ -27,7 +28,10 @@ export default {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+
         primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
           50: 'rgb(var(--tw-color-primary-50) / <alpha-value>)',
           //* Background
           100: 'rgb(var(--tw-color-primary-100) / <alpha-value>)',
@@ -45,21 +49,8 @@ export default {
           900: 'rgb(var(--tw-color-primary-900) / <alpha-value>)',
         },
         secondary: {
-          50: '#EFF9F8',
-          //* Background
-          100: '#E8F4F3',
-          200: '#E0F3F1',
-          //* Complement
-          300: '#D0EDEB',
-          400: '#A2DBD7',
-          //* Default
-          500: '#40A69F',
-          //* Hovered
-          600: '#3B9993',
-          //* Active
-          700: '#2F7A75',
-          800: '#235C58',
-          900: '#173D3A',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         typo: {
           DEFAULT: '#1F1F1F',

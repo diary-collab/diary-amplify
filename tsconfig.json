@@ -18,7 +18,8 @@
       "@utils/*": ["./src/utils/*"],
       "@src/*": ["./src/*"],
       "@/*": ["./*"],
-      "~/*": ["./public/*"]
+      "~/*": ["./public/*"],
+      "@amplify/*": ["./src/contexts/amplifycontext/*"]
     },
     "incremental": true,
     "plugins": [

@@ -76,7 +76,7 @@ export function ModalRoot({
           >
             <div
               className={clsxm(
-                'align inline-block transform rounded-2xl bg-white text-left shadow-xl transition-all sm:align-middle',
+                'align bg-background inline-block transform rounded-2xl text-left shadow-xl transition-all sm:align-middle',
                 'sm:w-11/12 sm:max-w-xl',
                 modalContainerClassName
               )}

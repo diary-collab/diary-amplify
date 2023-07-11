@@ -5,6 +5,23 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: 'Documentation',
       href: '/docs',
+      disabled: true,
+    },
+    {
+      title: 'Support',
+      href: '/support',
+      disabled: true,
+    },
+  ],
+  mainNavAuth: [
+    {
+      title: 'Dashboard',
+      href: '/dashboard',
+    },
+    {
+      title: 'Documentation',
+      href: '/docs',
+      disabled: true,
     },
     {
       title: 'Support',

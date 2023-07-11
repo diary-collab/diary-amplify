@@ -2,17 +2,20 @@ import {
   type Icon as LucideIcon,
   AlertTriangle,
   ArrowRight,
+  BookLock,
   Check,
   ChevronLeft,
   ChevronRight,
-  Command,
   CreditCard,
   File,
   FileText,
+  Footprints,
+  Frown,
   HelpCircle,
   Image,
   Laptop,
   Loader2,
+  LucideCalendarCheck,
   LucideProps,
   Moon,
   MoreVertical,
@@ -29,7 +32,7 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
-  logo: Command,
+  logo: BookLock,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,
@@ -50,6 +53,8 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  frown: Frown,
+  footprint: Footprints,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden='true'
@@ -69,4 +74,5 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  today: LucideCalendarCheck,
 };

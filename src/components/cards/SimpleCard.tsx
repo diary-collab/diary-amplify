@@ -17,7 +17,7 @@ export default function SimpleCard({
   return (
     <div
       className={clsxm(
-        'bg-white shadow-sm',
+        'bg-background shadow-sm',
         [
           size === 'sm' && ['p-4', 'rounded-lg'],
           size === 'base' && ['p-5', 'rounded-xl'],

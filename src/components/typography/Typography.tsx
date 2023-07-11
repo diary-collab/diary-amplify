@@ -67,12 +67,12 @@ type TypographyProps<T extends React.ElementType> = {
 } & React.ComponentPropsWithoutRef<T>;
 
 /** @see https://www.benmvp.com/blog/forwarding-refs-polymorphic-react-component-typescript/ */
-type TypographyComponent = <T extends React.ElementType = 'p'>(
+type TypographyComponent = <T extends React.ElementType = 'div'>(
   props: TypographyProps<T>
 ) => React.ReactElement | null;
 
 const Typography: TypographyComponent = React.forwardRef(
-  <T extends React.ElementType = 'p'>(
+  <T extends React.ElementType = 'div'>(
     {
       as,
       children,
@@ -84,7 +84,7 @@ const Typography: TypographyComponent = React.forwardRef(
     }: TypographyProps<T>,
     ref?: React.ComponentPropsWithRef<T>['ref']
   ) => {
-    const Component = as || 'p';
+    const Component = as || 'div';
     return (
       <Component
         ref={ref}
