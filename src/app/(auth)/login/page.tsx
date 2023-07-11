@@ -46,12 +46,12 @@ export default function LoginPage() {
             <LoginForm loading={loading} setLoading={setLoading} />
             <p className='text-muted-foreground mt-4 px-8 text-center text-sm'>
               <UnstyledLink
-                href='/'
+                href='/forgotpassword'
                 className='hover:text-brand underline underline-offset-4'
               >
                 Reset your password
               </UnstyledLink>
-              <p></p>
+              <p className='my-2'></p>
               <UnstyledLink
                 href='/register'
                 className='hover:text-brand underline underline-offset-4'

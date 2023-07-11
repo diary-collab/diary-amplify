@@ -52,10 +52,14 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className='cursor-pointer'
-          onSelect={async (event) => {
-            event.preventDefault();
-            await logout();
-            router.push('/login');
+          onSelect={async () => {
+            // event.preventDefault();
+            const logoutret = await logout();
+            if (logoutret) {
+              router.refresh();
+              router.push('/login');
+            }
+
             // signOut({
 
             //   callbackUrl: `${window.location.origin}/login`,

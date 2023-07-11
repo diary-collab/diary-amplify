@@ -9,6 +9,8 @@ import {
   CreditCard,
   File,
   FileText,
+  Footprints,
+  Frown,
   HelpCircle,
   Image,
   Laptop,
@@ -51,6 +53,8 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  frown: Frown,
+  footprint: Footprints,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden='true'

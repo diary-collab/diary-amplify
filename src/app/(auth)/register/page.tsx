@@ -1,7 +1,5 @@
 'use client';
 
-import awsExports from '@src/aws-exports';
-import { Amplify } from 'aws-amplify';
 import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/TextButton';
@@ -9,8 +7,6 @@ import { Icons } from '@src/components/icons';
 import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import RegisterForm from './authregisterform';
-
-Amplify.configure({ ...awsExports, ssr: true });
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState<boolean>(false);

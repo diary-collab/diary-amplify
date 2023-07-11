@@ -90,6 +90,16 @@ export type SignInWithEmailAndPassword = {
   password: string;
 };
 
+export type ForgotPasswordRequest = {
+  username: string;
+};
+
+export type ConfirmForgotPasswordRequest = {
+  username: string;
+  verificationcode: string;
+  newpassword: string;
+};
+
 export type RegisterNewUserForm = {
   email: string;
   password: string;

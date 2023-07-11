@@ -82,7 +82,8 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     //   description: 'We sent you a login link. Be sure to check your spam too.',
     // });
 
-    router.replace('/dashboard');
+    router.refresh();
+    router.push('/dashboard');
   }
   const { handleSubmit } = methods;
 
@@ -130,6 +131,8 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
             />
           )
         )}
+
+        <p></p>
 
         <Button
           type='submit'
