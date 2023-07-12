@@ -20,14 +20,14 @@ import { SignInWithEmailAndPassword } from '@src/types/user-auth';
 
 const AuthLoginfields: FormFields[] = [
   {
-    labelText: 'Email address',
+    labelText: 'Username / Email address',
     labelFor: 'email',
     id: 'email',
     name: 'email',
     type: 'text',
     autoComplete: 'email',
     isRequired: true,
-    placeholder: 'Email address',
+    placeholder: 'Username / Email address',
     titlekey: 'title_email',
   },
   {
@@ -120,11 +120,11 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
               disabled={loading}
               validation={{
                 required: `${field.name} must be filled!`,
-                pattern: {
-                  value:
-                    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/gi,
-                  message: 'Please inout a valid email!',
-                },
+                // pattern: {
+                //   value:
+                //     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/gi,
+                //   message: 'Please inout a valid email!',
+                // },
               }}
               placeholder={field.placeholder}
               helperText={field.helpertext ? field.helpertext : undefined}
