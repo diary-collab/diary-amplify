@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { confirmForgotPassword } from '@utils/AuthUtils';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import usePush from '@utils/UsePush';
 // import { useState } from 'react';
@@ -71,6 +72,7 @@ export default function ConfirmForgotPasswordForm({
   });
 
   const [attempt, setAttempt] = useState<number>(0);
+  const router = useRouter();
 
   async function onSubmit(data: ConfirmForgotPasswordRequest) {
     setLoading(true);
@@ -81,9 +83,14 @@ export default function ConfirmForgotPasswordForm({
     logger(message);
 
     if (success) {
+      setRequestSent(false);
+
+      router.refresh();
+      router.push('/login');
+
       return toast({
         title: 'Yeayy!',
-        description: message,
+        description: 'Your password has been changed successfully!',
         variant: 'default',
       });
     }
@@ -96,7 +103,7 @@ export default function ConfirmForgotPasswordForm({
       setAttempt(attempt + 1);
       return toast({
         title: 'Uh-Oh!',
-        description: `${message} (attmepts: ${attempt + 1}/3)`,
+        description: `${message} (attempts: ${attempt + 1}/3)`,
         variant: 'destructive',
       });
     } else if (
