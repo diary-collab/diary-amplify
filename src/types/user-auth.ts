@@ -36,7 +36,7 @@ export const AuthRegisterFields: FormFields[] = [
     type: 'text',
     autoComplete: 'username',
     isRequired: false,
-    placeholder: 'username',
+    placeholder: 'Username',
     titlekey: 'title_username',
   },
   {
@@ -114,6 +114,11 @@ export type RegisterNewUserRequest = {
   fullname: string;
   username: string;
   nickname: string;
+};
+
+export type VerifyUserRequest = {
+  username: string;
+  code: string;
 };
 
 export type AuthRequestResult = {

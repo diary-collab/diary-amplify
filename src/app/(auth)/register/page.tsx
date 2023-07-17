@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/TextButton';
@@ -10,6 +11,7 @@ import RegisterForm from './authregisterform';
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState<boolean>(false);
+  const { theme } = useTheme();
   return (
     <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
       {/* <section> */}
@@ -17,7 +19,7 @@ export default function RegisterPage() {
         <UnstyledLink href='/'>
           <TextButton
             disabled={loading}
-            variant='basic'
+            variant={theme === 'dark' ? 'dark' : 'light'}
             className='absolute left-4 top-4 md:left-8 md:top-8'
           >
             <>

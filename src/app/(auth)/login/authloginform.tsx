@@ -91,7 +91,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='max-w-sm space-y-3 text-left'
+        className='max-w-sm space-y-4 text-left'
       >
         {AuthLoginfields.map((field) =>
           field.type === 'password' ? (
