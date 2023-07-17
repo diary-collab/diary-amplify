@@ -4,6 +4,8 @@ import * as React from 'react';
 import { clsxm } from '@src/lib/utils';
 
 import { Icons } from '@src/components/icons';
+
+import { ModeToggle } from '../mode-toggle';
 // import { ModeToggle } from '@src/components/mode-toggle';
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
@@ -25,7 +27,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             .
           </p>
         </div>
-        {/* <ModeToggle /> */}
+        <ModeToggle />
       </div>
     </footer>
   );

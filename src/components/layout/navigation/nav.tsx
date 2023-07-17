@@ -49,51 +49,55 @@ export function DashboardNav({ items }: DashboardNavProps) {
 
   return (
     <nav className='fixed z-10 grid items-start gap-2 overflow-auto'>
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DatePicker
-            id='datequery'
-            name='datequery'
-            placeholder='Select date'
-            label='Search diary based on date..'
-            withPortal
-            defaultValue={new Date().toISOString()}
-            todayButton='Today'
-            customState={setDateQueryState}
-            rightNode={
-              <button
-                onClick={() => {
-                  datequerystate && new Date();
-                  setValue('datequery', new Date());
-                }}
-              >
-                <Icons.today className='h-4 w-4' />
-              </button>
-            }
-          />
-        </form>
-      </FormProvider>
-      {items.map((item, index) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const Icon = Icons[item.icon || 'arrowRight'];
-        return (
-          item.href && (
-            <Link key={index} href={item.disabled ? '/' : item.href}>
-              <span
-                className={clsxm(
-                  'hover:bg-accent hover:text-accent-foreground group flex items-center rounded-md px-3 py-2 text-sm font-medium',
-                  path === item.href ? 'bg-accent' : 'transparent',
-                  item.disabled && 'cursor-not-allowed opacity-80'
-                )}
-              >
-                <Icon className='mr-2 h-4 w-4' />
-                <span>{item.title}</span>
-              </span>
-            </Link>
-          )
-        );
-      })}
+      <div className='mb-4'>
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DatePicker
+              id='datequery'
+              name='datequery'
+              placeholder='Select date'
+              label='Search diary based on date..'
+              withPortal
+              defaultValue={new Date().toISOString()}
+              todayButton='Today'
+              customState={setDateQueryState}
+              rightNode={
+                <button
+                  onClick={() => {
+                    datequerystate && new Date();
+                    setValue('datequery', new Date());
+                  }}
+                >
+                  <Icons.today className='h-4 w-4' />
+                </button>
+              }
+            />
+          </form>
+        </FormProvider>
+      </div>
+      <div>
+        {items.map((item, index) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const Icon = Icons[item.icon || 'arrowRight'];
+          return (
+            item.href && (
+              <Link key={index} href={item.disabled ? '/' : item.href}>
+                <span
+                  className={clsxm(
+                    'hover:bg-accent hover:text-accent-foreground group flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                    path === item.href ? 'bg-accent' : 'transparent',
+                    item.disabled && 'cursor-not-allowed opacity-80'
+                  )}
+                >
+                  <Icon className='mr-2 h-4 w-4' />
+                  <span>{item.title}</span>
+                </span>
+              </Link>
+            )
+          );
+        })}
+      </div>
     </nav>
   );
 }

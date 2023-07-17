@@ -1,13 +1,18 @@
+'use client';
+
+import { useTheme } from 'next-themes';
+
 import ButtonLink from '@src/components/links/ButtonLink';
-import UnstyledLink from '@src/components/links/UnstyledLink';
+// import UnstyledLink from '@src/components/links/UnstyledLink';
 
 export default function IndexPage() {
+  const { theme } = useTheme();
   return (
     <section className='bg-background'>
       <div className='layout relative flex min-h-screen flex-col items-center justify-center text-center'>
         {/* <Logo className='text-5xl' /> */}
-        <h1 className='-mt-24'>Diary Project</h1>
-        <p className='mt-2 text-sm text-gray-800'>
+        <h1 className='text-foreground -mt-24'>Diary Project</h1>
+        <p className='text-accent-foreground mt-2 text-sm'>
           Proudly presented to you by Visi Global Teknologi{' '}
         </p>
         <p className='mt-2 text-sm text-gray-700'>
@@ -16,7 +21,11 @@ export default function IndexPage() {
               </ArrowLink> */}
         </p>
 
-        <ButtonLink className='mt-6' href='/' variant='light'>
+        <ButtonLink
+          className='mt-6'
+          href='/'
+          variant={theme === 'dark' ? 'dark' : 'light'}
+        >
           See our progress
         </ButtonLink>
 
@@ -33,10 +42,10 @@ export default function IndexPage() {
               /> */}
         {/* </UnstyledLink> */}
 
-        <footer className='absolute bottom-2 text-gray-700'>
+        {/* <footer className='absolute bottom-2 text-gray-700'>
           © {new Date().getFullYear()} By{' '}
           <UnstyledLink href='/'>Azzam</UnstyledLink>
-        </footer>
+        </footer> */}
       </div>
     </section>
   );
