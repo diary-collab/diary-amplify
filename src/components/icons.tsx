@@ -2,10 +2,12 @@ import {
   type Icon as LucideIcon,
   AlertTriangle,
   ArrowRight,
+  BellDot,
   BookLock,
   Check,
   ChevronLeft,
   ChevronRight,
+  CircleEllipsis,
   CreditCard,
   File,
   FileText,
@@ -26,6 +28,8 @@ import {
   Trash,
   Twitter,
   User,
+  UserCheck,
+  UserX,
   X,
 } from 'lucide-react';
 
@@ -55,6 +59,10 @@ export const Icons = {
   laptop: Laptop,
   frown: Frown,
   footprint: Footprints,
+  notifications: BellDot,
+  usercheck: UserCheck,
+  userx: UserX,
+  loading: CircleEllipsis,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden='true'

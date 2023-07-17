@@ -1,6 +1,7 @@
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
+import { PostCreateButton } from '@src/components/post-create-button';
 
 export default async function Dashboard() {
   const content = false;
@@ -8,8 +9,8 @@ export default async function Dashboard() {
   return (
     <DashboardShell>
       <DashboardHeader heading='Pages' text='Create and manage diary page.'>
-        {/* <PostCreateButton /> */}
-        Add Page
+        <PostCreateButton />
+        {/* Add Page */}
       </DashboardHeader>
       <div>
         {content ? (
@@ -24,8 +25,8 @@ export default async function Dashboard() {
               <EmptyPlaceholder.Description>
                 You don&apos;t have any posts yet. Start creating content.
               </EmptyPlaceholder.Description>
-              {/* <PostCreateButton variant="outline" /> */}
-              Add post
+              <PostCreateButton variant='outline' />
+              {/* Add post */}
             </EmptyPlaceholder>
           </div>
         )}

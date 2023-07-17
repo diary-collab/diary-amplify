@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
-const TextButtonVariant = ['primary', 'basic'] as const;
+const TextButtonVariant = ['primary', 'basic', 'dark', 'light'] as const;
 
 type TextButtonProps = {
   variant?: (typeof TextButtonVariant)[number];
@@ -34,6 +34,14 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
             'disabled:text-primary-200',
           ],
           variant === 'basic' && [
+            'text-black hover:text-gray-600 active:text-gray-800',
+            'disabled:text-gray-300',
+          ],
+          variant === 'dark' && [
+            'text-white hover:text-gray-300 active:text-gray-500',
+            'disabled:text-gray-700',
+          ],
+          variant === 'light' && [
             'text-black hover:text-gray-600 active:text-gray-800',
             'disabled:text-gray-300',
           ],

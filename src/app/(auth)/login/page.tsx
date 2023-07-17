@@ -1,7 +1,6 @@
 'use client';
 
-import awsExports from '@src/aws-exports';
-import { Amplify } from 'aws-amplify';
+import { useTheme } from 'next-themes';
 import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/TextButton';
@@ -10,10 +9,9 @@ import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import LoginForm from './authloginform';
 
-Amplify.configure({ ...awsExports, ssr: true });
-
 export default function LoginPage() {
   const [loading, setLoading] = useState<boolean>(false);
+  const { theme } = useTheme();
 
   return (
     <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
@@ -22,7 +20,7 @@ export default function LoginPage() {
         <UnstyledLink href='/'>
           <TextButton
             disabled={loading}
-            variant='basic'
+            variant={theme === 'dark' ? 'dark' : 'light'}
             className='absolute left-4 top-4 md:left-8 md:top-8'
           >
             <>

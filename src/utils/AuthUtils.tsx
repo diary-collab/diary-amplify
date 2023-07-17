@@ -58,6 +58,27 @@ export async function register(
   }
 }
 
+export async function verifyUser(
+  username: string,
+  code: string
+): Promise<AuthRequestResult> {
+  try {
+    const test = await Auth.confirmSignUp(username, code);
+
+    logger('verifyuser: ' + test);
+    return {
+      success: true,
+      message: 'Success verify user',
+    };
+  } catch (error) {
+    logger('verifyuser: ' + error);
+    return {
+      success: false,
+      message: 'Error verify user',
+    };
+  }
+}
+
 export async function forgotPasswordRequest(
   data: ForgotPasswordRequest
 ): Promise<AuthRequestResult> {

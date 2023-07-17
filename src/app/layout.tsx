@@ -5,7 +5,6 @@ import '@amplify/amplifyconfigure';
 
 import '@src/styles/globals.css';
 
-import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
 import { Analytics } from '@src/components/analytics';
@@ -78,11 +77,7 @@ export const metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-export default function RootLayout({
-  children,
-  needauthenticate,
-}: RootLayoutProps) {
-  logger('authenticated: ' + needauthenticate);
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en' suppressHydrationWarning>
       <head />
@@ -95,8 +90,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute='class'
-          defaultTheme='light'
-          enableSystem={false}
+          defaultTheme='dark'
+          enableSystem={true}
         >
           {children}
           <Analytics />

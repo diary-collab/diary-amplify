@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 import logger from '@src/lib/logger';
@@ -16,6 +17,8 @@ export default function ForgotPasswordPage() {
   const [requestSent, setRequestSent] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
 
+  const { theme } = useTheme();
+
   useEffect(() => {
     logger('request sent: ' + requestSent);
   }, [requestSent]);
@@ -27,7 +30,7 @@ export default function ForgotPasswordPage() {
         <UnstyledLink href='/'>
           <TextButton
             disabled={loading}
-            variant='basic'
+            variant={theme === 'dark' ? 'dark' : 'light'}
             className='absolute left-4 top-4 md:left-8 md:top-8'
           >
             <>

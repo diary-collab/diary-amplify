@@ -59,7 +59,12 @@ export default function PasswordInput({
   return (
     <div className={containerClassName}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography
+          as='label'
+          variant='s3'
+          className='text-foreground block'
+          htmlFor={id}
+        >
           {label}
         </Typography>
       )}
@@ -73,12 +78,12 @@ export default function PasswordInput({
           readOnly={readOnly}
           disabled={disabled}
           className={clsx(
-            'flex w-full rounded-lg shadow-sm',
+            'text-foreground bg-background flex w-full rounded-lg shadow-sm',
             'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
             'pr-10',
             'focus:border-primary-500 focus:ring-primary-500 border-gray-300',
             (readOnly || disabled) &&
-              'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
+              'bg-background cursor-not-allowed border-gray-300 focus:border-gray-300 focus:ring-0',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500'
           )}
           placeholder={placeholder}

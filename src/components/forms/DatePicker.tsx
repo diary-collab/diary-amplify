@@ -59,7 +59,12 @@ export default function DatePicker({
   return (
     <div className={clsxm('relative', containerClassName)}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography
+          as='label'
+          variant='s3'
+          className='text-foreground block'
+          htmlFor={id}
+        >
           {label}
         </Typography>
       )}
@@ -81,7 +86,7 @@ export default function DatePicker({
                 }}
                 selected={value ? new Date(value) : undefined}
                 className={clsx(
-                  'flex w-full rounded-lg shadow-sm',
+                  'bg-background flex w-full rounded-lg shadow-sm',
                   'min-h-[2.25rem] py-0 md:min-h-[2.5rem]',
                   'focus:border-primary-500 focus:ring-primary-500 border-gray-300',
                   (readOnly || disabled) &&
@@ -101,7 +106,7 @@ export default function DatePicker({
                 {...rest}
               />
               {rightNode && (
-                <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+                <div className='text-foreground absolute inset-y-0 right-0 flex items-center pr-3'>
                   {rightNode}
                 </div>
               )}
