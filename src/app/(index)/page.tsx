@@ -7,11 +7,12 @@ import ButtonLink from '@src/components/links/ButtonLink';
 
 export default function IndexPage() {
   const { theme } = useTheme();
+
   return (
     <section className='bg-background'>
-      <div className='layout relative flex min-h-screen flex-col items-center justify-center text-center'>
+      <div className='layout relative flex min-h-screen min-w-full flex-col items-center justify-center text-center'>
         {/* <Logo className='text-5xl' /> */}
-        <h1 className='text-foreground -mt-24'>Diary Project</h1>
+        <h1 className='text-foreground -mt-24'>Project Diary</h1>
         <p className='text-accent-foreground mt-2 text-sm'>
           Proudly presented to you by Visi Global Teknologi{' '}
         </p>

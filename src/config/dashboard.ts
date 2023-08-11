@@ -31,19 +31,61 @@ export const dashboardConfig: DashboardConfig = {
   ],
   sidebarNav: [
     {
-      title: 'Pages',
-      href: '/dashboard',
-      icon: 'post',
+      category: 'Pages',
+      catdesc:
+        'Manage your posts here by select each category or type of the pages.',
+      items: [
+        {
+          title: 'Public for everyone',
+          href: '/dashboard',
+          icon: 'post',
+        },
+        {
+          title: 'Shared to you',
+          href: '/dashboard/shared',
+          icon: 'sharedfile',
+        },
+        {
+          title: 'Private for you',
+          href: '/dashboard/private',
+          icon: 'privatepost',
+        },
+        {
+          title: 'Page requests',
+          href: '/dashboard/requests',
+          icon: 'notifications',
+        },
+      ],
     },
     {
-      title: 'Post requests',
-      href: '/dashboard/postrequests',
-      icon: 'notifications',
-    },
-    {
-      title: 'Settings',
-      href: '/dashboard/settings',
-      icon: 'settings',
+      category: 'Diaries (Coming soon)',
+      catdesc: 'This page is coming soon, we are still working on it!',
+      items: [
+        {
+          title: 'Public for everyone',
+          href: '/dashboard/diary',
+          icon: 'post',
+          disabled: true,
+        },
+        {
+          title: 'Shared to you',
+          href: '/dashboard/diary/shared',
+          icon: 'sharedfile',
+          disabled: true,
+        },
+        {
+          title: 'Private for you',
+          href: '/dashboard/diary/private',
+          icon: 'privatepost',
+          disabled: true,
+        },
+        {
+          title: 'Page requests',
+          href: '/dashboard/diary/requests',
+          icon: 'notifications',
+          disabled: true,
+        },
+      ],
     },
   ],
 };

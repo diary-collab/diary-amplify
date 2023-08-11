@@ -11,6 +11,12 @@ export type NavItem = {
 
 export type MainNavItem = NavItem;
 
+export type CustomSidebarNavItem = {
+  category: string;
+  catdesc: string;
+  items: SidebarNavItem[];
+};
+
 export type SidebarNavItem = {
   title: string;
   disabled?: boolean;
@@ -63,7 +69,7 @@ export type MarketingConfig = {
 export type DashboardConfig = {
   mainNav: MainNavItem[];
   mainNavAuth: MainNavItem[];
-  sidebarNav: SidebarNavItem[];
+  sidebarNav: CustomSidebarNavItem[];
 };
 
 export type SubscriptionPlan = {

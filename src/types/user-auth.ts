@@ -40,14 +40,14 @@ export const AuthRegisterFields: FormFields[] = [
     titlekey: 'title_username',
   },
   {
-    labelText: 'Fullname',
+    labelText: 'Fullname / Organisation name',
     labelFor: 'fullname',
     id: 'fullname',
     name: 'fullname',
     type: 'text',
     autoComplete: 'fullname',
     isRequired: true,
-    placeholder: 'Fullname',
+    placeholder: 'Name without any salutations',
     titlekey: 'title_fullname',
   },
   {

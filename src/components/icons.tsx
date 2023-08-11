@@ -10,6 +10,8 @@ import {
   CircleEllipsis,
   CreditCard,
   File,
+  FileLock2,
+  Files,
   FileText,
   Footprints,
   Frown,
@@ -30,6 +32,7 @@ import {
   User,
   UserCheck,
   UserX,
+  VenetianMask,
   X,
 } from 'lucide-react';
 
@@ -63,6 +66,9 @@ export const Icons = {
   usercheck: UserCheck,
   userx: UserX,
   loading: CircleEllipsis,
+  privatepost: FileLock2,
+  sharedfile: Files,
+  secret: VenetianMask,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden='true'

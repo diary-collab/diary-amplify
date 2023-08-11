@@ -3,7 +3,7 @@
 
 import { signInWithEmailAndPassword } from '@utils/AuthUtils';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import usePush from '@utils/UsePush';
 // import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ import logger from '@src/lib/logger';
 import Button from '@src/components/buttons/Button';
 import Input from '@src/components/forms/Input';
 import PasswordInput from '@src/components/forms/PasswordInput';
+import { Skeleton } from '@src/components/ui/skeleton';
 import { toast } from '@src/components/ui/use-toast';
 
 import { FormFields } from '@src/types';
@@ -54,6 +55,13 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
   const methods = useForm<SignInWithEmailAndPassword>({
     mode: 'onTouched',
   });
+  const { handleSubmit } = methods;
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function onSubmit(data: SignInWithEmailAndPassword) {
     setLoading(true);
@@ -85,7 +93,15 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     router.refresh();
     router.push('/dashboard');
   }
-  const { handleSubmit } = methods;
+
+  if (!mounted) {
+    return (
+      <>
+        <Skeleton className='my-2 h-8 max-w-sm' />
+        <Skeleton className='mb-8 mt-2 h-8 max-w-sm' />
+      </>
+    );
+  }
 
   return (
     <FormProvider {...methods}>

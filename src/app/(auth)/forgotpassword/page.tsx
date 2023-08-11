@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
   }, [requestSent]);
 
   return (
-    <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
+    <div className='bg-background relative flex min-h-screen min-w-full flex-row items-center justify-center text-center'>
       {/* <section> */}
       <div className='container flex h-screen w-screen flex-col items-center justify-center'>
         <UnstyledLink href='/'>
@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
             </>
           </TextButton>
         </UnstyledLink>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
+        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] md:w-[400px]'>
           <div className='flex flex-col space-y-2 text-center'>
             {requestSent ? (
               <Icons.footprint className='mx-auto h-10 w-10' />

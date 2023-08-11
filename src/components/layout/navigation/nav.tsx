@@ -10,11 +10,18 @@ import { clsxm } from '@src/lib/utils';
 
 import DatePicker from '@src/components/forms/DatePicker';
 import { Icons } from '@src/components/icons';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@src/components/tooltip';
+import Typography from '@src/components/typography/Typography';
 
-import { SidebarNavItem } from '@src/types';
+import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 
 interface DashboardNavProps {
-  items: SidebarNavItem[];
+  items: CustomSidebarNavItem[];
 }
 
 type DashboardSideNavForm = {
@@ -23,6 +30,11 @@ type DashboardSideNavForm = {
 
 export function DashboardNav({ items }: DashboardNavProps) {
   const [datequerystate, setDateQueryState] = useState<Date | null>(new Date());
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // if (!datequery) {
@@ -30,8 +42,6 @@ export function DashboardNav({ items }: DashboardNavProps) {
     // }
     logger(datequerystate);
   }, [datequerystate]);
-
-  const path = usePathname();
 
   const methods = useForm<DashboardSideNavForm>({
     mode: 'onTouched',
@@ -45,6 +55,10 @@ export function DashboardNav({ items }: DashboardNavProps) {
 
   if (!items?.length) {
     return null;
+  }
+
+  if (!mounted) {
+    return <></>;
   }
 
   return (
@@ -77,27 +91,70 @@ export function DashboardNav({ items }: DashboardNavProps) {
       </div>
       <div>
         {items.map((item, index) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const Icon = Icons[item.icon || 'arrowRight'];
           return (
-            item.href && (
-              <Link key={index} href={item.disabled ? '/' : item.href}>
-                <span
-                  className={clsxm(
-                    'hover:bg-accent hover:text-accent-foreground group flex items-center rounded-md px-3 py-2 text-sm font-medium',
-                    path === item.href ? 'bg-accent' : 'transparent',
-                    item.disabled && 'cursor-not-allowed opacity-80'
-                  )}
-                >
-                  <Icon className='mr-2 h-4 w-4' />
-                  <span>{item.title}</span>
-                </span>
-              </Link>
-            )
+            <section key={index}>
+              <TooltipProvider delayDuration={300}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Typography
+                      variant='b2'
+                      className={clsxm(
+                        'text-md group flex items-center rounded-md px-3 py-2 font-bold',
+                        'transparent',
+                        'opacity-80'
+                      )}
+                    >
+                      {item.category}
+                    </Typography>
+                  </TooltipTrigger>
+                  <TooltipContent side='bottom'>
+                    <Typography variant='b2'>{item.catdesc}</Typography>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {item.items ? (
+                <>
+                  <DashboardSideNavItems items={item.items} />
+                </>
+              ) : null}
+            </section>
           );
         })}
       </div>
     </nav>
+  );
+}
+
+interface DashboardNavItemsProps {
+  items: SidebarNavItem[];
+}
+
+export function DashboardSideNavItems({ items }: DashboardNavItemsProps) {
+  const path = usePathname();
+  return (
+    <>
+      {items.map((item, index) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const Icon = Icons[item.icon || 'arrowRight'];
+        return (
+          item.href && (
+            <Link key={index} href={item.disabled ? '/' : item.href}>
+              <span
+                className={clsxm(
+                  'hover:bg-accent hover:text-accent-foreground group flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                  path === item.href ? 'bg-accent' : 'transparent',
+                  item.disabled && 'cursor-not-allowed opacity-80'
+                )}
+              >
+                <Icon className='mr-2 h-4 w-4' />
+                <span>{item.title}</span>
+              </span>
+            </Link>
+          )
+        );
+      })}
+    </>
   );
 }

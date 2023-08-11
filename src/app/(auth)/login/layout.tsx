@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { useamplifyauth } from '@src/hooks/use-auth';
+import { provideSessionData } from '@src/hooks/use-auth';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
-  const userattributes = await useamplifyauth();
+  const sessionData = await provideSessionData();
 
-  if (userattributes) {
+  if (sessionData && sessionData.attributes) {
     redirect('/dashboard');
   }
 

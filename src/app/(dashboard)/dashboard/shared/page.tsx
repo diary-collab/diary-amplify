@@ -3,12 +3,12 @@ import { DashboardShell } from '@src/components/dashboard-shell';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { PostCreateButton } from '@src/components/post-create-button';
 
-export default async function Dashboard() {
+export default async function SharedDashboard() {
   const content = false;
 
   return (
     <DashboardShell>
-      <DashboardHeader heading='Pages' text='Create and manage diary page.'>
+      <DashboardHeader heading='Shared' text='Halaman shared'>
         <PostCreateButton />
         {/* Add Page */}
       </DashboardHeader>

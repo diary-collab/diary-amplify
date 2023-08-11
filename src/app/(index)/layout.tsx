@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { clsxm } from '@src/lib/utils';
-import { useamplifyauth } from '@src/hooks/use-auth';
+import { provideSessionData } from '@src/hooks/use-auth';
 
 import { MainNav } from '@src/components/layout/navigation/main-nav';
 import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexLayout({ children }: IndexPageProps) {
-  const userattributes = await useamplifyauth();
+  const sessionData = await provideSessionData();
 
   return (
     <>
@@ -32,18 +32,18 @@ export default async function IndexLayout({ children }: IndexPageProps) {
           <div className='mx-8 flex h-20 items-center justify-between py-6 md:mx-10 lg:mx-12'>
             <MainNav
               items={
-                userattributes
+                sessionData && sessionData.attributes
                   ? dashboardConfig.mainNavAuth
                   : dashboardConfig.mainNav
               }
             />
-            {userattributes ? (
+            {sessionData && sessionData.attributes ? (
               <>
                 <UserAccountNav
                   user={{
-                    name: userattributes.name,
+                    name: sessionData.attributes.name,
                     image: null,
-                    email: userattributes.email,
+                    email: sessionData.attributes.email,
                   }}
                 />
               </>

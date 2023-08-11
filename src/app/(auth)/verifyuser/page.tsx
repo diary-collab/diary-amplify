@@ -2,6 +2,7 @@
 
 import { verifyUser } from '@utils/AuthUtils';
 import { notFound, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
@@ -105,6 +106,8 @@ export default function VerifyUserPage() {
 
   const queryParams = useSearchParams();
 
+  const router = useRouter();
+
   const { theme } = useTheme();
 
   const username = queryParams.get('username');
@@ -132,6 +135,11 @@ export default function VerifyUserPage() {
         success: result.success,
         message: result.message,
       });
+
+      if (result.success) {
+        router.refresh();
+        router.push('/login');
+      }
     }
 
     if (!username || !code) {
@@ -143,7 +151,7 @@ export default function VerifyUserPage() {
   }, [username, code]);
 
   return (
-    <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
+    <div className='bg-background relative flex min-h-screen min-w-full flex-row items-center justify-center text-center'>
       {/* <section> */}
       <div className='container flex h-screen w-screen flex-col items-center justify-center'>
         <UnstyledLink href='/'>
@@ -158,7 +166,7 @@ export default function VerifyUserPage() {
             </>
           </TextButton>
         </UnstyledLink>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
+        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] md:w-[400px]'>
           {(() => {
             if (pageState.loading) {
               return <LoadingVerifyUser />;

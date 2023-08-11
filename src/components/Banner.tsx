@@ -11,7 +11,11 @@ import { clsxm } from '@src/lib/utils';
 import IconButton from '@src/components/buttons/IconButton';
 import Typography from '@src/components/typography/Typography';
 
-type BannerProps = React.ComponentPropsWithoutRef<'div'>;
+type BannerProps = {
+  variant: (typeof BannerVariant)[number];
+} & React.ComponentPropsWithoutRef<'div'>;
+
+const BannerVariant = ['alert', 'primary'];
 
 function NextArrow({ onClick }: CustomArrowProps) {
   return (
@@ -48,13 +52,21 @@ const settings: Settings = {
   prevArrow: <PrevArrow />,
 };
 
-export default function Banner({ className, ...rest }: BannerProps) {
+export default function Banner({
+  className,
+  variant = 'primary',
+  ...rest
+}: BannerProps) {
   if (!BANNER_CONTENT.length) return null;
 
   return (
     <div
       className={clsxm(
-        'bg-primary-100 flex items-center py-3',
+        [
+          variant === 'primary' && ['bg-primary-100'],
+          variant === 'alert' && ['bg-red-100'],
+        ],
+        'flex items-center py-3',
         'min-h-[4rem]',
         className
       )}

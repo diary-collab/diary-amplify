@@ -1,50 +1,54 @@
 import { dashboardConfig } from '@src/config/dashboard';
 import { redirect } from 'next/navigation';
 
-import logger from '@src/lib/logger';
-import { useamplifyauth } from '@src/hooks/use-auth';
+import { provideSessionData } from '@src/hooks/use-auth';
 
-import { MainNav } from '@src/components/layout/navigation/main-nav';
+import { PartyNav } from '@src/components/layout/navigation/auth/party-nav';
 import { DashboardNav } from '@src/components/layout/navigation/nav';
 import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
 import { SiteFooter } from '@src/components/layout/site-footer';
 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
+import { LayoutProps } from '@src/types/props';
 
 export default async function DashboardLayout({
   children,
-}: DashboardLayoutProps) {
-  const userattributes = await useamplifyauth();
+  params,
+}: LayoutProps) {
+  const sessionData = await provideSessionData();
 
-  if (!userattributes) {
+  if (!sessionData || !sessionData.attributes || !sessionData.jwt) {
     redirect('/login');
   }
-
-  logger('authent: ' + JSON.stringify(userattributes, null, 4));
+  params.sessionData = sessionData;
 
   return (
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
       <header className='bg-background border-border sticky top-0 z-40 min-w-full border-b shadow-md'>
         <div className='mx-8 flex h-12 items-center justify-between py-4 md:mx-10 lg:mx-12'>
-          <MainNav items={dashboardConfig.mainNav} />
+          <PartyNav
+          // user={{
+          //   name: sessionData.attributes.name,
+          //   image: null,
+          //   email: sessionData.attributes.email,
+          // }}
+          />
           <UserAccountNav
             user={{
-              name: userattributes.name,
+              name: sessionData.attributes.name,
               image: null,
-              email: userattributes.email,
+              email: sessionData.attributes.email,
             }}
           />
         </div>
       </header>
       <div className='container grid min-h-screen min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
         <aside className='border-border hidden w-[250px] flex-col border-r pr-2 md:flex'>
-          <div className='mt-6'>
+          <div className='mt-6 grid overflow-auto'>
             {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               //@ts-ignore
               // prettier-ignore
+              //sidenav
               <DashboardNav items={dashboardConfig.sidebarNav}/>
             }
           </div>

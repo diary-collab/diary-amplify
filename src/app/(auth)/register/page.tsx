@@ -13,7 +13,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const { theme } = useTheme();
   return (
-    <div className='bg-background relative flex min-h-screen flex-row items-center justify-center text-center'>
+    <div className='bg-background relative flex min-h-screen min-w-full flex-row items-center justify-center text-center'>
       {/* <section> */}
       <div className='container flex h-screen w-screen flex-col items-center justify-center'>
         <UnstyledLink href='/'>
@@ -28,7 +28,7 @@ export default function RegisterPage() {
             </>
           </TextButton>
         </UnstyledLink>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
+        <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] md:w-[400px]'>
           <div className='flex flex-col space-y-2 text-center'>
             <Icons.logo className='mx-auto h-6 w-6' />
             <h1 className='text-2xl font-semibold tracking-tight'>

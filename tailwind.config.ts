@@ -51,6 +51,21 @@ export default {
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          50: '#EFF9F8',
+          //* Background
+          100: '#E8F4F3',
+          200: '#E0F3F1',
+          //* Complement
+          300: '#D0EDEB',
+          400: '#A2DBD7',
+          //* Default
+          500: '#40A69F',
+          //* Hovered
+          600: '#3B9993',
+          //* Active
+          700: '#2F7A75',
+          800: '#235C58',
+          900: '#173D3A',
         },
         typo: {
           DEFAULT: '#1F1F1F',

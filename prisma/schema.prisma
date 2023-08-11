@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,3 +6,343 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+/// ATURAN UNTUK PENULISAN ///
+
+// ----------------------- BEGIN SELF REGION -------------------------- //
+
+model Party {
+  id                                String        @id
+  partyName                         String        @map("party_name")
+  partyBirthdate                    DateTime      @map("party_birthdate")
+  partyParentName                   String        @map("party_parent_name")
+  partyAttributes                   Json?         @map("partyAttributes")
+  isVerified                        Boolean       @default(false) @map("is_party_verified")
+  isActive                          Boolean       @default(true) @map("is_party_active")
+  createdAt                         DateTime      @default(now()) @map("created_at")
+  updatedAt                         DateTime      @default(now()) @map("updated_at")
+  partyType                         EnumPartyType @map("party_type")
+  partyNameBirthdateParentNameIndex String        @map("party_unique_index")
+
+  partyIdProvider PartyProvidedIdentity[] @relation("PartyProvidedIdentity_identityProvider")
+  partyIdProvided PartyProvidedIdentity[] @relation("PartyProvidedIdentity_identityProvided")
+
+  partyDiaries         Diary[]
+  selfPageAccesses     PageAccess[]
+  selfPages            Page[]
+  selfTemplateProvided TemplateProvider[]
+  selfDiaryApprovers   DiaryOwnerApprover[]
+  accounts             Account[]
+  accessRequestIn      AccessRequestTable[] @relation("AccessRequestTable_requestIn")
+  accessRequestOut     AccessRequestTable[] @relation("AccessRequestTable_requestOut")
+
+  @@unique([partyName, partyBirthdate, partyParentName])
+  @@index([partyNameBirthdateParentNameIndex], type: Brin)
+  @@index([partyAttributes(ops: JsonbOps)], type: Gin)
+  @@map("parties")
+}
+
+enum EnumPartyType {
+  self
+  organisation
+}
+
+// ----------------------- END SELF REGION -------------------------- //
+
+// // ----------------------- BEGIN ORGANISATION REGION -------------------------- //
+// model Organisation {
+//   id            String   @id @default(uuid())
+//   orgName       String   @map("organisaiton_name")
+//   orgAttributes Json?    @map("organisation_attributes")
+//   isVerified    Boolean  @default(false) @map("is_organisation_verified")
+//   createdAt     DateTime @default(now()) @map("created_at")
+//   updatedAt     DateTime @default(now()) @map("updated_at")
+
+//   orgIdentitiesProvided SelfOrganisationIdentity[]
+//   orgDiaries            Diary[]
+//   orgTemplateProvided   TemplateProvider[]
+//   orgDiaryApprovers     DiaryOwnerApprover[]
+//   orgPageAccesses       PageAccess[]
+//   orgPages              Page[]
+
+//   @@index([orgAttributes(ops: JsonbOps)], type: Gin)
+//   @@map("organisations")
+// }
+
+// // ----------------------- END ORGANISATION REGION -------------------------- //
+
+// ----------------------- BEGIN ACCOUNT REGION -------------------------- //
+model Account {
+  accountProviderId            String          @map("account_provider_id")
+  accountProvidedId            String          @map("account_provided_id")
+  partyId                      String?         @map("account_party_id")
+  party                        Party?          @relation(fields: [partyId], references: [id])
+  accountType                  EnumAccountType @map("account_type")
+  accountAttributes            Json            @map("account_attributes")
+  isVerified                   Boolean         @default(false) @map("is_party_verified")
+  isActive                     Boolean         @default(false) @map("is_party_active")
+  createdAt                    DateTime        @default(now()) @map("created_at")
+  updatedAt                    DateTime        @default(now()) @map("updated_at")
+  accountByProviderByTypeIndex String          @map("accounts_by_provider_by_type")
+  accountProvider              AccountProvider @relation(fields: [accountProviderId], references: [id])
+
+  @@id([accountProviderId, accountProvidedId], name: "Account_id")
+  @@index([accountByProviderByTypeIndex], type: Hash, name: "accounts_by_provider_by_type_index")
+  @@index([accountAttributes(ops: JsonbOps)], type: Gin)
+  @@map("accounts")
+}
+
+model AccountProvider {
+  id                 String   @id
+  providerName       String   @map("provider_name")
+  providerAttributes Json     @map("provider_attributes")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @map("updated_at")
+  isActive           Boolean  @default(false) @map("is_account_provider_active")
+
+  accountsProvided Account[]
+
+  @@map("account_providers")
+}
+
+enum EnumAccountType {
+  self_account
+  organisation_account
+}
+
+// ----------------------- END ACCOUNT REGION -------------------------- //
+
+// ----------------------- BEGIN DIARY REGION -------------------------- //
+model Diary {
+  id        String @id
+  diaryName String @map("diary_name")
+
+  diaryTag   String[] @map("diary_tag")
+  metadata   Json?
+  // approvers  String[]
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+  isArchived Boolean  @map("is_archived")
+
+  diaryOwnerId String @map("diary_owner_id")
+  diaryOwner   Party  @relation(fields: [diaryOwnerId], references: [id])
+
+  pages     Page[]
+  approvers DiaryOwnerApprover[]
+
+  @@unique([diaryName, diaryOwnerId])
+  @@index([diaryTag(ops: ArrayOps)], type: Gin)
+  @@map("diaries")
+}
+
+// ----------------------- END DIARY REGION -------------------------- //
+
+// ----------------------- BEGIN PAGE REGION -------------------------- //
+enum EnumPageAccessType {
+  editor
+  viewer
+  banned
+}
+
+enum EnumPageStatus {
+  incomplete
+  complete
+  inactive
+  deleted
+  abandoned
+}
+
+model Page {
+  id        String
+  pageTitle String   @map("page_title")
+  diaryId   String   @map("diary_id")
+  diary     Diary    @relation(fields: [diaryId], references: [id])
+  pageTags  String[] @map("page_tag")
+
+  pageStatus  EnumPageStatus
+  pageOwnerId String         @map("page_owner_id")
+  pageOwner   Party          @relation(fields: [pageOwnerId], references: [id])
+
+  pageAccesses   PageAccess[]
+  version        Int               @default(autoincrement()) @map("page_version")
+  pageContent    Json?             @map("page_content")
+  pageTemplateId String?           @map("page_template_id")
+  pageTemplate   TemplateProvider? @relation(fields: [pageTemplateId], references: [id])
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @default(now()) @map("updated_at")
+
+  ///hash indexes
+  pagesByOwnerByCreationDateIndex String @map("pages_by_owner_by_creationdate")
+  pagesByOwnerByTitleIndes        String @map("pages_by_owner_by_title")
+
+  @@id([id, version], name: "Page_id")
+  @@index([pageTags(ops: ArrayOps)], type: Gin)
+  @@index([pageContent(ops: JsonbOps)], type: Gin)
+  @@index([pagesByOwnerByCreationDateIndex], type: Hash, name: "pages_by_owner_by_creationdate")
+  @@index([pagesByOwnerByTitleIndes], type: Hash, name: "pages_by_owner_by_title")
+  @@map("pages")
+}
+
+// ----------------------- END PAGE REGION -------------------------- //
+
+// ----------------------- BEGIN TEMPLATE REGION -------------------------- //
+model TemplateProvider {
+  id                          String           @id
+  templateName                String           @map("template_name")
+  metadata                    Json?
+  templateType                EnumTemplateType @map("template_type")
+  templateOwnerId             String           @map("template_owner_id")
+  templateOwner               Party            @relation(fields: [templateOwnerId], references: [id])
+  templateAttribute           Json             @map("template_attribute")
+  createdAt                   DateTime         @default(now()) @map("created_at")
+  updatedAt                   DateTime         @default(now()) @map("updated_at")
+  templatesByOwnerByNameindex String           @map("templates_by_owner_by_name")
+  templatesByOwnerByTypeIndex String           @map("templates_by_owner_by_type")
+
+  pages      Page[]
+  identities PartyProvidedIdentity[]
+
+  @@index([templatesByOwnerByNameindex], type: Hash, name: "templates_by_owner_by_name")
+  @@index([templatesByOwnerByTypeIndex], type: Hash, name: "templates_by_owner_by_type")
+  @@map("templates")
+}
+
+enum EnumTemplateType {
+  page_template
+  identity_template
+}
+
+// ----------------------- END TEMPLATE REGION -------------------------- //
+
+// ----------------------- BEGIN VERSION HISTORY REGION -------------------------- //
+
+model AttestationTable {
+  tableName     String         @map("table_name")
+  tableId       String         @map("table_id")
+  previousData  Json?          @map("page_previous_data")
+  currentData   Json           @map("page_current_data")
+  changeType    EnumChangeType @map("change_type")
+  contributors  String[]
+  changeReasons String?        @map("page_change_reason")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @default(now()) @map("updated_at")
+  isPublished   Boolean        @default(false) @map("is_history_published")
+
+  @@id([tableName, tableId], name: "AttestationTable_id")
+  @@index([previousData(ops: JsonbOps)], type: Gin)
+  @@index([currentData(ops: JsonbOps)], type: Gin)
+  @@index([contributors(ops: ArrayOps)], type: Gin)
+  @@map("attestations")
+}
+
+enum EnumChangeType {
+  create_draft
+  create_final
+  update
+  delete
+  revert
+  deactivate
+  abandon
+  reactivate
+}
+
+// ----------------------- END VERSION HISTORY REGION -------------------------- //
+
+// ----------------------- BEGIN REQUEST REGION -------------------------- //
+
+model AccessRequestTable {
+  tableName       String                @map("table_name")
+  tableId         String                @map("table_id")
+  requestType     EnumAccessRequestType @map("request_type")
+  requestData     Json                  @map("request_data")
+  requestMetadata Json?                 @map("request_metadata")
+  requestTags     String[]              @map("request_tags")
+  requestTo       String                @map("request_to")
+  requestFrom     String                @map("request_from")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @default(now()) @map("updated_at")
+  requestStatus   EnumRequestStatus     @map("request_status")
+
+  requestToParty   Party @relation("AccessRequestTable_requestIn", fields: [requestTo], references: [id])
+  requestFromParty Party @relation("AccessRequestTable_requestOut", fields: [requestFrom], references: [id])
+
+  @@id([tableId, tableName], name: "AccessRequestTable_id")
+  @@index([requestData(ops: JsonbOps)], type: Gin)
+  @@index([requestMetadata(ops: JsonbOps)], type: Gin)
+  @@map("access_requests")
+}
+
+enum EnumRequestStatus {
+  requested
+  approved
+  rejected
+  revision_submitted
+  cancelled
+}
+
+enum EnumAccessRequestType {
+  create
+  update
+  delete
+}
+
+// ----------------------- END REQUEST REGION -------------------------- //
+
+// ----------------------- BEGIN MANY-TO-MANY REGION -------------------------- //
+
+///belum perlu relations karena belum perlu template,
+model TemplateProviderContributor {
+  templateId    String   @map("template_id")
+  contributorId String   @map("contributor_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @map("updated_at")
+
+  @@id([templateId, contributorId], name: "TemplateProviderContributor_id")
+  @@map("template_provider_contributors")
+}
+
+model PartyProvidedIdentity {
+  providerId         String            @map("provider_id")
+  providedId         String            @map("provided_id")
+  identityTemplateId String?           @map("identity_template_id")
+  identityTemplate   TemplateProvider? @relation(fields: [identityTemplateId], references: [id])
+  identity           Json
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @default(now()) @map("updated_at")
+
+  provider Party @relation("PartyProvidedIdentity_identityProvider", fields: [providerId], references: [id])
+  provided Party @relation("PartyProvidedIdentity_identityProvided", fields: [providedId], references: [id])
+
+  @@id([providerId, providedId], name: "PartyProvidedIdentity_id")
+  @@index([identity(ops: JsonbOps)], type: Gin)
+  @@map("self_organisation_identities")
+}
+
+model DiaryOwnerApprover {
+  diaryId       String   @map("diary_id")
+  approverId    String   @map("approver_id")
+  approverParty Party    @relation(fields: [approverId], references: [id])
+  diary         Diary    @relation(fields: [diaryId], references: [id])
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @map("updated_at")
+
+  @@id([diaryId, approverId], name: "DiaryOwnerApprover_id")
+  @@map("diary_owner_approvers")
+}
+
+model PageAccess {
+  pageId      String             @map("page_id")
+  pageVersion Int                @map("page_version")
+  pageOwnerId String             @map("page_owner_id")
+  page        Page               @relation(fields: [pageId, pageVersion], references: [id, version])
+  owner       Party              @relation(fields: [pageOwnerId], references: [id])
+  accessType  EnumPageAccessType @map("page_access_type")
+  isPublic    Boolean            @default(false) @map("is_page_public")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @default(now()) @map("updated_at")
+
+  @@id([pageId, pageOwnerId, pageVersion], name: "PageAccess_id")
+  @@map("page_accesses")
+}
+
+// ----------------------- END MANY-TO-MANY REGION -------------------------- //
