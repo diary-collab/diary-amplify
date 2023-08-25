@@ -9,7 +9,7 @@ import {
   HiOutlineX,
 } from 'react-icons/hi';
 
-import Button from '@src/components/buttons/Button';
+import Button from '@src/components/buttons/button';
 
 type BaseDialogProps = {
   /** Maintained by useDialogStore */

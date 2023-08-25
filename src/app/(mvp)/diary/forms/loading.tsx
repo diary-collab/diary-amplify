@@ -1,4 +1,4 @@
-import PageLoading from '@src/components/PageLoadingSkeleton';
+import PageLoading from '@src/components/page-loading-skeleton';
 // import clsxm from '@src/lib/clsxm';
 
 export default function DiaryFormLoading() {

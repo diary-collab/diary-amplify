@@ -12,10 +12,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { completeAccountRequest } from '@src/lib/fetcher/account-fetcher';
 import logger from '@src/lib/logger';
 
-import Button from '@src/components/buttons/Button';
-import DatePicker from '@src/components/forms/DatePicker';
-import Input from '@src/components/forms/Input';
-import SearchableSelectInput from '@src/components/forms/SearchableSelectInput';
+import Button from '@src/components/buttons/button';
+import DatePicker from '@src/components/forms/date-picker';
+import Input from '@src/components/forms/input';
+import SearchableSelectInput from '@src/components/forms/searchable-select-input';
 import { toast } from '@src/components/ui/use-toast';
 
 // import { toast } from '@src/components/ui/use-toast';

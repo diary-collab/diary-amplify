@@ -2,7 +2,7 @@ import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
-import { DialogOptions } from '@src/components/dialog/BaseDialog';
+import { DialogOptions } from '@src/components/dialog/base-dialog';
 
 type DialogStoreType = {
   awaitingPromise: {

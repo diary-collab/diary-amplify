@@ -1,6 +1,6 @@
 'use client';
 
-import { verifyUser } from '@utils/AuthUtils';
+import { verifyUser } from '@utils/auth-utils';
 import { notFound, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -8,9 +8,9 @@ import { useEffect, useState } from 'react';
 
 import logger from '@src/lib/logger';
 
-import TextButton from '@src/components/buttons/TextButton';
+import TextButton from '@src/components/buttons/text-button';
 import { Icons } from '@src/components/icons';
-import UnstyledLink from '@src/components/links/UnstyledLink';
+import UnstyledLink from '@src/components/links/unstyled-link';
 
 type VerifyUsageState = {
   success: boolean;

@@ -3,9 +3,10 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
 import logger from '@src/lib/logger';
 
-import Button from '@src/components/buttons/Button';
-import Input from '@src/components/forms/Input';
-import Layout from '@src/components/layout/Layout';
+import Button from '@src/components/buttons/button';
+import Input from '@src/components/forms/input';
+
+import Layout from '../layout/layout';
 
 type BoilerplateForm = {
   name: string;

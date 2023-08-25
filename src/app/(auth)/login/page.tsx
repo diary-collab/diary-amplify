@@ -3,10 +3,10 @@
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-import TextButton from '@src/components/buttons/TextButton';
+import TextButton from '@src/components/buttons/text-button';
 import { Icons } from '@src/components/icons';
-import UnstyledLink from '@src/components/links/UnstyledLink';
-import Skeleton from '@src/components/Skeleton';
+import UnstyledLink from '@src/components/links/unstyled-link';
+import Skeleton from '@src/components/skeleton';
 
 import LoginForm from './authloginform';
 

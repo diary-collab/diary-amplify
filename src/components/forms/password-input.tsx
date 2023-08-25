@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
-import Typography from '@src/components/typography/Typography';
+import Typography from '@src/components/typography/typography';
 
 export type PasswordInputProps = {
   /** Input label */

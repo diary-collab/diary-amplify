@@ -6,7 +6,7 @@ import * as React from 'react';
 
 // import { clsxm } from '@src/lib/utils';
 import { Icons } from '@src/components/icons';
-import UnstyledLink from '@src/components/links/UnstyledLink';
+import UnstyledLink from '@src/components/links/unstyled-link';
 
 // import { MobileNav } from '../mobile-nav';
 

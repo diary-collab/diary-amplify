@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { PartyAvatar } from '@src/components/party-avatar';
-import Skeleton from '@src/components/Skeleton';
+import Skeleton from '@src/components/skeleton';
 import {
   DropdownMenu,
   DropdownMenuContent,

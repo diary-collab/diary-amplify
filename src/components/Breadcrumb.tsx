@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
-import PrimaryLink from '@src/components/links/PrimaryLink';
-import Typography from '@src/components/typography/Typography';
+import PrimaryLink from '@src/components/links/primary-link';
+import Typography from '@src/components/typography/typography';
 
 const breadcrumbs = {
   '/': 'Landing Page',

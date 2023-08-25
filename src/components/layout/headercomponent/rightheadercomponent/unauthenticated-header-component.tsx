@@ -4,7 +4,7 @@ import Logo from '~/images/logo.svg';
 
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import usePush from '@utils/UsePush';
+import usePush from '@utils/use-push';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react';
 

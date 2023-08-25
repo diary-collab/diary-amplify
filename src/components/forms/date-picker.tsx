@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { clsxm } from '@src/lib/utils';
 
-import Typography from '@src/components/typography/Typography';
+import Typography from '@src/components/typography/typography';
 
 type DatePickerProps = {
   validation?: RegisterOptions;

@@ -1,6 +1,6 @@
 import { Icons } from '@src/components/icons';
-import UnstyledLink from '@src/components/links/UnstyledLink';
-import Skeleton from '@src/components/Skeleton';
+import UnstyledLink from '@src/components/links/unstyled-link';
+import Skeleton from '@src/components/skeleton';
 
 export default function CompleteAccountLoading() {
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { replaceWildcards } from '@utils/paramswildcardutils';
+import { replaceWildcards } from '@utils/params-wildcard-utils';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@src/components/tooltip';
-import Typography from '@src/components/typography/Typography';
+import Typography from '@src/components/typography/typography';
 
 import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 

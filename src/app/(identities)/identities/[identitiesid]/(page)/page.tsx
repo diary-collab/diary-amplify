@@ -1,7 +1,7 @@
 'use client';
 
 import { dashboardConfig } from '@src/config/dashboard';
-import { formatDate } from '@utils/dateutils';
+import { formatDate } from '@utils/date-utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { getIdentitiesById } from '@src/lib/fetcher/identity-fetcher';
 import { useAccount } from '@src/hooks/use-account';
 
-import Banner from '@src/components/Banner';
+import Banner from '@src/components/banner';
 import { DashboardShell } from '@src/components/dashboard-shell';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { IdentityItem } from '@src/components/identity-item';
@@ -17,8 +17,8 @@ import { IdentityItem } from '@src/components/identity-item';
 import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identities-nav';
 import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
 import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
-import ButtonLink from '@src/components/links/ButtonLink';
-import Typography from '@src/components/typography/Typography';
+import ButtonLink from '@src/components/links/button-link';
+import Typography from '@src/components/typography/typography';
 
 import IdentityLoading from './loading';
 

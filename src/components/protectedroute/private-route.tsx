@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Typography from '../typography/Typography';
+import Typography from '../typography/typography';
 
 export interface IPrivateRoute {
   success: boolean;

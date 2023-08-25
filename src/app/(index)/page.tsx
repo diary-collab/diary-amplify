@@ -2,7 +2,7 @@
 
 import { useTheme } from 'next-themes';
 
-import ButtonLink from '@src/components/links/ButtonLink';
+import ButtonLink from '@src/components/links/button-link';
 // import UnstyledLink from '@src/components/links/UnstyledLink';
 
 export default function IndexPage() {

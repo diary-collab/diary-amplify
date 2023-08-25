@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
-import DatePicker from '@src/components/forms/DatePicker';
+import DatePicker from '@src/components/forms/date-picker';
 import { Icons } from '@src/components/icons';
 import {
   Tooltip,
@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@src/components/tooltip';
-import Typography from '@src/components/typography/Typography';
+import Typography from '@src/components/typography/typography';
 
 import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 

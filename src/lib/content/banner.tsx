@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import UnstyledLink from '@src/components/links/UnstyledLink';
+import UnstyledLink from '@src/components/links/unstyled-link';
 
 export const BANNER_CONTENT: (() => React.ReactNode)[] = [
   () => (
