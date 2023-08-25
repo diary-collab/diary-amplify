@@ -2,7 +2,7 @@ import { EnumDiaryType } from '@src/API';
 import Link from 'next/link';
 
 import { IdentityOperations } from './identity-operations';
-import Skeleton from './Skeleton';
+import Skeleton from './skeleton';
 import { UserAvatar } from './user-avatar';
 
 export interface IdentityItemProps {

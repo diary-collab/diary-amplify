@@ -1,4 +1,4 @@
-import useDialogStore from '@src/store/useDialogStore';
+import useDialogStore from '@src/store/use-dialog-store';
 
 /** Hook to use dialog cleanly */
 export default function useDialog() {

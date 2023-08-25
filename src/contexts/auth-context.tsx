@@ -17,7 +17,7 @@ import {
 
 import logger from '@src/lib/logger';
 
-import PrivateRoute from '@src/components/protectedroute/PrivateRoute';
+import PrivateRoute from '@src/components/protectedroute/private-route';
 
 interface UserContextType {
   user: CognitoUser | null;

@@ -1,8 +1,8 @@
-import { useUser } from '@src/contexts/AuthContext';
+import { useUser } from '@src/contexts/auth-context';
 import * as React from 'react';
 
-import LoadingComponent from './headercomponent/LoadingComponent';
-import UnauthenticatedHeaderComponent from './headercomponent/rightheadercomponent/UnauthenticatedHeaderComponent';
+import LoadingComponent from './headercomponent/loading-component';
+import UnauthenticatedHeaderComponent from './headercomponent/rightheadercomponent/unauthenticated-header-component';
 
 interface Props {
   children?: React.ReactElement | null;

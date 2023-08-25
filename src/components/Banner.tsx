@@ -8,8 +8,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import { BANNER_CONTENT } from '@src/lib/content/banner';
 import { clsxm } from '@src/lib/utils';
 
-import IconButton from '@src/components/buttons/IconButton';
-import Typography from '@src/components/typography/Typography';
+import IconButton from '@src/components/buttons/icon-button';
+import Typography from '@src/components/typography/typography';
 
 type BannerProps = {
   variant: (typeof BannerVariant)[number];

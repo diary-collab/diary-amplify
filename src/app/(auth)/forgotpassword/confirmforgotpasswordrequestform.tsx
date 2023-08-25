@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { confirmForgotPassword } from '@utils/AuthUtils';
+import { confirmForgotPassword } from '@utils/auth-utils';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import usePush from '@utils/UsePush';
@@ -10,9 +10,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import logger from '@src/lib/logger';
 
-import Button from '@src/components/buttons/Button';
-import Input from '@src/components/forms/Input';
-import PasswordInput from '@src/components/forms/PasswordInput';
+import Button from '@src/components/buttons/button';
+import Input from '@src/components/forms/input';
+import PasswordInput from '@src/components/forms/password-input';
 import { toast } from '@src/components/ui/use-toast';
 
 import { FormFields } from '@src/types';

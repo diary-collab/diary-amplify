@@ -1,16 +1,16 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { register } from '@utils/AuthUtils';
+import { register } from '@utils/auth-utils';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
 import logger from '@src/lib/logger';
 
-import Button from '@src/components/buttons/Button';
-import Input from '@src/components/forms/Input';
-import PasswordInput from '@src/components/forms/PasswordInput';
+import Button from '@src/components/buttons/button';
+import Input from '@src/components/forms/input';
+import PasswordInput from '@src/components/forms/password-input';
 import { toast } from '@src/components/ui/use-toast';
 
 import {

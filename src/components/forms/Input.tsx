@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 import { IconType } from 'react-icons';
 
-import Typography from '@src/components/typography/Typography';
+import Typography from '@src/components/typography/typography';
 
 export type InputProps = {
   /** Input label */

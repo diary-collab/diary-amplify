@@ -9,7 +9,7 @@ import { identitiesByParty } from '@src/lib/fetcher/identity-fetcher';
 import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 
-import Banner from '@src/components/Banner';
+import Banner from '@src/components/banner';
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';

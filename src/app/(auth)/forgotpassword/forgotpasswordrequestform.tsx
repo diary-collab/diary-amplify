@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { forgotPasswordRequest } from '@utils/AuthUtils';
+import { forgotPasswordRequest } from '@utils/auth-utils';
 import { Dispatch, SetStateAction } from 'react';
 // import usePush from '@utils/UsePush';
 // import { useState } from 'react';
@@ -9,8 +9,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import logger from '@src/lib/logger';
 
-import Button from '@src/components/buttons/Button';
-import Input from '@src/components/forms/Input';
+import Button from '@src/components/buttons/button';
+import Input from '@src/components/forms/input';
 import { toast } from '@src/components/ui/use-toast';
 
 import { FormFields } from '@src/types';

@@ -1,6 +1,6 @@
 'use client';
 
-import { logout } from '@utils/AuthUtils';
+import { logout } from '@utils/auth-utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User } from 'next-auth';
