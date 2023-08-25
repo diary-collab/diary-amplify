@@ -1,6 +1,8 @@
+import { env } from '@/env.mjs';
+
 export async function identitiesByParty(jwt: string, partyid: string) {
   const postnewaccount = await fetch(
-    `http://localhost:3010/v1/parties/${partyid}/identities`,
+    `${env.NEXT_PUBLIC_API_BASE_URL}/v1/parties/${partyid}/identities`,
     {
       method: 'GET',
       headers: {
@@ -15,7 +17,7 @@ export async function identitiesByParty(jwt: string, partyid: string) {
 
 export async function getIdentitiesById(jwt: string, identityid: string) {
   const getidentity = await fetch(
-    `http://localhost:3010/v1/identities/${identityid}`,
+    `${env.NEXT_PUBLIC_API_BASE_URL}/v1/identities/${identityid}`,
     {
       method: 'GET',
       headers: {
