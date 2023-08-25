@@ -1,7 +1,9 @@
 import useSWR from 'swr';
 
+import { env } from '@/env.mjs';
+
 export function useAccount(jwt: string) {
-  const url = `http://localhost:3010/v1/accounts/checkaccount`;
+  const url = `${env.NEXT_PUBLIC_API_BASE_URL}/v1/accounts/checkaccount`;
 
   const fetcher = (url: string) =>
     fetch(url, {
