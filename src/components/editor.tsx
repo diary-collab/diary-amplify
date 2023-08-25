@@ -20,7 +20,7 @@ import { buttonVariants } from '@src/components/ui/button';
 import { toast } from '@src/components/ui/use-toast';
 
 interface EditorProps {
-  post: Pick<Page, 'id' | 'pageTitle' | 'content' | 'version'>;
+  post: Pick<Page, 'id' | 'pageTitle' | 'pageContent' | 'version'>;
 }
 
 type FormData = z.infer<typeof postPatchSchema>;
