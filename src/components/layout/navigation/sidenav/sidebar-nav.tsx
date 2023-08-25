@@ -22,7 +22,9 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
             {item.title}
           </h4>
           {item.items ? (
-            <DocsSidebarNavItems items={item.items} pathname={pathname} />
+            <>
+              <DocsSidebarNavItems items={item.items} pathname={pathname} />
+            </>
           ) : null}
         </div>
       ))}

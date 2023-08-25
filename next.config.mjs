@@ -16,11 +16,17 @@ const nextConfig = {
   },
 
   // Uncoment to add domain whitelist
-  // images: {
-  //   domains: [
-  //     'res.cloudinary.com',
-  //   ],
-  // },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'media.suara.com',
+        port: '',
+        pathname: '/pictures/**',
+      },
+    ],
+  },
 
   // SVGR
   webpack(config) {

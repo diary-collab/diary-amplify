@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import get from 'lodash.get';
+import { Dispatch, SetStateAction } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import Select, { components, MultiValue, StylesConfig } from 'react-select';
@@ -20,6 +21,8 @@ export type SearchableSelectInputProps = {
   validation?: RegisterOptions;
   options: { value: string; label: string }[];
   containerClassName?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customSetData?: Dispatch<SetStateAction<any>>;
 } & React.ComponentPropsWithoutRef<'select'> &
   ExtractProps<Select>;
 
@@ -35,6 +38,7 @@ export default function SearchableSelectInput({
   options,
   hideError = false,
   containerClassName,
+  customSetData,
   ...rest
 }: SearchableSelectInputProps) {
   const {
@@ -175,6 +179,11 @@ export default function SearchableSelectInput({
                     : options.find((opt) => opt.value === field.value) ?? null
                 }
                 onChange={(selectedOptions) => {
+                  customSetData &&
+                    customSetData(
+                      (selectedOptions as (typeof options)[number])?.value ??
+                        null
+                    );
                   isMulti
                     ? field.onChange(
                         (

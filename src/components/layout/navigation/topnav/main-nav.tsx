@@ -9,7 +9,7 @@ import { clsxm } from '@src/lib/utils';
 import { Icons } from '@src/components/icons';
 import UnstyledLink from '@src/components/links/UnstyledLink';
 
-import { MobileNav } from './mobile-nav';
+import { MobileNav } from '../mobilenav/mobile-nav';
 
 // import { siteConfig } from "@src/config/site"
 import { MainNavItem } from '@src/types';

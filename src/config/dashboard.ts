@@ -31,19 +31,69 @@ export const dashboardConfig: DashboardConfig = {
   ],
   sidebarNav: [
     {
-      title: 'Pages',
-      href: '/dashboard',
-      icon: 'post',
+      category: 'Pages',
+      catdesc:
+        'Manage your posts here by select each category or type of the pages.',
+      items: [
+        {
+          title: 'Public for everyone',
+          href: '/dashboard',
+          icon: 'post',
+        },
+        {
+          title: 'Shared to you',
+          href: '/dashboard/shared',
+          icon: 'sharedfile',
+        },
+        {
+          title: 'Private for you',
+          href: '/dashboard/private',
+          icon: 'privatepost',
+        },
+        {
+          title: 'Page requests',
+          href: '/dashboard/requests',
+          icon: 'notifications',
+        },
+      ],
     },
+  ],
+  identitiesNav: [
     {
-      title: 'Post requests',
-      href: '/dashboard/postrequests',
-      icon: 'notifications',
+      category: 'Identities',
+      catdesc: 'Manage your identities here',
+      items: [
+        {
+          title: 'List identities',
+          href: '/identities',
+          icon: 'post',
+        },
+        {
+          title: 'Identity request',
+          href: '/identities/requests',
+          icon: 'sharedfile',
+          disabled: true,
+        },
+        {
+          title: 'Request history',
+          href: '/identities/requests/history',
+          icon: 'privatepost',
+          disabled: true,
+        },
+      ],
     },
+  ],
+  identitiesIdNav: [
     {
-      title: 'Settings',
-      href: '/dashboard/settings',
-      icon: 'settings',
+      category: 'Your identity',
+      catdesc: 'Here is your identity info',
+      items: [
+        {
+          title: 'Identity info',
+          href: '/identities/[identitiesid]',
+          icon: 'post',
+        },
+      ],
     },
   ],
 };

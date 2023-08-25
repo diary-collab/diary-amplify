@@ -1,28 +1,29 @@
 import { dashboardConfig } from '@src/config/dashboard';
 import { redirect } from 'next/navigation';
 
-import logger from '@src/lib/logger';
-import { useamplifyauth } from '@src/hooks/use-auth';
+import { provideSessionData } from '@src/hooks/use-auth';
 
-import { MainNav } from '@src/components/layout/navigation/main-nav';
-import { DashboardNav } from '@src/components/layout/navigation/nav';
-import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
+import { DashboardNav } from '@src/components/layout/navigation/sidenav/dashboard-nav';
+import { MainNav } from '@src/components/layout/navigation/topnav/main-nav';
+import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 import { SiteFooter } from '@src/components/layout/site-footer';
 
-interface DashboardLayoutProps {
+interface PrivateDashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function DashboardLayout({
+export default async function PrivateDashboardLayout({
   children,
-}: DashboardLayoutProps) {
-  const userattributes = await useamplifyauth();
+}: PrivateDashboardLayoutProps) {
+  const sessionData = await provideSessionData();
 
-  if (!userattributes) {
+  if (!sessionData || !sessionData.attributes) {
     redirect('/login');
   }
 
-  logger('authent: ' + JSON.stringify(userattributes, null, 4));
+  if (!sessionData.jwt) {
+    //redirect lengkapi profil
+  }
 
   return (
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
@@ -31,9 +32,9 @@ export default async function DashboardLayout({
           <MainNav items={dashboardConfig.mainNav} />
           <UserAccountNav
             user={{
-              name: userattributes.name,
+              name: sessionData.attributes.name,
               image: null,
-              email: userattributes.email,
+              email: sessionData.attributes.email,
             }}
           />
         </div>
@@ -53,7 +54,7 @@ export default async function DashboardLayout({
           {children}
         </main>
       </div>
-      <SiteFooter className='bg-background border-border sticky bottom-0 z-40 mt-8 w-full border-t' />
+      <SiteFooter className='bg-background border-border invisible sticky bottom-0 z-40 mt-8 w-full border-t md:visible' />
     </div>
   );
 }

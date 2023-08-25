@@ -1,11 +1,16 @@
 import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
 
-export async function useamplifyauth() {
+import logger from '@src/lib/logger';
+
+import { SessionData } from '@src/types/use-session';
+
+export async function provideSessionData() {
   const SSR = getWithSSRContext();
   let result;
 
   try {
     result = await SSR.Auth.currentAuthenticatedUser();
+    logger(result.signInUserSession.accessToken.jwtToken);
   } catch (error) {
     return null;
   }
@@ -14,5 +19,10 @@ export async function useamplifyauth() {
     return null;
   }
 
-  return result.attributes;
+  const sessionData = {
+    attributes: result.attributes,
+    jwt: result.signInUserSession.accessToken.jwtToken,
+  };
+
+  return sessionData as SessionData;
 }

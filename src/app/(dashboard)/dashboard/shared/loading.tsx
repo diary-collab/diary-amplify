@@ -1,8 +1,8 @@
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
-import { PostItem } from '@src/components/post-item';
+import { PostItem } from '@src/components/identity-item';
 
-export default function DashboardLoading() {
+export default function SharedDashboardLoading() {
   return (
     <DashboardShell>
       <DashboardHeader heading='Posts' text='Create and manage posts.'>
