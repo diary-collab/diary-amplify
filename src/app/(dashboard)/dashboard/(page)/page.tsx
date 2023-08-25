@@ -2,8 +2,10 @@
 
 // import logger from '@src/lib/logger';
 // import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import logger from '@src/lib/logger';
 // import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 
@@ -22,14 +24,28 @@ export default function Dashboard({
     sessionData: SessionData;
   };
 }) {
-  // const router = useRouter();
+  const router = useRouter();
   const content = false;
   const { data, isLoading, error } = useAccount(params.sessionData.jwt);
   const [mounted, setMounted] = useState(false);
+  logger(data);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      data &&
+      data.message &&
+      data.message.includes('TokenExpiredError')
+    ) {
+      router.refresh();
+    } else {
+      return;
+    }
+  }, [isLoading, error, data, router]);
 
   if (!mounted) {
     return <></>;

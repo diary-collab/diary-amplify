@@ -1,6 +1,7 @@
 import {
   type Icon as LucideIcon,
   AlertTriangle,
+  ArrowLeft,
   ArrowRight,
   BellDot,
   BookLock,
@@ -13,9 +14,11 @@ import {
   FileLock2,
   Files,
   FileText,
+  FolderSearch,
   Footprints,
   Frown,
   HelpCircle,
+  History,
   Image,
   Laptop,
   Loader2,
@@ -31,6 +34,7 @@ import {
   Twitter,
   User,
   UserCheck,
+  Users,
   UserX,
   VenetianMask,
   X,
@@ -46,6 +50,7 @@ export const Icons = {
   chevronRight: ChevronRight,
   trash: Trash,
   post: FileText,
+  folderSearch: FolderSearch,
   page: File,
   media: Image,
   settings: Settings,
@@ -59,6 +64,7 @@ export const Icons = {
   pizza: Pizza,
   sun: SunMedium,
   moon: Moon,
+  left: ArrowLeft,
   laptop: Laptop,
   frown: Frown,
   footprint: Footprints,
@@ -69,6 +75,8 @@ export const Icons = {
   privatepost: FileLock2,
   sharedfile: Files,
   secret: VenetianMask,
+  users: Users,
+  history: History,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden='true'

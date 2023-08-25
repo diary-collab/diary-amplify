@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { clsxm } from '@src/lib/utils';
 import { provideSessionData } from '@src/hooks/use-auth';
 
-import { MainNav } from '@src/components/layout/navigation/main-nav';
-import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
+import { MainNav } from '@src/components/layout/navigation/topnav/main-nav';
+import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 import { SiteFooter } from '@src/components/layout/site-footer';
 
 interface IndexPageProps {

@@ -57,33 +57,41 @@ export const dashboardConfig: DashboardConfig = {
         },
       ],
     },
+  ],
+  identitiesNav: [
     {
-      category: 'Diaries (Coming soon)',
-      catdesc: 'This page is coming soon, we are still working on it!',
+      category: 'Identities',
+      catdesc: 'Manage your identities here',
       items: [
         {
-          title: 'Public for everyone',
-          href: '/dashboard/diary',
+          title: 'List identities',
+          href: '/identities',
           icon: 'post',
-          disabled: true,
         },
         {
-          title: 'Shared to you',
-          href: '/dashboard/diary/shared',
+          title: 'Identity request',
+          href: '/identities/requests',
           icon: 'sharedfile',
           disabled: true,
         },
         {
-          title: 'Private for you',
-          href: '/dashboard/diary/private',
+          title: 'Request history',
+          href: '/identities/requests/history',
           icon: 'privatepost',
           disabled: true,
         },
+      ],
+    },
+  ],
+  identitiesIdNav: [
+    {
+      category: 'Your identity',
+      catdesc: 'Here is your identity info',
+      items: [
         {
-          title: 'Page requests',
-          href: '/dashboard/diary/requests',
-          icon: 'notifications',
-          disabled: true,
+          title: 'Identity info',
+          href: '/identities/[identitiesid]',
+          icon: 'post',
         },
       ],
     },

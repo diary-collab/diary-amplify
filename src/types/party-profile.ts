@@ -1,9 +1,9 @@
-import { EnumAccountType } from '@prisma/client';
+import { EnumPartyType } from '@prisma/client';
 
 export type CompleteAccount = {
   email: string;
   partyName: string;
-  accountType: EnumAccountType;
+  accountType: EnumPartyType;
   birthdate: Date;
   parentName: string;
 };

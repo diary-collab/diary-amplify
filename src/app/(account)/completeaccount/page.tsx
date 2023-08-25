@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 
 import TextButton from '@src/components/buttons/TextButton';
@@ -12,6 +12,7 @@ import { Icons } from '@src/components/icons';
 import UnstyledLink from '@src/components/links/UnstyledLink';
 
 import CompleteAccountForm from './completeaccountform';
+import CompleteAccountLoading from './loading';
 
 import { SessionData } from '@src/types/use-session';
 
@@ -25,31 +26,34 @@ export default function CompleteAccountPage({
   const [loading, setLoading] = useState<boolean>(false);
   const { theme } = useTheme();
 
-  const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
+  // const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
 
   const router = useRouter();
 
   const { data, isLoading, error } = useAccount(params.sessionData.jwt);
-
-  logger(data);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !error && data) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !error && data && data.code >= 200 && data.code <= 299) {
       router.push('/dashboard');
+    } else if (
+      !isLoading &&
+      data &&
+      data.message &&
+      data.message.includes('TokenExpiredError')
+    ) {
+      router.refresh();
+    } else {
+      return;
     }
-  });
+  }, [isLoading, error, data, router]);
 
-  if (
-    !isLoading &&
-    (error || (data.message && data.message.includes('TokenExpiredError')))
-  ) {
-    if (!shouldRefresh) {
-      setShouldRefresh(true);
-    }
-  }
-
-  if (shouldRefresh) {
-    router.refresh();
+  if (!mounted) {
+    return <CompleteAccountLoading />;
   }
 
   return (

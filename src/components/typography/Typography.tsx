@@ -26,6 +26,7 @@ const TypographyVariant = [
 ] as const;
 
 const TypographyColor = [
+  'theme',
   'primary',
   'secondary',
   'tertiary',
@@ -77,7 +78,7 @@ const Typography: TypographyComponent = React.forwardRef(
       as,
       children,
       className,
-      color = 'primary',
+      color = 'theme',
       variant,
       font,
       ...rest
@@ -112,6 +113,7 @@ const Typography: TypographyComponent = React.forwardRef(
           //#endregion  //*======== Variants ===========
           //#region  //*=========== Color ===========
           [
+            color === 'theme' && ['text-foreground'],
             color === 'primary' && ['text-black'],
             color === 'secondary' && ['text-gray-700'],
             color === 'tertiary' && ['text-gray-500'],

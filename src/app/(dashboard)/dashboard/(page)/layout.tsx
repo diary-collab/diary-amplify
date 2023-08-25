@@ -3,9 +3,9 @@ import { redirect } from 'next/navigation';
 
 import { provideSessionData } from '@src/hooks/use-auth';
 
-import { PartyNav } from '@src/components/layout/navigation/auth/party-nav';
-import { DashboardNav } from '@src/components/layout/navigation/nav';
-import { UserAccountNav } from '@src/components/layout/navigation/user-account-nav';
+import { DashboardNav } from '@src/components/layout/navigation/sidenav/dashboard-nav';
+import { PartyNav } from '@src/components/layout/navigation/topnav/party-nav';
+import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 import { SiteFooter } from '@src/components/layout/site-footer';
 
 import { LayoutProps } from '@src/types/props';
@@ -57,7 +57,7 @@ export default async function DashboardLayout({
           {children}
         </main>
       </div>
-      <SiteFooter className='bg-background border-border sticky bottom-0 z-40 mt-8 w-full border-t' />
+      <SiteFooter className='bg-background border-border invisible sticky bottom-0 z-40 mt-8 w-full border-t md:visible' />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
-import { PostItem } from '@src/components/post-item';
+import { PostItem } from '@src/components/identity-item';
 
 export default function SharedDashboardLoading() {
   return (

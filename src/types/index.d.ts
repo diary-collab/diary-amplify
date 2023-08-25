@@ -70,6 +70,8 @@ export type DashboardConfig = {
   mainNav: MainNavItem[];
   mainNavAuth: MainNavItem[];
   sidebarNav: CustomSidebarNavItem[];
+  identitiesNav: CustomSidebarNavItem[];
+  identitiesIdNav: CustomSidebarNavItem[];
 };
 
 export type SubscriptionPlan = {

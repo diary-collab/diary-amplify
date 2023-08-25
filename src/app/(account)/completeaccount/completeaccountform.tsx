@@ -1,8 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { EnumAccountType } from '@prisma/client';
-import { completeAccountRequest } from '@utils/AccountUtils';
+import { EnumPartyType } from '@prisma/client';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -10,11 +9,13 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { completeAccountRequest } from '@src/lib/fetcher/account-fetcher';
+import logger from '@src/lib/logger';
+
 import Button from '@src/components/buttons/Button';
 import DatePicker from '@src/components/forms/DatePicker';
 import Input from '@src/components/forms/Input';
 import SearchableSelectInput from '@src/components/forms/SearchableSelectInput';
-import { Skeleton } from '@src/components/ui/skeleton';
 import { toast } from '@src/components/ui/use-toast';
 
 // import { toast } from '@src/components/ui/use-toast';
@@ -34,9 +35,7 @@ export default function CompleteAccountForm({
   jwt,
 }: CompleteAccountProps) {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
 
-  // ---------------------------------- START FORM REGION ---------------------------------- //
   const methods = useForm<CompleteAccount>({
     mode: 'onTouched',
   });
@@ -48,9 +47,11 @@ export default function CompleteAccountForm({
     setValue('partyName', accountAttributes.name);
   });
 
-  const [accountType, setAccountType] = useState<EnumAccountType>(
-    EnumAccountType.self_account
+  const [accountType, setAccountType] = useState<EnumPartyType>(
+    EnumPartyType.self
   );
+
+  // ---------------------------------- START FORM REGION ---------------------------------- //
 
   async function onSubmit(data: CompleteAccount) {
     setLoading(true);
@@ -67,44 +68,30 @@ export default function CompleteAccountForm({
       accountType: accountType,
       partyParentName: parentName,
     };
-    const createAccountResult = completeAccountRequest(jwt, requestData);
-    // logger(createAccountResult);
-    setLoading(false);
+    const createAccountResult = await completeAccountRequest(jwt, requestData);
+    logger(createAccountResult);
 
-    if (!createAccountResult || !createAccountResult.success) {
+    if (!createAccountResult.ok) {
+      setLoading(false);
       return toast({
         title: 'Something went wrong.',
         description:
-          (createAccountResult?.error as string) ??
+          (createAccountResult.statusText as string) ??
           'Sorry, unknown error happen, please contact to our developer!',
         variant: 'destructive',
       });
     }
 
     router.refresh();
-    router.push('/dashboard');
+    router.push('/identities');
 
-    // return toast({
-    //   title: 'Success create account!',
-    //   description: 'Please wait while we redirect you to dashboard page...',
-    // });
+    return toast({
+      duration: 3000,
+      title: 'Success create account!',
+      description: 'Please wait while we redirect you to dashboard page...',
+    });
   }
   // ---------------------------------- END FORM REGION ---------------------------------- //
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <>
-        <Skeleton className='my-2 h-8 max-w-sm' />
-        <Skeleton className='my-2 h-8 max-w-sm' />
-        <Skeleton className='my-2 h-8 max-w-sm' />
-        <Skeleton className='mb-8 mt-2 h-8 max-w-sm' />
-      </>
-    );
-  }
 
   return (
     <FormProvider {...methods}>
@@ -117,9 +104,7 @@ export default function CompleteAccountForm({
           id='email'
           type='text'
           label={
-            accountType === 'self_account'
-              ? 'Personal email'
-              : 'Organisation email'
+            accountType === 'self' ? 'Personal email' : 'Organisation email'
           }
           disabled={true}
           placeholder='Email'
@@ -133,12 +118,12 @@ export default function CompleteAccountForm({
           isMulti={false}
           options={[
             {
-              value: EnumAccountType.organisation_account,
+              value: EnumPartyType.organisation,
               label: 'Organisation Account',
             },
             {
               label: 'Self Account',
-              value: EnumAccountType.self_account,
+              value: EnumPartyType.self,
             },
           ]}
           customSetData={setAccountType}
@@ -148,19 +133,17 @@ export default function CompleteAccountForm({
           key='key_partyName'
           id='partyName'
           type='text'
-          label={
-            accountType === 'self_account' ? 'Full name' : 'Organisation name'
-          }
+          label={accountType === 'self' ? 'Full name' : 'Organisation name'}
           disabled={loading}
           validation={{
             required: `${
-              accountType === 'self_account'
+              accountType === 'self'
                 ? 'Your fullname'
                 : 'Your organisation name'
             } must be filled!`,
           }}
           placeholder={
-            accountType === 'self_account' ? 'Full name' : 'Organisation name'
+            accountType === 'self' ? 'Full name' : 'Organisation name'
           }
           helperText='This field is auto populate but you can change it'
         />
@@ -168,21 +151,19 @@ export default function CompleteAccountForm({
           key='key_birthdate'
           id='birthdate'
           label={
-            accountType === EnumAccountType.self_account
-              ? 'Birthdate'
-              : 'Founding date'
+            accountType === EnumPartyType.self ? 'Birthdate' : 'Founding date'
           }
           maxDate={new Date()}
           validation={{
             required: `${
-              accountType === 'self_account'
+              accountType === 'self'
                 ? 'Your birth date'
                 : 'Your organisation founding date'
             } must be filled!`,
           }}
           disabled={loading}
           placeholder={
-            accountType === EnumAccountType.self_account
+            accountType === EnumPartyType.self
               ? 'Your date of birth'
               : `Your organisation's founding date`
           }
@@ -192,16 +173,16 @@ export default function CompleteAccountForm({
           id='parentName'
           type='text'
           label={
-            accountType === 'self_account'
+            accountType === 'self'
               ? 'Mother fullname'
-              : 'Founder fullname'
+              : 'Notary public fullname'
           }
           disabled={loading}
           validation={{
             required: `${
-              accountType === 'self_account'
+              accountType === 'self'
                 ? 'Your mother name'
-                : 'Your founder name'
+                : 'Your Notary public fullname'
             } must be filled!`,
           }}
           placeholder='Without any salutation'
