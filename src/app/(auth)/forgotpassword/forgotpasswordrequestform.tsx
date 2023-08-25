@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 
 import Button from '@src/components/buttons/default-button';
-import Input from '@src/components/forms/input';
+import Input from '@src/components/forms/default-input';
 import { toast } from '@src/components/ui/use-toast';
 
 import { FormFields } from '@src/types';

@@ -8,15 +8,15 @@ import { FormProvider, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 import { clsxm } from '@src/lib/utils';
 
-import DatePicker from '@src/components/forms/date-picker';
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@src/components/tooltip';
-import Typography from '@src/components/typography/typography';
+} from '@src/components/default-tooltip';
+import DatePicker from '@src/components/forms/date-picker';
+import Typography from '@src/components/typography/default-typography';
 
 import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 

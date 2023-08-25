@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 
 interface SettingTopNavProps {
   redirectTitle: string;

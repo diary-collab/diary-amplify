@@ -4,7 +4,7 @@ import * as React from 'react';
 import { clsxm } from '@src/lib/utils';
 import { useLockBody } from '@src/hooks/use-lock-body';
 
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import UnstyledLink from '@src/components/links/unstyled-link';
 
 import { MainNavItem } from '@src/types';

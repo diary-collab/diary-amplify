@@ -5,8 +5,8 @@ import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import Skeleton from '@src/components/default-skeleton';
 import { PartyAvatar } from '@src/components/party-avatar';
-import Skeleton from '@src/components/skeleton';
 import {
   DropdownMenu,
   DropdownMenuContent,

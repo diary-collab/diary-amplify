@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
-import { buttonVariants } from '@src/components/ui/button';
+import { buttonVariants } from '@src/components/ui/default-ui-button';
 
 export default function NotFound() {
   return (

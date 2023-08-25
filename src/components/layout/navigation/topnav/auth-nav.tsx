@@ -5,7 +5,7 @@ import { siteConfig } from '@src/config/site';
 import * as React from 'react';
 
 // import { clsxm } from '@src/lib/utils';
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import UnstyledLink from '@src/components/links/unstyled-link';
 
 // import { MobileNav } from '../mobile-nav';

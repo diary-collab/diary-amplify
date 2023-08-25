@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import get from 'lodash.get';
 import { RegisterOptions, useFormContext } from 'react-hook-form';
 
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 export type TextAreaProps = {
   label: string | null;

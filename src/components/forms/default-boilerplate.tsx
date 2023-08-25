@@ -4,9 +4,9 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 
 import Button from '@src/components/buttons/default-button';
-import Input from '@src/components/forms/input';
+import Input from '@src/components/forms/default-input';
 
-import Layout from '../layout/layout';
+import Layout from '../layout/default-layout';
 
 type BoilerplateForm = {
   name: string;

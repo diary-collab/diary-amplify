@@ -3,8 +3,8 @@ import { IconType } from 'react-icons';
 
 import { clsxm } from '@src/lib/utils';
 
-import Skeleton from '@src/components/skeleton';
-import Typography from '@src/components/typography/typography';
+import Skeleton from '@src/components/default-skeleton';
+import Typography from '@src/components/typography/default-typography';
 
 const statisticsCardVariant = [
   'primary',

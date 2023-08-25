@@ -5,7 +5,7 @@ import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import { FiChevronDown, FiX } from 'react-icons/fi';
 import Select, { components, MultiValue, StylesConfig } from 'react-select';
 
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 import { ExtractProps } from '@src/types/helper';
 

@@ -1,8 +1,8 @@
 import { EnumDiaryType } from '@src/API';
 import Link from 'next/link';
 
+import Skeleton from './default-skeleton';
 import { IdentityOperations } from './identity-operations';
-import Skeleton from './skeleton';
 import { UserAvatar } from './user-avatar';
 
 export interface IdentityItemProps {

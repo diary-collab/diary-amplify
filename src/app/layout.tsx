@@ -7,10 +7,10 @@ import '@src/styles/globals.css';
 
 import { clsxm } from '@src/lib/utils';
 
-import { Analytics } from '@src/components/analytics';
+import { Analytics } from '@src/components/default-analytics';
 import { ThemeProvider } from '@src/components/theme-provider';
 // import { ThemeProvider } from '@src/components/theme-provider';
-import { Toaster } from '@src/components/ui/toaster';
+import { Toaster } from '@src/components/ui/default-ui-toaster';
 
 // const fontSans = FontSans({
 //   subsets: ['latin'],

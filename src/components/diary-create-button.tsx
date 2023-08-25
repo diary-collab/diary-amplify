@@ -4,8 +4,11 @@ import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
-import { Icons } from '@src/components/icons';
-import { ButtonProps, buttonVariants } from '@src/components/ui/button';
+import { Icons } from '@src/components/default-icons';
+import {
+  ButtonProps,
+  buttonVariants,
+} from '@src/components/ui/default-ui-button';
 import { toast } from '@src/components/ui/use-toast';
 
 type DiaryCreateButtonProps = ButtonProps;

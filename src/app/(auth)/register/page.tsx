@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes';
 import { useState } from 'react';
 
 import TextButton from '@src/components/buttons/text-button';
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import UnstyledLink from '@src/components/links/unstyled-link';
 
 import RegisterForm from './authregisterform';

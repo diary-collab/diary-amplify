@@ -11,10 +11,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 
 import { DashboardShell } from '@src/components/dashboard-shell';
+import { Icons } from '@src/components/default-icons';
 import DatePicker from '@src/components/forms/date-picker';
-import { Icons } from '@src/components/icons';
 import PageLoading from '@src/components/page-loading-skeleton';
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 // import { useAccount } from '@src/hooks/use-account';
 import { SessionData } from '@src/types/use-session';

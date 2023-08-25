@@ -5,7 +5,7 @@ import { RegisterOptions, useFormContext } from 'react-hook-form';
 
 import { clsxm } from '@src/lib/utils';
 
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 export type RadioProps = {
   /** Input label */

@@ -11,9 +11,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import logger from '@src/lib/logger';
 
 import Button from '@src/components/buttons/default-button';
-import Input from '@src/components/forms/input';
+import Input from '@src/components/forms/default-input';
 import PasswordInput from '@src/components/forms/password-input';
-import { Skeleton } from '@src/components/ui/skeleton';
+import { Skeleton } from '@src/components/ui/default-ui-skeleton';
 import { toast } from '@src/components/ui/use-toast';
 
 import { FormFields } from '@src/types';
