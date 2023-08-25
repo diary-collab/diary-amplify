@@ -9,9 +9,9 @@ import { identitiesByParty } from '@src/lib/fetcher/identity-fetcher';
 import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 
-import Banner from '@src/components/banner';
 import { DashboardHeader } from '@src/components/dashboard-header';
 import { DashboardShell } from '@src/components/dashboard-shell';
+import Banner from '@src/components/default-banner';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { IdentityItem } from '@src/components/identity-item';
 import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identities-nav';

@@ -2,7 +2,7 @@ import { EnumDiaryType } from '@src/API';
 import Link from 'next/link';
 
 import { DiaryOperations } from './diary-operations';
-import Skeleton from '../skeleton';
+import Skeleton from '../default-skeleton';
 import { UserAvatar } from '../user-avatar';
 
 export interface DiaryItemProps {

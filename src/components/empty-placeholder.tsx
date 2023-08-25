@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 
 type EmptyPlaceholderProps = React.HTMLAttributes<HTMLDivElement>;
 

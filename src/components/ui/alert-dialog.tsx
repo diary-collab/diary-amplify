@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
-import { buttonVariants } from '@src/components/ui/button';
+import { buttonVariants } from '@src/components/ui/default-ui-button';
 
 const AlertDialog = AlertDialogPrimitive.Root;
 

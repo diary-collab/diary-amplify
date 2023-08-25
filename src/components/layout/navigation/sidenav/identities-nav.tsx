@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react';
 
 import { clsxm } from '@src/lib/utils';
 
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@src/components/tooltip';
-import Typography from '@src/components/typography/typography';
+} from '@src/components/default-tooltip';
+import Typography from '@src/components/typography/default-typography';
 
 import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 

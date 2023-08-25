@@ -1,4 +1,4 @@
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 // import clsxm from '@src/lib/clsxm';
 
 export default function DiaryFormNotFound() {

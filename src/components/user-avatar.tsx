@@ -3,8 +3,12 @@
 // import { CognitoUser } from "@aws-amplify/auth";
 import { AvatarProps } from '@radix-ui/react-avatar';
 
-import { Icons } from '@src/components/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
+import { Icons } from '@src/components/default-icons';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@src/components/ui/default-avatar';
 
 export interface User {
   image?: string | null;

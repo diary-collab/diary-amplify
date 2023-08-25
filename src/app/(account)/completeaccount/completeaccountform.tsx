@@ -14,7 +14,7 @@ import logger from '@src/lib/logger';
 
 import Button from '@src/components/buttons/default-button';
 import DatePicker from '@src/components/forms/date-picker';
-import Input from '@src/components/forms/input';
+import Input from '@src/components/forms/default-input';
 import SearchableSelectInput from '@src/components/forms/searchable-select-input';
 import { toast } from '@src/components/ui/use-toast';
 

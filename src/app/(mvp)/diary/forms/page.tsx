@@ -8,7 +8,7 @@ import { notFound, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { DashboardShell } from '@src/components/dashboard-shell';
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 // import { useAccount } from '@src/hooks/use-account';
 // import { API, graphqlOperation } from 'aws-amplify';

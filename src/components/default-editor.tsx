@@ -15,8 +15,8 @@ import '@/styles/editor.css';
 import { clsxm } from '@src/lib/utils';
 import { postPatchSchema } from '@src/lib/validations/post';
 
-import { Icons } from '@src/components/icons';
-import { buttonVariants } from '@src/components/ui/button';
+import { Icons } from '@src/components/default-icons';
+import { buttonVariants } from '@src/components/ui/default-ui-button';
 import { toast } from '@src/components/ui/use-toast';
 
 interface EditorProps {

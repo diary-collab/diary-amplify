@@ -5,7 +5,7 @@ import { HiOutlineX } from 'react-icons/hi';
 import { clsxm } from '@src/lib/utils';
 
 import IconButton from '@src/components/buttons/icon-button';
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 import { ExtractProps } from '@src/types/helper';
 

@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import { getIdentitiesById } from '@src/lib/fetcher/identity-fetcher';
 import { useAccount } from '@src/hooks/use-account';
 
-import Banner from '@src/components/banner';
 import { DashboardShell } from '@src/components/dashboard-shell';
+import Banner from '@src/components/default-banner';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { IdentityItem } from '@src/components/identity-item';
 // import { IdentityItem } from '@src/components/identity-item';
@@ -18,7 +18,7 @@ import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identit
 import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
 import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 import ButtonLink from '@src/components/links/button-link';
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 import IdentityLoading from './loading';
 

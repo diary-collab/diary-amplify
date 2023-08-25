@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from '@src/hooks/use-account';
 
 import TextButton from '@src/components/buttons/text-button';
-import { Icons } from '@src/components/icons';
+import { Icons } from '@src/components/default-icons';
 import UnstyledLink from '@src/components/links/unstyled-link';
 
 import CompleteAccountForm from './completeaccountform';

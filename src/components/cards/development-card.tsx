@@ -3,7 +3,7 @@ import * as React from 'react';
 import { clsxm } from '@src/lib/utils';
 
 import SimpleCard from '@src/components/cards/simple-card';
-import Typography from '@src/components/typography/typography';
+import Typography from '@src/components/typography/default-typography';
 
 type DevelopmentCardProps = React.ComponentPropsWithoutRef<'div'>;
 
