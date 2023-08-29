@@ -16,13 +16,13 @@ export default async function VerifyUserLayout({
 }: VerifyUserLayoutProps) {
   const sessionData = await provideSessionData();
 
-  if (!sessionData || sessionData.attributes) {
+  if (sessionData && sessionData.attributes) {
     redirect('/dashboard');
   }
 
-  if (!sessionData.jwt) {
-    //redirect lengkapi profil
-  }
+  // if (!sessionData.jwt) {
+  //   //redirect lengkapi profil
+  // }
 
   return <div className='min-h-screen'>{children}</div>;
 }

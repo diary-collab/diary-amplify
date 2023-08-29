@@ -90,7 +90,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     //   description: 'We sent you a login link. Be sure to check your spam too.',
     // });
 
-    router.refresh();
+    // router.refresh();
     router.push('/dashboard');
   }
 
