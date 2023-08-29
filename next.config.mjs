@@ -3,6 +3,7 @@
 import './env.mjs';
 
 const nextConfig = {
+  output: 'export',
   eslint: {
     dirs: ['src'],
   },
