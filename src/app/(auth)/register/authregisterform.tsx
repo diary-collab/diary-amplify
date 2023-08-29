@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { register } from '@utils/auth-utils';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
@@ -9,6 +10,7 @@ import { useDebounce } from 'use-debounce';
 import logger from '@src/lib/logger';
 
 import Button from '@src/components/buttons/default-button';
+import Skeleton from '@src/components/default-skeleton';
 import Input from '@src/components/forms/default-input';
 import PasswordInput from '@src/components/forms/password-input';
 import { toast } from '@src/components/ui/use-toast';
@@ -34,6 +36,13 @@ export default function RegisterForm({
 
   const [username, setUsername] = useState('');
   const [value] = useDebounce(username, 1000);
+
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const checkUsername = async (unamequery: string) => {
@@ -131,9 +140,20 @@ export default function RegisterForm({
       title: 'Check your email',
       description: 'We sent you a login link. Be sure to check your spam too.',
     });
+
+    router;
   }
 
   const { handleSubmit, setError, clearErrors } = methods;
+
+  if (!mounted) {
+    return (
+      <>
+        <Skeleton className='my-2 h-8 max-w-sm' />
+        <Skeleton className='mb-8 mt-2 h-8 max-w-sm' />
+      </>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
