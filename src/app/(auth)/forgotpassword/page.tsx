@@ -7,6 +7,7 @@ import logger from '@src/lib/logger';
 
 import TextButton from '@src/components/buttons/text-button';
 import { Icons } from '@src/components/default-icons';
+import Skeleton from '@src/components/default-skeleton';
 import UnstyledLink from '@src/components/links/unstyled-link';
 
 import ConfirmForgotPasswordForm from './confirmforgotpasswordrequestform';
@@ -18,10 +19,24 @@ export default function ForgotPasswordPage() {
   const [username, setUsername] = useState<string>('');
 
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     logger('request sent: ' + requestSent);
   }, [requestSent]);
+
+  if (!mounted) {
+    return (
+      <>
+        <Skeleton className='my-2 h-8 max-w-sm' />
+        <Skeleton className='mb-8 mt-2 h-8 max-w-sm' />
+      </>
+    );
+  }
 
   return (
     <div className='bg-background relative flex min-h-screen min-w-full flex-row items-center justify-center text-center'>

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   const sessionData = await provideSessionData();
 
-  if (sessionData && sessionData.attributes) {
+  if (sessionData) {
     redirect('/dashboard');
   }
 

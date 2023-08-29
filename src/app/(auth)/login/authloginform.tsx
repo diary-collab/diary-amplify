@@ -51,17 +51,16 @@ interface LoginFormProps {
 
 export default function LoginForm({ loading, setLoading }: LoginFormProps) {
   const router = useRouter();
-
-  const methods = useForm<SignInWithEmailAndPassword>({
-    mode: 'onTouched',
-  });
-  const { handleSubmit } = methods;
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const methods = useForm<SignInWithEmailAndPassword>({
+    mode: 'onTouched',
+  });
+  const { handleSubmit } = methods;
 
   async function onSubmit(data: SignInWithEmailAndPassword) {
     setLoading(true);
@@ -90,7 +89,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     //   description: 'We sent you a login link. Be sure to check your spam too.',
     // });
 
-    router.refresh();
+    // router.refresh();
     router.push('/dashboard');
   }
 
