@@ -90,7 +90,7 @@ export default function LoginForm({ loading, setLoading }: LoginFormProps) {
     // });
 
     // router.refresh();
-    router.push('/dashboard');
+    router.push('/identities');
   }
 
   if (!mounted) {

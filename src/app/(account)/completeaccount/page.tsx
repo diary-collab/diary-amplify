@@ -39,7 +39,7 @@ export default function CompleteAccountPage({
 
   useEffect(() => {
     if (!isLoading && !error && data && data.code >= 200 && data.code <= 299) {
-      router.push('/dashboard');
+      router.push('/identities');
     } else if (
       !isLoading &&
       data &&
@@ -60,7 +60,7 @@ export default function CompleteAccountPage({
     <div className='bg-background relative flex min-h-max min-w-full flex-row items-center justify-center text-center md:min-h-screen'>
       {/* <section> */}
       <div className='container my-8 flex min-h-max w-screen flex-col items-center justify-center md:my-0'>
-        <UnstyledLink href='/dashboard' className='hidden md:block'>
+        <UnstyledLink href='/identities' className='hidden md:block'>
           <TextButton
             disabled={loading}
             variant={theme === 'dark' ? 'dark' : 'light'}

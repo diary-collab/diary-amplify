@@ -97,7 +97,7 @@ export async function middleware(req: NextRequest) {
   if (isAuthPage) {
     if (isAuth) {
       logger('masuk return 3');
-      return NextResponse.redirect(new URL('/dashboard', req.url));
+      return NextResponse.redirect(new URL('/identities', req.url));
     }
 
     logger('masuk return 4');

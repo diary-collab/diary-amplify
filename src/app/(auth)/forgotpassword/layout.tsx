@@ -15,7 +15,7 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
   const sessionData = await provideSessionData();
 
   if (sessionData && sessionData.attributes) {
-    redirect('/dashboard');
+    redirect('/identities');
   }
 
   return <div className='min-h-screen'>{children}</div>;

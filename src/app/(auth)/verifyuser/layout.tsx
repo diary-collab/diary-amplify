@@ -17,7 +17,7 @@ export default async function VerifyUserLayout({
   const sessionData = await provideSessionData();
 
   if (sessionData && sessionData.attributes) {
-    redirect('/dashboard');
+    redirect('/identities');
   }
 
   // if (!sessionData.jwt) {
