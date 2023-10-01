@@ -12,28 +12,30 @@ const middlewareSchema = z.object({
   body: z.unknown(),
 });
 
-export async function GET() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function GET(req: any, res: any) {
+  if (!req) {
+    //no action, just to ignore
+  }
   try {
     const cookieStore = cookies();
 
     // console.log(cookieStore);
-    return Response.json({ message: cookieStore }, { status: 200 });
+    return res.status(200).json({ message: cookieStore });
   } catch (error) {
     // console.log(error);
   }
 }
 
-export async function POST(req: Request) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function POST(req: any, res: any) {
   try {
     const sessionData = await provideSessionJwt();
 
     if (!sessionData?.jwt) {
-      return Response.json(
-        { message: 'Session not found! Please login first.' },
-        {
-          status: 404,
-        }
-      );
+      return res
+        .status(404)
+        .json({ message: 'Session not found! Please login first.' });
     }
 
     const json = await req.json();
@@ -42,11 +44,11 @@ export async function POST(req: Request) {
     const { path, method, body } = requestbody;
 
     if (!isValidUrlPath(path)) {
-      return Response.json({ message: 'Invalid path.' }, { status: 400 });
+      return res.status(400).json({ message: 'Invalid path.' });
     }
 
     if (!isValidApiMethod(method)) {
-      return Response.json({ message: 'Invalid method.' }, { status: 400 });
+      return res.status(400).json({ message: 'Invalid method.' });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,7 +64,7 @@ export async function POST(req: Request) {
       (method.toUpperCase() === 'POST' || method.toUpperCase() === 'PUT') &&
       !body
     ) {
-      return Response.json({ message: 'Invalid body.' }, { status: 400 });
+      return res.status(400).json({ message: 'Invalid body.' });
     }
 
     if (method.toUpperCase() === 'POST' || method.toUpperCase() === 'PUT') {
@@ -76,24 +78,21 @@ export async function POST(req: Request) {
 
     const bodyreturn = await forwardedrequest.json();
 
-    return Response.json(bodyreturn, { status: forwardedrequest.status });
+    return res.status(forwardedrequest.status).json(bodyreturn);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       // Handle Zod exceptions
       // console.error('ZodError:', error);
-      return Response.json({ message: 'Bad request body.' }, { status: 400 });
+      return res.status(400).json({ message: 'Bad request body.' });
     } else if (error instanceof SyntaxError) {
       // Handle JSON.parse exceptions
-      return Response.json(
-        { message: 'Malformed JSON body.' },
-        { status: 400 }
-      );
+      return res.status(400).json({ message: 'Malformed JSON body.' });
       // console.error('SyntaxError:', error);
     } else {
       // Handle other exceptions
       // console.error('Other Exception:', error);
-      return Response.json({ message: error.message }, { status: 500 });
+      return res.status(500).json({ message: error.message });
     }
   }
 }
