@@ -1,7 +1,7 @@
 import { dashboardConfig } from '@src/config/dashboard';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 import { DashboardNav } from '@src/components/layout/navigation/sidenav/dashboard-nav';
 import { PartyNav } from '@src/components/layout/navigation/topnav/party-nav';
@@ -14,9 +14,9 @@ export default async function DashboardLayout({
   children,
   params,
 }: LayoutProps) {
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
-  if (!sessionData || !sessionData.attributes || !sessionData.jwt) {
+  if (!sessionData || !sessionData.attributes) {
     redirect('/login');
   }
   params.sessionData = sessionData;

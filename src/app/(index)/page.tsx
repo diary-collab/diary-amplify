@@ -1,12 +1,12 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+// import { useTheme } from 'next-themes';
 
-import ButtonLink from '@src/components/links/button-link';
+// import ButtonLink from '@src/components/links/button-link';
 // import UnstyledLink from '@src/components/links/UnstyledLink';
 
 export default function IndexPage() {
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
 
   return (
     <section className='bg-background'>
@@ -22,13 +22,13 @@ export default function IndexPage() {
               </ArrowLink> */}
         </p>
 
-        <ButtonLink
+        {/* <ButtonLink
           className='mt-6'
           href='/'
           variant={theme === 'dark' ? 'dark' : 'light'}
         >
           See our progress
-        </ButtonLink>
+        </ButtonLink> */}
 
         {/* <UnstyledLink
               href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'

@@ -38,7 +38,7 @@ export function IdentitiesNav({ items }: IdentitiesNavProps) {
   }
 
   return (
-    <nav className='fixed z-10 flex min-h-screen w-[210px] flex-col items-start justify-between overflow-auto'>
+    <nav className='fixed z-10 flex min-h-screen w-[190px] flex-col items-start justify-between overflow-auto'>
       <div className='w-full'>
         {items.map((item, index) => {
           return (

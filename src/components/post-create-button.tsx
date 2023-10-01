@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 import { Icons } from '@src/components/default-icons';
@@ -18,19 +18,20 @@ export function PostCreateButton({
   variant,
   ...props
 }: PostCreateButtonProps) {
-  const router = useRouter();
+  // const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onClick() {
     setIsLoading(true);
 
-    const response = await fetch('/api/posts', {
+    const response = await fetch('/api/middleware', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: 'Untitled Post',
+        path: '/identities/BBrCF5hOWybwb5dXCurdfS7s',
+        method: 'get',
       }),
     });
 
@@ -53,11 +54,14 @@ export function PostCreateButton({
     }
 
     const post = await response.json();
+    if (!post) {
+      //no action, just to ignore warning
+    }
 
     // This forces a cache invalidation.
-    router.refresh();
+    // router.refresh();
 
-    router.push(`/editor/${post.id}`);
+    // router.push(`/editor/${post.id}`);
   }
 
   return (

@@ -30,7 +30,7 @@ export default function CompleteAccountPage({
 
   const router = useRouter();
 
-  const { data, isLoading, error } = useAccount(params.sessionData.jwt);
+  const { data, isLoading, error } = useAccount();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -89,7 +89,6 @@ export default function CompleteAccountPage({
               loading={loading}
               setLoading={setLoading}
               accountAttributes={params.sessionData.attributes}
-              jwt={params.sessionData.jwt}
             />
             <p className='hover:text-brand mt-4 px-8 text-center text-sm'>
               Don't worry, we won't tell anyone, and neither should you!

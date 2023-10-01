@@ -43,8 +43,7 @@ export default function IdentityDetailPage({
 }) {
   const router = useRouter();
 
-  const jwt = params?.sessionData?.jwt ?? '-';
-  const { data, isValidating } = useAccount(jwt);
+  const { data, isValidating } = useAccount();
   const [mounted, setMounted] = useState<boolean>(false);
   const [showBanner, setShowBanner] = useState<boolean>(false);
   const [identity, setIdentity] = useState<IGetIdentityByID | null>(null);
@@ -55,21 +54,14 @@ export default function IdentityDetailPage({
   }, []);
 
   useEffect(() => {
-    if (jwt === '-') {
-      setFetchingData(true);
-      router.refresh();
-    }
-  }, [jwt, router]);
-
-  useEffect(() => {
     if (isValidating || fetchingdata) {
       setShowBanner(false);
       return;
     }
 
-    if (data.partyid) {
-      //kalau ada data party id, dan gak expired, dan partyid masih kosong, set partyid
-      setShowBanner(false);
+    if (!data || !data.isSuccess) {
+      //kalau data gak ada partyid, show banner
+      setShowBanner(true);
       return;
     }
 
@@ -79,21 +71,17 @@ export default function IdentityDetailPage({
         data.message === 'JsonWebTokenError: jwt malformed')
     ) {
       setShowBanner(false);
-      // router.refresh();
+      router.refresh();
       return;
     }
 
-    if (!data || !data.partyid) {
-      //kalau data gak ada partyid, show banner
-      setShowBanner(true);
-      return;
-    }
+    setShowBanner(false);
   }, [isValidating, data, fetchingdata, router]);
 
   useEffect(() => {
     async function getIdentityByIdHook(id: string) {
       setFetchingData(true);
-      const getIdResult = await getIdentitiesById(jwt, id);
+      const getIdResult = await getIdentitiesById(id);
       const getIdJson = await getIdResult.json();
 
       setFetchingData(false);
@@ -106,12 +94,12 @@ export default function IdentityDetailPage({
       }
     }
 
-    if (params.identitiesid && jwt) {
+    if (params.identitiesid) {
       getIdentityByIdHook(params.identitiesid);
     }
-  }, [jwt, params.identitiesid, router]);
+  }, [params.identitiesid, router]);
 
-  if (!mounted || isValidating || jwt === '-') {
+  if (!mounted) {
     return <IdentityLoading />;
   }
 
@@ -172,13 +160,13 @@ export default function IdentityDetailPage({
                       <Typography variant='h4'>Identity</Typography>
                     </Link>
                     <div className='px-4 py-2'>
-                      {Object.entries(identity.identity).map(
+                      {Object.entries(identity.identityDetails).map(
                         ([key, value]) =>
                           key !== 'identityType' &&
                           key !== 'providerName' && (
                             <div key={key}>
                               <Typography variant='s3'>
-                                {key}: {value}
+                                {key.toString().toLocaleUpperCase()}: {value}
                               </Typography>
                             </div>
                           )
@@ -188,17 +176,20 @@ export default function IdentityDetailPage({
                   <div>
                     <Typography variant='h4'>Identity Provider</Typography>
                     <div className='px-4 py-2'>
-                      {Object.entries(identity.provider).map(
-                        ([key, value]) =>
-                          key !== 'identityType' &&
-                          key !== 'providerName' && (
-                            <div key={key}>
-                              <Typography variant='s3'>
-                                {key}: {value.toString()}
-                              </Typography>
-                            </div>
-                          )
-                      )}
+                      <div>
+                        <Typography variant='s3'>
+                          Provider Name:{' '}
+                          {identity.provider.partyName.toString()}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography variant='s3'>
+                          Provider is{' '}
+                          {identity.provider.isVerified
+                            ? 'Verified'
+                            : 'Not verified'}
+                        </Typography>
+                      </div>
                     </div>
                   </div>
                 </div>

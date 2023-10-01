@@ -72,6 +72,8 @@ export type DashboardConfig = {
   sidebarNav: CustomSidebarNavItem[];
   identitiesNav: CustomSidebarNavItem[];
   identitiesIdNav: CustomSidebarNavItem[];
+  diariesNav: CustomSidebarNavItem[];
+  userNav: CustomSidebarNavItem[];
 };
 
 export type SubscriptionPlan = {

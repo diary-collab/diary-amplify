@@ -20,3 +20,9 @@ export interface PaginatedApiResponse<T> {
     total: number;
   };
 }
+
+export interface IApiMiddlewareRequest {
+  path: string;
+  method: string;
+  body?: object;
+}

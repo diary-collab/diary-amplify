@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 interface VerifyUserLayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function VerifyUserLayout({
   children,
 }: VerifyUserLayoutProps) {
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
   if (sessionData && sessionData.attributes) {
     redirect('/identities');

@@ -1,7 +1,7 @@
 import { dashboardConfig } from '@src/config/dashboard';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 import { DashboardNav } from '@src/components/layout/navigation/sidenav/dashboard-nav';
 import { MainNav } from '@src/components/layout/navigation/topnav/main-nav';
@@ -15,14 +15,10 @@ interface PrivateDashboardLayoutProps {
 export default async function PrivateDashboardLayout({
   children,
 }: PrivateDashboardLayoutProps) {
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
   if (!sessionData || !sessionData.attributes) {
     redirect('/login');
-  }
-
-  if (!sessionData.jwt) {
-    //redirect lengkapi profil
   }
 
   return (

@@ -3,7 +3,7 @@ import { listDiaries } from '@src/graphql/queries';
 import { graphqlOperation } from 'aws-amplify';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 // import { SettingNav } from '@src/components/layout/navigation/sidenav/setting-nav';
 import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
@@ -14,9 +14,9 @@ import { LayoutProps } from '@src/types/props';
 
 export default async function DiaryLayout({ children, params }: LayoutProps) {
   const SSR = getWithSSRContext();
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
-  if (!sessionData || !sessionData.attributes || !sessionData.jwt) {
+  if (!sessionData || !sessionData.attributes) {
     redirect('/login');
   }
 

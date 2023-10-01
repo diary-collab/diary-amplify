@@ -43,23 +43,19 @@ export default function IdentityPage({
   const router = useRouter();
   const [listIdentities, setListIdentities] =
     useState<IIdentitiesByParty | null>(null);
-  const jwt = params?.sessionData?.jwt ?? '-';
-  const { data, isValidating } = useAccount(jwt);
+  const { data, isValidating } = useAccount();
   const [mounted, setMounted] = useState<boolean>(false);
   const [partyId, setPartyId] = useState<string | null>(null);
   const [fetchingdata, setFetchingData] = useState<boolean>(false);
   const [showBanner, setShowBanner] = useState<boolean>(false);
 
+  if (!params) {
+    //no action, just to ignore warning
+  }
+
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (jwt === '-') {
-      setFetchingData(true);
-      router.refresh();
-    }
-  }, [jwt, router]);
 
   useEffect(() => {
     if (isValidating || fetchingdata) {
@@ -67,9 +63,9 @@ export default function IdentityPage({
       return;
     }
 
-    if (data.partyid) {
+    if (data.data?.id) {
       //kalau ada data party id, dan gak expired, dan partyid masih kosong, set partyid
-      setPartyId(data.partyid);
+      setPartyId(data.data.id);
       setShowBanner(false);
       return;
     }
@@ -84,7 +80,7 @@ export default function IdentityPage({
       return;
     }
 
-    if (!data || !data.partyid) {
+    if (!data || !data.isSuccess) {
       //kalau data gak ada partyid, show banner
       setShowBanner(true);
       return;
@@ -95,7 +91,7 @@ export default function IdentityPage({
     logger('triggered get list identities' + partyId);
     async function getListIdentities(id: string) {
       setFetchingData(true);
-      const listIdentitiesResult = await identitiesByParty(jwt, id);
+      const listIdentitiesResult = await identitiesByParty(id);
       const listIdentitiesJson = await listIdentitiesResult.json();
 
       setFetchingData(false);
@@ -110,17 +106,18 @@ export default function IdentityPage({
       } else {
         setShowBanner(false);
         setListIdentities(listIdentitiesJson);
+        //di comment karena biar user pilih aja dulu identity yang mau dia pilih
         // router.push(`/identities/${listIdentitiesJson.partyIdProvided[0].id}`);
       }
     }
 
-    if (partyId && jwt) {
+    if (partyId) {
       logger('triggered true get list identities');
       getListIdentities(partyId);
     }
-  }, [partyId, jwt, router]);
+  }, [partyId, router]);
 
-  if (!mounted || isValidating || jwt === '-') {
+  if (!mounted) {
     return <IdentityLoading />;
   }
 
@@ -137,7 +134,7 @@ export default function IdentityPage({
         </div>
       </aside>
       <main className='mx-0 mt-6 flex w-full flex-1 flex-col overflow-hidden md:mx-4'>
-        {!isValidating && showBanner && jwt !== '-' && (
+        {!isValidating && showBanner && (
           <Banner className='mb-8' variant='alert' />
         )}
         <DashboardShell>
@@ -165,7 +162,7 @@ export default function IdentityPage({
                         <div className='flex flex-row items-start justify-start gap-4'>
                           <UserAvatar
                             user={{
-                              name: identity.identity.fullname || null,
+                              name: identity.identityDetails.partyName || null,
                               image: null,
                             }}
                             className='border-muted h-10 w-10 border-2'
@@ -176,7 +173,7 @@ export default function IdentityPage({
                               href={`/identities/${identity.id}`}
                               className='font-semibold hover:underline'
                             >
-                              {identity.identity.fullname}
+                              {identity.identityDetails.partyName}
                             </Link>
                             <div>
                               <p className='text-muted-foreground text-sm'>

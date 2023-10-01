@@ -124,9 +124,8 @@ export default function RegisterForm({
 
     const registerResult = await register(registerdata);
 
-    setLoading(false);
-
     if (!registerResult?.success) {
+      setLoading(false);
       return toast({
         title: 'Something went wrong.',
         description:
@@ -136,12 +135,12 @@ export default function RegisterForm({
       });
     }
 
+    router.push('/login');
+
     return toast({
       title: 'Check your email',
       description: 'We sent you a login link. Be sure to check your spam too.',
     });
-
-    router;
   }
 
   const { handleSubmit, setError, clearErrors } = methods;
