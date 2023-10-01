@@ -1,20 +1,25 @@
 import useSWR from 'swr';
 
-import { env } from '@/env.mjs';
-
-export function useAccount(jwt: string) {
-  const url = `${env.NEXT_PUBLIC_API_BASE_URL}/v1/accounts/checkaccount`;
-
-  const fetcher = (url: string) =>
-    fetch(url, {
+export function useAccount() {
+  const fetcher = () =>
+    fetch('/api/middleware', {
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        path: '/parties/checkparties',
+        method: 'get',
+      }),
     }).then((res) => res.json());
 
-  const { data, error, isLoading, isValidating } = useSWR(url, fetcher, {
-    refreshInterval: 10000000,
-  });
+  const { data, error, isLoading, isValidating } = useSWR(
+    '/api/middleware',
+    fetcher,
+    {
+      refreshInterval: 10000000,
+    }
+  );
 
   return {
     data,

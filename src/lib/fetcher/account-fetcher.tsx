@@ -1,20 +1,22 @@
 // import logger from '@src/lib/logger';
 
-import { env } from '@/env.mjs';
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function completeAccountRequest(jwt: string, body: any) {
-  const postnewaccount = await fetch(
-    `${env.NEXT_PUBLIC_API_BASE_URL}/v1/accounts`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      body: JSON.stringify(body),
-    }
-  );
+export async function completeAccountRequest(body: any) {
+  const response = await fetch(`/api/middleware`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      path: '/parties',
+      method: 'post',
+      body: body,
+    }),
+  });
 
-  return postnewaccount;
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+
+  return response.json();
 }

@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 import { LayoutProps } from '@src/types/props';
 // import { redirect } from 'next/navigation';
 
-// import { provideSessionData } from '@src/hooks/use-auth';
+// import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 export const metadata: Metadata = {
   title: 'Account Completion',
@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AuthLayout({ children, params }: LayoutProps) {
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
-  if (!sessionData || !sessionData.attributes || !sessionData.jwt) {
+  if (!sessionData || !sessionData.attributes) {
     redirect('/login');
   }
   params.sessionData = sessionData;

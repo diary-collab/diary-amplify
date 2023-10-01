@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { clsxm } from '@src/lib/utils';
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 import { MainNav } from '@src/components/layout/navigation/topnav/main-nav';
 import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexLayout({ children }: IndexPageProps) {
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
   return (
     <>

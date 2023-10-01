@@ -15,8 +15,12 @@ export const dashboardConfig: DashboardConfig = {
   ],
   mainNavAuth: [
     {
-      title: 'Dashboard',
-      href: '/dashboard',
+      title: 'Account',
+      href: '/user',
+    },
+    {
+      title: 'Identities',
+      href: '/identities',
     },
     {
       title: 'Documentation',
@@ -92,6 +96,50 @@ export const dashboardConfig: DashboardConfig = {
           title: 'Identity info',
           href: '/identities/[identitiesid]',
           icon: 'post',
+        },
+      ],
+    },
+  ],
+  diariesNav: [
+    {
+      category: 'Diaries',
+      catdesc: 'Manage your diaries here',
+      items: [
+        {
+          title: 'List identities',
+          href: '/identities',
+          icon: 'post',
+        },
+        {
+          title: 'Identity request',
+          href: '/identities/requests',
+          icon: 'sharedfile',
+          disabled: true,
+        },
+        {
+          title: 'Request history',
+          href: '/identities/requests/history',
+          icon: 'privatepost',
+          disabled: true,
+        },
+      ],
+    },
+  ],
+  userNav: [
+    {
+      category: 'Account',
+      catdesc: 'Manage your account here',
+      items: [
+        {
+          title: 'Your accounts',
+          href: '/user',
+          icon: 'user',
+        },
+        {
+          title: 'Account relationships',
+          href: '/user/relationships',
+          icon: 'users',
+          disabled: true,
         },
       ],
     },

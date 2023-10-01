@@ -11,99 +11,136 @@ datasource db {
 
 // ----------------------- BEGIN PARTY REGION -------------------------- //
 
-model PartyProvidedIdentity {
-  //perlu single id buat jadi path di frontend
-  id                                String   @id
-  identityProvider                  String   @map("identity_provider")
-  identityProvided                  String   @map("identity_provided")
-  // identityTemplateId String?           @map("identity_template_id")
-  // identityTemplate   TemplateProvider? @relation(fields: [identityTemplateId], references: [id])
-  identity                          Json     @map("identity")
-  createdAt                         DateTime @default(now()) @map("created_at")
-  updatedAt                         DateTime @default(now()) @map("updated_at")
-  identityByProviderByProvidedIndex String   @map("identity_index")
+model PartyIdentity {
+  /// perlu single id buat jadi path di frontend
+  id                                String                   @id
+  identityProvider                  String                   @map("identity_provider")
+  identityProvided                  String                   @map("identity_provided")
+  identityDetails                   Json                     @map("identity_details")
+  createdAt                         DateTime                 @default(now()) @map("created_at")
+  updatedAt                         DateTime                 @default(now()) @map("updated_at")
+  identityByProviderByProvidedIndex String                   @map("identity_index")
+  roleMapperId                      String?                  @default("no_roles") @map("role_mapper_id")
+  identityRole                      PartyIdentityRoleMapper? @relation(fields: [roleMapperId], references: [id], onDelete: SetDefault, onUpdate: Restrict)
 
-  provider Party @relation("PartyProvidedIdentity_identityProvider", fields: [identityProvider], references: [id])
-  provided Party @relation("PartyProvidedIdentity_identityProvided", fields: [identityProvided], references: [id])
+  provider Party @relation("PartyIdentity_identityProvider", fields: [identityProvider], references: [id])
+  provided Party @relation("PartyIdentity_identityProvided", fields: [identityProvided], references: [id])
 
   diaries Diary[]
 
+  // commented sections
+  // identityTemplateId String?           @map("identity_template_id")
+  // identityTemplate   TemplateProvider? @relation(fields: [identityTemplateId], references: [id])
+
   @@unique([identityProvider, identityProvided])
-  @@index([identityByProviderByProvidedIndex], type: Brin)
-  @@index([identity(ops: JsonbOps)], type: Gin)
-  @@map("party_provided_identities")
+  @@index([identityByProviderByProvidedIndex(ops: TextMinMaxOps)], type: Brin)
+  @@index([identityProvider(ops: TextMinMaxOps)], type: Brin)
+  @@index([identityDetails(ops: JsonbOps)], type: Gin)
+  @@map("party_identities")
+}
+
+model PartyIdentityRoleMapper {
+  id               String          @id
+  roleName         String          @map("role_name")
+  ownerId          String          @map("owner_id")
+  allowedPartyType EnumPartyType[] @map("allowed_party_type")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+  owner            Party           @relation(fields: [ownerId], references: [id], onUpdate: Restrict, onDelete: Cascade) //can't upodate ownerId, if role provider deleted then delete all role mapper here
+  listIdentities   PartyIdentity[]
+
+  @@unique([roleName, ownerId])
+  @@map("party_identity_role_mapper")
 }
 
 model Party {
-  id                                String        @id
-  partyName                         String        @map("party_name")
-  partyBirthdate                    DateTime      @map("party_birthdate")
-  partyParentName                   String        @map("party_parent_name")
-  partyAttributes                   Json?         @map("partyAttributes")
-  isVerified                        Boolean       @default(false) @map("is_party_verified")
-  isActive                          Boolean       @default(true) @map("is_party_active")
-  createdAt                         DateTime      @default(now()) @map("created_at")
-  updatedAt                         DateTime      @default(now()) @map("updated_at")
-  partyType                         EnumPartyType @map("party_type")
-  partyNameBirthdateParentNameIndex String        @map("party_unique_index")
-  permissionGroups                  String[]      @map("permission_groups")
+  id              String   @id
+  partyName       String   @map("party_name")
+  partyBirthdate  DateTime @map("party_birthdate")
+  partyParentName String?  @map("party_parent_name")
+  partyAddress    String?  @map("party_address")
+  partyAttributes Json?    @map("partyAttributes")
+  isVerified      Boolean  @default(false) @map("is_party_verified")
+  isActive        Boolean  @default(true) @map("is_party_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
 
-  partyIdProvider PartyProvidedIdentity[] @relation("PartyProvidedIdentity_identityProvider")
-  partyIdProvided PartyProvidedIdentity[] @relation("PartyProvidedIdentity_identityProvided")
+  /// Enum
+  partyType EnumPartyType @map("party_type")
 
-  accounts Account[]
+  /// Account section
+  accountProviderId String?          @default("no_account") @map("account_provider_id")
+  accountProvidedId String           @map("account_provided_id")
+  accountProvider   AccountProvider? @relation(fields: [accountProviderId], references: [id], onDelete: SetDefault, onUpdate: Restrict)
 
-  @@unique([partyName, partyBirthdate, partyParentName])
-  @@index([partyNameBirthdateParentNameIndex], type: Brin)
+  /// Self to self relations
+  partyIdProvider       PartyIdentity[] @relation("PartyIdentity_identityProvider")
+  partyIdProvided       PartyIdentity[] @relation("PartyIdentity_identityProvided")
+  partyRelationSelf     PartyRelation[] @relation("PartyRelation_self")
+  partyRelationRelative PartyRelation[] @relation("PartyRelation_relative")
+
+  // Other relations
+  roleOwned PartyIdentityRoleMapper[]
+
+  // commented section
+  // permissionGroups  String[]        @map("permission_groups")
+  // @@unique([partyName, partyBirthdate, partyParentName])
+
+  @@unique([accountProviderId, accountProvidedId], name: "PartyAccount_id")
   @@index([partyAttributes(ops: JsonbOps)], type: Gin)
   @@map("parties")
 }
 
+model PartyRelation {
+  selfId         String                  @map("party_self_id")
+  relativeId     String                  @map("party_relative_id")
+  self           Party                   @relation("PartyRelation_self", fields: [selfId], references: [id])
+  relative       Party                   @relation("PartyRelation_relative", fields: [relativeId], references: [id])
+  relationType   EnumPartyRelationType   @map("relation_type")
+  relationStatus EnumPartyRelationStatus @map("relation_status")
+  createdAt      DateTime                @default(now()) @map("created_at")
+  updatedAt      DateTime                @default(now()) @map("updated_at")
+
+  @@id([selfId, relativeId])
+  @@map("party_relations")
+}
+
+enum EnumPartyRelationStatus {
+  requested
+  rejected
+  accepted
+  pending
+}
+
+enum EnumPartyRelationType {
+  parent
+  children
+}
+
 enum EnumPartyType {
-  self
+  personal
   organisation
+  account_provider
 }
 
 // ----------------------- END PARTY REGION -------------------------- //
 
-// // ----------------------- BEGIN ORGANISATION REGION -------------------------- //
-// model Organisation {
-//   id            String   @id @default(uuid())
-//   orgName       String   @map("organisaiton_name")
-//   orgAttributes Json?    @map("organisation_attributes")
-//   isVerified    Boolean  @default(false) @map("is_organisation_verified")
-//   createdAt     DateTime @default(now()) @map("created_at")
-//   updatedAt     DateTime @default(now()) @map("updated_at")
-
-//   orgIdentitiesProvided SelfOrganisationIdentity[]
-//   orgDiaries            Diary[]
-//   orgTemplateProvided   TemplateProvider[]
-//   orgDiaryApprovers     DiaryOwnerApprover[]
-//   orgPageAccesses       PageAccess[]
-//   orgPages              Page[]
-
-//   @@index([orgAttributes(ops: JsonbOps)], type: Gin)
-//   @@map("organisations")
-// }
-
-// // ----------------------- END ORGANISATION REGION -------------------------- //
-
 // ----------------------- BEGIN ACCOUNT REGION -------------------------- //
-model Account {
-  accountProviderId String          @map("account_provider_id")
-  accountProvidedId String          @map("account_provided_id")
-  partyId           String?         @map("account_party_id")
-  party             Party?          @relation(fields: [partyId], references: [id])
-  accountAttributes Json            @map("account_attributes")
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @default(now()) @map("updated_at")
-  accountProvider   AccountProvider @relation(fields: [accountProviderId], references: [id])
+// model Account {
+//   accountProviderId String          @map("account_provider_id")
+//   accountProvidedId String          @map("account_provided_id")
+//   partyId           String?         @map("account_party_id")
+//   party             Party?          @relation(fields: [partyId], references: [id])
+//   accountAttributes Json            @map("account_attributes")
+//   createdAt         DateTime        @default(now()) @map("created_at")
+//   updatedAt         DateTime        @default(now()) @map("updated_at")
+//   accountProvider   AccountProvider @relation(fields: [accountProviderId], references: [id])
 
-  @@id([accountProviderId, accountProvidedId], name: "Account_id")
-  @@index([accountProviderId], type: Hash, name: "accounts_by_provider_index")
-  @@index([accountAttributes(ops: JsonbOps)], type: Gin)
-  @@map("accounts")
-}
+//   @@id([accountProviderId, accountProvidedId], name: "Account_id")
+//   @@index([accountProviderId], type: Hash, name: "accounts_by_provider_index")
+//   @@index([accountAttributes(ops: JsonbOps)], type: Gin)
+//   @@map("accounts")
+// }
 
 model AccountProvider {
   id                 String   @id
@@ -113,7 +150,7 @@ model AccountProvider {
   updatedAt          DateTime @default(now()) @map("updated_at")
   isActive           Boolean  @default(false) @map("is_account_provider_active")
 
-  accountsProvided Account[]
+  accountsProvided Party[]
 
   @@map("account_providers")
 }
@@ -132,12 +169,13 @@ model Diary {
   updatedAt  DateTime @default(now()) @map("updated_at")
   isArchived Boolean  @map("is_archived")
 
-  diaryOwnerId String                @map("diary_owner_id")
-  diaryOwner   PartyProvidedIdentity @relation(fields: [diaryOwnerId], references: [id])
+  diaryOwnerId String        @default("anonymous") @map("diary_owner_id")
+  diaryOwner   PartyIdentity @relation(fields: [diaryOwnerId], references: [id], onUpdate: Restrict, onDelete: SetDefault)
 
   pages Page[]
 
   @@unique([diaryName, diaryOwnerId])
+  @@index([diaryOwnerId], type: Hash) //gak pake brin karena diaryOwnerId bisa jadi berubah di tengah tengah
   @@index([diaryTag(ops: ArrayOps)], type: Gin)
   @@map("diaries")
 }
@@ -163,7 +201,7 @@ model Page {
   id        String
   pageTitle String   @map("page_title")
   diaryId   String   @map("diary_id")
-  diary     Diary    @relation(fields: [diaryId], references: [id])
+  diary     Diary    @relation(fields: [diaryId], references: [id], onDelete: Cascade, onUpdate: Restrict)
   pageTags  String[] @map("page_tag")
 
   pageStatus EnumPageStatus
@@ -178,14 +216,15 @@ model Page {
   updatedAt      DateTime @default(now()) @map("updated_at")
 
   ///hash indexes
-  pagesByDiaryByCreationDateIndex String @map("pages_by_diary_by_creationdate")
-  pagesByDiaryByTitleIndex        String @map("pages_by_diary_by_title")
+  // pagesByDiaryByCreationDateIndex String @map("pages_by_diary_by_creationdate")
+  // pagesByDiaryByTitleIndex        String @map("pages_by_diary_by_title")
 
   @@id([id, version], name: "Page_id")
   @@index([pageTags(ops: ArrayOps)], type: Gin)
   @@index([pageContent(ops: JsonbOps)], type: Gin)
-  @@index([pagesByDiaryByCreationDateIndex], type: Hash, name: "pages_by_diary_by_creationdate")
-  @@index([pagesByDiaryByTitleIndex], type: Hash, name: "pages_by_diary_by_title")
+  @@index([diaryId(ops: TextMinMaxOps)], type: Brin)
+  // @@index([pagesByDiaryByCreationDateIndex], type: Hash, name: "pages_by_diary_by_creationdate")
+  // @@index([pagesByDiaryByTitleIndex], type: Hash, name: "pages_by_diary_by_title")
   @@map("pages")
 }
 

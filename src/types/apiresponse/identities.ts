@@ -1,15 +1,16 @@
 import { EnumPartyType } from '@prisma/client';
 
+interface IIdentityDetails {
+  partyName: string;
+  partyType: string;
+  partyAddress: string;
+  partyBirthDate: string;
+  partyParentName: string;
+}
 interface IPartyProvided {
   id: string;
   createdAt: string;
-  identity: {
-    fullname: string;
-    nickname: string;
-    birthdate: string;
-    identityType: string;
-    providerName: string;
-  };
+  identityDetails: IIdentityDetails;
   provider: {
     partyName: string;
   };
@@ -25,7 +26,7 @@ export interface IGetIdentityByID {
   id: string;
   createdAt: string;
   updatedAt: string;
-  identity: object;
+  identityDetails: object;
   provider: {
     partyName: string;
     isVerified: boolean;

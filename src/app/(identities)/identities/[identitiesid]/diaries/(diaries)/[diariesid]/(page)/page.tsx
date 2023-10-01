@@ -5,7 +5,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
 // import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 
@@ -26,9 +26,12 @@ export default function Dashboard({
 }) {
   const router = useRouter();
   const content = false;
-  const { data, isLoading, error } = useAccount(params.sessionData.jwt);
+  const { data, isLoading, error } = useAccount();
   const [mounted, setMounted] = useState(false);
-  logger(data);
+
+  if (!params) {
+    //no action, just to ignore warning
+  }
 
   useEffect(() => {
     setMounted(true);

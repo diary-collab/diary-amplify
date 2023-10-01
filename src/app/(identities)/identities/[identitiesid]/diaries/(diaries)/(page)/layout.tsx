@@ -8,10 +8,7 @@ import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-ac
 // import { SiteFooter } from '@src/components/layout/site-footer';
 import { LayoutProps } from '@src/types/props';
 
-export default async function IdentitiesLayout({
-  children,
-  params,
-}: LayoutProps) {
+export default async function DiaryLayout({ children, params }: LayoutProps) {
   const sessionData = await provideSessionAttributes();
 
   if (!sessionData || !sessionData.attributes) {

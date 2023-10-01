@@ -4,7 +4,7 @@ import { getDiary } from '@src/graphql/queries';
 import { graphqlOperation } from 'aws-amplify';
 import { redirect } from 'next/navigation';
 
-import { provideSessionData } from '@src/hooks/use-auth';
+import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 // import { SettingNav } from '@src/components/layout/navigation/sidenav/setting-nav';
 import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
@@ -26,7 +26,7 @@ export default async function DiaryPageLayout({
   params,
 }: LayoutDiaryIdProps) {
   const SSR = getWithSSRContext();
-  const sessionData = await provideSessionData();
+  const sessionData = await provideSessionAttributes();
 
   if (!params.diaryid) {
     redirect('/diary');
@@ -45,7 +45,7 @@ export default async function DiaryPageLayout({
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
       <header className='bg-background border-border sticky top-0 z-40 min-w-full border-b shadow-md'>
         <div className='mx-8 flex h-12 items-center justify-between py-4 md:mx-10 lg:mx-12'>
-          {!sessionData || !sessionData.attributes || !sessionData.jwt ? (
+          {!sessionData || !sessionData.attributes ? (
             <div className='flex flex-row items-center justify-center space-x-2'>
               <p>Diary</p>
             </div>
