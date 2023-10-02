@@ -1,18 +1,16 @@
 import * as React from 'react';
 
-import PrimaryLink from '@/components/links/PrimaryLink';
+import UnstyledLink from '@src/components/links/unstyled-link';
 
 export const BANNER_CONTENT: (() => React.ReactNode)[] = [
   () => (
     <span>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.{' '}
-      <PrimaryLink href='#'>Baca panduan</PrimaryLink>
+      You dont have any active account yet! Complete your account registration{' '}
+      <UnstyledLink className='text-red-600' href='/completeaccount'>
+        Click here
+      </UnstyledLink>
     </span>
   ),
-  () =>
-    'Quia magnam ipsam consequuntur quam eligendi et corrupti blanditiis voluptatum, nisi beatae placeat, quis libero nihil voluptatibus ad. Quasi animi accusantium alias, dolorem ducimus consequuntur!',
-  () =>
-    'Doloribus tenetur rem laboriosam ad voluptatibus magni repellat quos tempora iusto commodi',
 ];
 
 export const BANNER_DELAY_MS = 5000;

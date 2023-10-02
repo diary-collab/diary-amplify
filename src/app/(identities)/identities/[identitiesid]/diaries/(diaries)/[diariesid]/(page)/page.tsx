@@ -1,0 +1,91 @@
+'use client';
+
+// import logger from '@src/lib/logger';
+// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+// import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
+import { useAccount } from '@src/hooks/use-account';
+
+import { DashboardHeader } from '@src/components/dashboard-header';
+import { DashboardShell } from '@src/components/dashboard-shell';
+import Banner from '@src/components/default-banner';
+import { EmptyPlaceholder } from '@src/components/empty-placeholder';
+import { PostCreateButton } from '@src/components/post-create-button';
+
+import { SessionData } from '@src/types/use-session';
+
+export default function Dashboard({
+  params,
+}: {
+  params: {
+    sessionData: SessionData;
+  };
+}) {
+  const router = useRouter();
+  const content = false;
+  const { data, isLoading, error } = useAccount();
+  const [mounted, setMounted] = useState(false);
+
+  if (!params) {
+    //no action, just to ignore warning
+  }
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      data &&
+      data.message &&
+      data.message.includes('TokenExpiredError')
+    ) {
+      router.refresh();
+    } else {
+      return;
+    }
+  }, [isLoading, error, data, router]);
+
+  if (!mounted) {
+    return <></>;
+  }
+
+  return (
+    <>
+      {(error || (data && data.code && (data.code < 200 || data.code > 200))) &&
+        !isLoading && <Banner className='mb-8' variant='alert' />}
+
+      <DashboardShell>
+        <DashboardHeader heading='Pages' text='Create and manage diary page.'>
+          <PostCreateButton />
+          {/* Add Page */}
+        </DashboardHeader>
+        <div>
+          {content ? (
+            <div className='divide-border divide-y rounded-md border'>
+              Content here
+            </div>
+          ) : (
+            <div className='divide-border divide-y rounded-md border'>
+              <EmptyPlaceholder>
+                <EmptyPlaceholder.Icon name='post' />
+                <EmptyPlaceholder.Title>
+                  No posts created
+                </EmptyPlaceholder.Title>
+                <EmptyPlaceholder.Description>
+                  You don&apos;t have any posts yet. Start creating content.
+                </EmptyPlaceholder.Description>
+                <PostCreateButton variant='outline' />
+                {/* Add post */}
+              </EmptyPlaceholder>
+            </div>
+          )}
+        </div>
+      </DashboardShell>
+    </>
+  );
+}

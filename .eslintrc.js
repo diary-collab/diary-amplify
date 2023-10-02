@@ -49,11 +49,11 @@ module.exports = {
           // {s}css files
           ['^.+\\.s?css$'],
           // Lib and hooks
-          ['^@/lib', '^@/hooks'],
+          ['^@src/lib', '^@src/hooks'],
           // static data
           ['^@/data'],
           // components
-          ['^@/components', '^@/container'],
+          ['^@src/components', '^@src/container'],
           // zustand store
           ['^@/store'],
           // Other imports
@@ -69,7 +69,7 @@ module.exports = {
             '^\\.\\./\\.\\./\\.\\./?$',
             '^\\.\\./\\.\\./\\.\\.(?!/?$)',
           ],
-          ['^@/types'],
+          ['^@src/types'],
           // other that didnt fit in
           ['^'],
         ],

@@ -1,0 +1,349 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------- BEGIN ACCOUNT PROVIDER REGION --------------------------//
+model AccountProvider {
+  id              String   @id @default(uuid())
+  providerName    String
+  providerDetails Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+
+  /// to enable soft delete in accountprovider
+  isDeleted Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  accountProvided Account[]
+  changeRequests  AccountChangeRequest[]
+
+  @@map("accountproviders")
+}
+
+// ----------------------- END ACCOUNT PROVIDER REGION --------------------------//
+
+// ----------------------- BEGIN ACCOUNT PROFILE REGION --------------------------//
+model AccountProfile {
+  id                             String   @id @default(uuid())
+  accountId                      String   @unique
+  accountName                    String
+  accountNickname                String?
+  accountDob                     String?
+  accountEmail                   String
+  accountPhoneNumber             String?
+  accountProfileCustomAttributes Json?
+  createdAt                      DateTime @default(now()) @map("created_at")
+  updatedAt                      DateTime @default(now()) @map("updated_at")
+
+  /// relations
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  /// to enable soft delete in accountprofile
+  isDeleted Boolean @default(false)
+
+  @@map("accountprofiles")
+}
+
+// ----------------------- END ACCOUNT PROFILE REGION --------------------------//
+
+// ----------------------- BEGIN ACCOUNT REGION --------------------------//
+model Account {
+  id                String          @id @default(uuid())
+  userId            String?
+  role              EnumAccountRole @default(DIARYUSER)
+  accountAttributes Json? ///object disini harus sama dengan object changerequest di table accountchangerequest
+  providerId        String
+  providerName      String
+  providedAccountId String
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @default(now()) @map("updated_at")
+
+  ///relations
+  user            User?                  @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  diaries         Diary[]
+  profile         AccountProfile[]
+  accountProvider AccountProvider        @relation(fields: [providerId], references: [id], onUpdate: Cascade)
+  changeRequests  AccountChangeRequest[]
+  identities      AccountIdentity[]
+
+  /// to enable soft delete in account table, manage in isActive
+  isDeleted Boolean @default(false)
+  //isActive default true karena belum perlu persetujuan dari id provider, baru ada cognito kan
+  isActive  Boolean @default(true)
+
+  @@unique([providerId, providedAccountId])
+  @@map("accounts")
+}
+
+model AccountChangeRequest {
+  id            String           @id @default(uuid())
+  accountId     String
+  providerId    String
+  changeRequest Json ///body request masuk ke sini
+  changeReason  String?
+  changeStatus  EnumChangeStatus
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @default(now()) @map("updated_at")
+
+  /// relations
+  account  Account                       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  provider AccountProvider               @relation(fields: [providerId], references: [id])
+  comments AccountChangeRequestComment[]
+
+  @@map("accountchangerequests")
+}
+
+model AccountChangeRequestComment {
+  id              String   @id @default(uuid())
+  changeRequestId String
+  changeComment   String
+  submittedBy     String
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+
+  ///relations
+  changeRequest AccountChangeRequest @relation(fields: [changeRequestId], references: [id], onDelete: Cascade)
+
+  @@map("accountchangerequestcomments")
+}
+
+// ----------------------- END ACCOUNT REGION --------------------------//
+
+// ----------------------- BEGIN ACCOUNT IDENTITY REGION --------------------------//
+
+///AIPRequest buat admin dashboard manage account identity provider
+model AIPChangeRequest {
+  id        String                    @id @default(uuid())
+  aipId     String
+  aip       AccountIdentityProvider   @relation(fields: [aipId], references: [id])
+  aipStatus EnumChangeStatus
+  createdAt DateTime                  @default(now()) @map("created_at")
+  updatedAt DateTime                  @default(now()) @map("updated_at")
+  comments  AIPChangeRequestComment[]
+
+  @@map("aipchangerequests")
+}
+
+model AIPChangeRequestComment {
+  id            String           @id @default(uuid())
+  requestId     String
+  requestDetail AIPChangeRequest @relation(fields: [requestId], references: [id])
+  comment       String
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @default(now()) @map("updated_at")
+
+  @@map("aipchangerequestcomments")
+}
+
+model AccountIdentityProvider {
+  id                  String   @id @default(uuid())
+  aipName             String   @unique
+  aipDetails          Json
+  aipCustomAttributes Json?
+  aipSanitisedName    String
+  aipTags             String[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  ///softdelete handler
+  isDeleted Boolean @default(false)
+  //is active default false karena ini perlu persetujuan dari admin diary dulu
+  isActive  Boolean @default(false)
+
+  ///relations
+  aipManager         AIPChangeRequest[]
+  identitiesProvided AccountIdentity[]
+  changeReuests      AccountIdentityChangeRequest[]
+
+  @@map("accountidentityproviders")
+}
+
+model AccountIdentity {
+  aipId           String
+  accountId       String
+  identityDetail  Json
+  identityContext Json?
+  isMainIdentity  Boolean @default(false)
+
+  ///softdelete handler
+  isDeleted Boolean @default(false)
+  //is active default false karena ini perlu persetujuan dari admin diary dulu
+  isActive  Boolean @default(false)
+
+  ///relations
+  aip                    AccountIdentityProvider        @relation(fields: [aipId], references: [id])
+  account                Account                        @relation(fields: [accountId], references: [id])
+  identityChangeRequests AccountIdentityChangeRequest[]
+
+  @@id([aipId, accountId])
+  @@map("accounidentities")
+}
+
+model AccountIdentityChangeRequest {
+  id            String           @id @default(uuid())
+  accountId     String
+  aipId         String
+  changeRequest Json
+  changeReason  String
+  changeStatus  EnumChangeStatus
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @default(now()) @map("updated_at")
+
+  ///relations
+  identity AccountIdentity                       @relation(fields: [aipId, accountId], references: [aipId, accountId], onUpdate: Cascade)
+  aip      AccountIdentityProvider               @relation(fields: [aipId], references: [id], onUpdate: Cascade)
+  comments AccountIdentityChangeRequestComment[]
+
+  @@map("accountidentitychangerequests")
+}
+
+model AccountIdentityChangeRequestComment {
+  id              String   @id @default(uuid())
+  changeRequestId String
+  changeComment   String
+  submittedBy     String
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+
+  ///relations
+  changeRequest AccountIdentityChangeRequest @relation(fields: [changeRequestId], references: [id], onDelete: Cascade)
+
+  @@map("accountidentitychangerequestcomments")
+}
+
+// ----------------------- END ACCOUNT IDENTITY REGION --------------------------//
+
+// ----------------------- BEGIN DIARY REGION --------------------------//
+
+model Diary {
+  id            String   @id
+  diaryTitle    String
+  diaryMetadata Json?
+  ownerId       String   @unique
+  tags          String[]
+  icons         Json?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @map("updated_at")
+
+  /// relations
+  owner Account @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  pages Page[]
+
+  @@map("diaries")
+}
+
+// ----------------------- END DIARY REGION --------------------------//
+
+// ----------------------- BEGIN PAGE REGION --------------------------//
+model PageHistory {
+  id            Int      @id @default(autoincrement())
+  pageId        String   @unique
+  previousItems Json
+  changedItems  Json
+  reasons       String
+  published     Boolean
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @map("updated_at")
+
+  /// relations
+  page Page @relation(fields: [pageId], references: [id])
+
+  @@map("pagehistories")
+}
+
+model PageAccess {
+  id             String   @id
+  pageId         String   @unique
+  editorAccounts String[]
+  viewerAccounts String[]
+  editorGroups   String[]
+  viewerGroups   String[]
+  bannedAccounts String[]
+  bannedGroups   String[]
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @map("updated_at")
+
+  /// relations
+  page Page @relation(fields: [pageId], references: [id])
+
+  @@map("pageaccesses")
+}
+
+model Page {
+  id              String            @id
+  diaryId         String
+  pageTitle       String
+  pageDescription String
+  pageMetadata    Json?
+  version         Int               @unique @default(autoincrement())
+  versionStatus   EnumVersionStatus
+  content         Json?
+  parentId        String?
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @default(now()) @map("updated_at")
+
+  /// relations
+  accesses   PageAccess?
+  histories  PageHistory?
+  diary      Diary        @relation(fields: [diaryId], references: [id])
+  parentPage Page[]       @relation("PageParentChilds")
+  childPage  Page[]       @relation("PageParentChilds")
+
+  @@map("pages")
+}
+
+// ----------------------- END PAGE REGION --------------------------//
+
+// ----------------------- BEGIN USER REGION --------------------------//
+
+model User {
+  id                   String    @id @default(uuid())
+  name                 String?
+  email                String?   @unique
+  emailVerified        DateTime?
+  image                String?
+  userCustomAttributes Json?
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @default(now()) @map("updated_at")
+
+  /// relations
+  accounts Account[]
+
+  /// to enable soft delete in accountprovider
+  isDeleted Boolean @default(false)
+  isActive  Boolean @default(false)
+
+  @@map("users")
+}
+
+// ----------------------- END USER REGION --------------------------//
+
+// ----------------------- BEGIN ENUM REGION --------------------------//
+enum EnumVersionStatus {
+  INITIAL
+  DRAFT
+  FINAL
+  REVISION
+}
+
+enum EnumChangeStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  REVISION_SUBMITTED
+  CANCELLED
+}
+
+enum EnumAccountRole {
+  DIARYUSER
+  DIARYADMIN
+  DIARYIDENTITYPROVIDER
+}
+
+// ----------------------- END ENUM REGION --------------------------//
