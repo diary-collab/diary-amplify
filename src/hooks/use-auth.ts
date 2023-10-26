@@ -1,14 +1,14 @@
-import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
+// import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
 
 // import logger from '@src/lib/logger';
 import { SessionData } from '@src/types/use-session';
 
 export async function provideSessionAttributes() {
-  const SSR = getWithSSRContext();
+  // const SSR = getWithSSRContext();
   let result;
 
   try {
-    result = await SSR.Auth.currentAuthenticatedUser();
+    result = { attributes: {} };
     // logger(result);
   } catch (error) {
     return null;
@@ -26,11 +26,10 @@ export async function provideSessionAttributes() {
 }
 
 export async function provideSessionJwt() {
-  const SSR = getWithSSRContext();
   let result;
 
   try {
-    result = await SSR.Auth.currentAuthenticatedUser();
+    result = { attributes: {} };
     // logger(result.signInUserSession.accessToken.jwtToken);
   } catch (error) {
     return null;
@@ -41,7 +40,7 @@ export async function provideSessionJwt() {
   }
 
   const sessionData = {
-    jwt: result.signInUserSession.accessToken.jwtToken,
+    jwt: 'result.signInUserSession.accessToken.jwtToken',
   };
 
   return sessionData as SessionData;

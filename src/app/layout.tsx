@@ -5,6 +5,7 @@ import '@amplify/amplifyconfigure';
 
 import '@src/styles/globals.css';
 
+import ConfigureAmplifyClientSide from '@src/lib/amplify-client-side-config';
 import { clsxm } from '@src/lib/utils';
 
 import { Analytics } from '@src/components/default-analytics';
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           defaultTheme='dark'
           enableSystem={true}
         >
+          <ConfigureAmplifyClientSide />
           {children}
           <Analytics />
           <Toaster />

@@ -65,16 +65,6 @@ export default function IdentityDetailPage({
       return;
     }
 
-    if (
-      data.message &&
-      (data.message === 'TokenExpiredError: jwt expired' ||
-        data.message === 'JsonWebTokenError: jwt malformed')
-    ) {
-      setShowBanner(false);
-      router.refresh();
-      return;
-    }
-
     setShowBanner(false);
   }, [isValidating, data, fetchingdata, router]);
 
@@ -124,8 +114,8 @@ export default function IdentityDetailPage({
           />
         </div>
       </header>
-      <div className='container grid min-h-screen min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
-        <aside className='border-border hidden w-[220px] flex-col border-r pr-2 md:flex'>
+      <div className='container grid min-w-full flex-1 gap-12 bg-white md:grid-cols-[230px_1fr]'>
+        <aside className='border-border -ml-8 hidden h-screen w-[250px] flex-col border-r px-2 pl-[-2rem] md:flex'>
           <div className='mt-6'>
             {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -135,7 +125,7 @@ export default function IdentityDetailPage({
             }
           </div>
         </aside>
-        <main className='mx-0 mt-6 flex w-full flex-1 flex-col overflow-hidden md:mx-4'>
+        <main className='-ml-8 mt-8 flex w-full flex-col overflow-hidden'>
           {showBanner && <Banner className='mb-8' variant='alert' />}
           <DashboardShell>
             <div>
@@ -159,19 +149,37 @@ export default function IdentityDetailPage({
                     <Link href='/identities'>
                       <Typography variant='h4'>Identity</Typography>
                     </Link>
-                    <div className='px-4 py-2'>
-                      {Object.entries(identity.identityDetails).map(
-                        ([key, value]) =>
-                          key !== 'identityType' &&
-                          key !== 'providerName' && (
-                            <div key={key}>
-                              <Typography variant='s3'>
-                                {key.toString().toLocaleUpperCase()}: {value}
-                              </Typography>
-                            </div>
-                          )
-                      )}
-                    </div>
+
+                    {identity.identityDetails && (
+                      <div className='px-4 py-2'>
+                        <div>
+                          <Typography variant='s3'>
+                            Identitiy Name: {identity.identityDetails.partyName}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant='s3'>
+                            Identitiy Type:{' '}
+                            {`${identity.identityDetails.partyType}`}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant='s3'>
+                            Identitiy Name: {identity.identityDetails.partyName}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant='s3'>
+                            Identitiy Name: {identity.identityDetails.partyName}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant='s3'>
+                            Identitiy Name: {identity.identityDetails.partyName}
+                          </Typography>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <Typography variant='h4'>Identity Provider</Typography>

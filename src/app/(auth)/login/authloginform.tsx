@@ -22,11 +22,11 @@ import { SignInWithEmailAndPassword } from '@src/types/user-auth';
 const AuthLoginfields: FormFields[] = [
   {
     labelText: 'Username / Email address',
-    labelFor: 'email',
-    id: 'email',
-    name: 'email',
+    labelFor: 'username',
+    id: 'username',
+    name: 'username',
     type: 'text',
-    autoComplete: 'email',
+    autoComplete: 'username',
     isRequired: true,
     placeholder: 'Username / Email address',
     titlekey: 'title_email',

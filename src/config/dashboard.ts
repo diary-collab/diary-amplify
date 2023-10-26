@@ -70,7 +70,7 @@ export const dashboardConfig: DashboardConfig = {
         {
           title: 'List identities',
           href: '/identities',
-          icon: 'post',
+          icon: 'users',
         },
         {
           title: 'Identity request',

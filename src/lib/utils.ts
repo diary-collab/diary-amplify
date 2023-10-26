@@ -2,7 +2,7 @@ import clsx, { ClassValue } from 'clsx';
 // import crypto from 'crypto'
 import { twMerge } from 'tailwind-merge';
 
-import { env } from '@/env.mjs';
+import { env } from '@/env.js';
 
 export function formatDate(input: string | number): string {
   const date = new Date(input);

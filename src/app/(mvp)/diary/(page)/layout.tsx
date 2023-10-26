@@ -1,6 +1,6 @@
-import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
-import { listDiaries } from '@src/graphql/queries';
-import { graphqlOperation } from 'aws-amplify';
+// import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
+// import { listDiaries } from '@src/graphql/queries';
+// import { graphqlOperation } from 'aws-amplify';
 import { redirect } from 'next/navigation';
 
 import { provideSessionAttributes } from '@src/hooks/use-auth';
@@ -13,16 +13,16 @@ import { SiteFooter } from '@src/components/layout/site-footer';
 import { LayoutProps } from '@src/types/props';
 
 export default async function DiaryLayout({ children, params }: LayoutProps) {
-  const SSR = getWithSSRContext();
+  // const SSR = getWithSSRContext();
   const sessionData = await provideSessionAttributes();
 
   if (!sessionData || !sessionData.attributes) {
     redirect('/login');
   }
 
-  const { data } = await SSR.API.graphql(graphqlOperation(listDiaries));
+  // const { data } = await SSR.API.graphql(graphqlOperation(listDiaries));
   params.sessionData = sessionData;
-  params.data = data;
+  // params.data = data;
 
   return (
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>

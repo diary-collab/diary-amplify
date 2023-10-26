@@ -4,7 +4,7 @@ import * as z from 'zod';
 
 import { provideSessionJwt } from '@src/hooks/use-auth';
 
-import { env } from '@/env.mjs';
+import { env } from '@/env.js';
 
 const middlewareSchema = z.object({
   path: z.string(),

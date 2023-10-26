@@ -1,7 +1,3 @@
-// import { redirect } from 'next/navigation';
-
-import { redirect } from 'next/navigation';
-
 import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 import { SessionData } from '@src/types/use-session';
@@ -19,11 +15,6 @@ export default async function IdentitiesDetailLayout({
   params,
 }: LayoutIdentitiesIdProps) {
   const sessionData = await provideSessionAttributes();
-
-  if (!sessionData || !sessionData.attributes) {
-    //dari server = redirect, dari client pake router.push
-    redirect('/login');
-  }
 
   params.sessionData = sessionData;
 

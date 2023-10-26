@@ -2,35 +2,35 @@
 
 //TODO: PERHATIIN PENGGUNAAN 'ANY' DISINI
 
-import { withSSRContext } from 'aws-amplify';
+// import { withSSRContext } from 'aws-amplify';
 
-import { config } from './amplifyconfig';
+// import { config } from './amplifyconfig';
 
-const serialize = (c: any) => {
-  const attrs = [
-    'path' in c && c.path && `Path=${c.path}`,
-    'expires' in c && c.expires && `Expires=${c.expires.toUTCString()}`,
-    'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
-    'domain' in c && c.domain && `Domain=${c.domain}`,
-    'secure' in c && c.secure && 'Secure',
-    'httpOnly' in c && c.httpOnly && 'HttpOnly',
-    'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
-  ].filter(Boolean);
+// const serialize = (c: any) => {
+//   const attrs = [
+//     'path' in c && c.path && `Path=${c.path}`,
+//     'expires' in c && c.expires && `Expires=${c.expires.toUTCString()}`,
+//     'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
+//     'domain' in c && c.domain && `Domain=${c.domain}`,
+//     'secure' in c && c.secure && 'Secure',
+//     'httpOnly' in c && c.httpOnly && 'HttpOnly',
+//     'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
+//   ].filter(Boolean);
 
-  return `${c.name}=${c.value ? decodeURIComponent(c.value) : ''}; ${
-    attrs.join('; ') + (attrs.length > 0 ? '; ' : '')
-  }`;
-};
+//   return `${c.name}=${c.value ? decodeURIComponent(c.value) : ''}; ${
+//     attrs.join('; ') + (attrs.length > 0 ? '; ' : '')
+//   }`;
+// };
 
-export const serializeMultiple = (cookies: any[]) => {
-  return cookies.map(serialize).join('');
-};
+// export const serializeMultiple = (cookies: any[]) => {
+//   return cookies.map(serialize).join('');
+// };
 
-export const getWithSSRContextMiddleware = (cookies: any) => {
-  const SSR = withSSRContext({
-    req: { headers: { cookie: serializeMultiple(cookies) } },
-  });
-  SSR.configure(config);
+// export const getWithSSRContextMiddleware = (cookies: any) => {
+//   const SSR = withSSRContext({
+//     req: { headers: { cookie: serializeMultiple(cookies) } },
+//   });
+//   SSR.configure(config);
 
-  return SSR;
-};
+//   return SSR;
+// };

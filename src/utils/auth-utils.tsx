@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Auth } from 'aws-amplify';
+import { confirmSignUp, resetPassword, signIn, signUp } from 'aws-amplify/auth';
 
 import logger from '@src/lib/logger';
 
@@ -16,11 +16,11 @@ export async function signInWithEmailAndPassword(
 ): Promise<AuthRequestResult> {
   // return { success: true, data: "sukses" } as returnData;
   try {
-    await Auth.signIn(data.email, data.password);
-    const currentUser = await Auth.currentAuthenticatedUser();
+    const { isSignedIn, nextStep } = await signIn(data);
 
-    return { success: true, user: currentUser } as AuthRequestResult;
+    return { success: true, user: isSignedIn } as AuthRequestResult;
   } catch (err: unknown) {
+    logger(err);
     return {
       success: false,
       errorMessage: 'Combination of email and password not found!',
@@ -38,21 +38,19 @@ export async function register(
   const name = data.fullname;
 
   try {
-    const { user } = await Auth.signUp({
+    const { isSignUpComplete, userId, nextStep } = await signUp({
       username,
       password,
-      attributes: {
-        email, // optional
-        nickname,
-        name, // optional - E.164 number convention
-      },
-      autoSignIn: {
-        // optional - enables auto sign in after user is confirmed
-        enabled: true,
+      options: {
+        userAttributes: {
+          email, // optional
+          nickname,
+          name, // optional - E.164 number convention
+        },
       },
     });
 
-    return { user: user, success: true } as AuthRequestResult;
+    return { user: userId, success: true } as AuthRequestResult;
   } catch (error) {
     return { success: false, errorMessage: error } as AuthRequestResult;
   }
@@ -60,10 +58,10 @@ export async function register(
 
 export async function verifyUser(
   username: string,
-  code: string
+  confirmationCode: string
 ): Promise<AuthRequestResult> {
   try {
-    const test = await Auth.confirmSignUp(username, code);
+    const test = await confirmSignUp({ username, confirmationCode });
 
     logger('verifyuser: ' + test);
     return {
@@ -83,7 +81,7 @@ export async function forgotPasswordRequest(
   data: ForgotPasswordRequest
 ): Promise<AuthRequestResult> {
   try {
-    const { CodeDeliveryDetails } = await Auth.forgotPassword(data.username);
+    const { CodeDeliveryDetails } = await resetPassword(data.username);
 
     return {
       success: true,

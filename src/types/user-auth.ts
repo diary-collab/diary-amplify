@@ -1,4 +1,4 @@
-import { CognitoUser } from '@aws-amplify/auth';
+// import { CognitoUser } from '@aws-amplify/auth';
 
 import { FormFields } from '.';
 
@@ -86,7 +86,7 @@ export const AuthRegisterFields: FormFields[] = [
 ];
 
 export type SignInWithEmailAndPassword = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -122,7 +122,7 @@ export type VerifyUserRequest = {
 };
 
 export type AuthRequestResult = {
-  user?: CognitoUser | null;
+  user?: any | null;
   success: boolean;
   message?: string;
   errorMessage?: string;

@@ -1,7 +1,8 @@
-import { createEnv } from '@t3-oss/env-nextjs';
-import { z } from 'zod';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { createEnv } = require('@t3-oss/env-nextjs');
+const { z } = require('zod');
 
-export const env = createEnv({
+exports.env = createEnv({
   server: {
     // This is optional because it's only used in development.
     // See https://next-auth.js.org/deployment.

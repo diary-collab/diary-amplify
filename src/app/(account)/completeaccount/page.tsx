@@ -40,13 +40,6 @@ export default function CompleteAccountPage({
   useEffect(() => {
     if (!isLoading && !error && data && data.code >= 200 && data.code <= 299) {
       router.push('/identities');
-    } else if (
-      !isLoading &&
-      data &&
-      data.message &&
-      data.message.includes('TokenExpiredError')
-    ) {
-      router.refresh();
     } else {
       return;
     }

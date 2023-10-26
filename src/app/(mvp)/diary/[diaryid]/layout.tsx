@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
-import { getDiary } from '@src/graphql/queries';
-import { graphqlOperation } from 'aws-amplify';
+// import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
+// import { getDiary } from '@src/graphql/queries';
+// import { graphqlOperation } from 'aws-amplify';
 import { redirect } from 'next/navigation';
 
 import { provideSessionAttributes } from '@src/hooks/use-auth';
@@ -25,21 +25,21 @@ export default async function DiaryPageLayout({
   children,
   params,
 }: LayoutDiaryIdProps) {
-  const SSR = getWithSSRContext();
+  // const SSR = getWithSSRContext();
   const sessionData = await provideSessionAttributes();
 
   if (!params.diaryid) {
     redirect('/diary');
   }
 
-  const { data } = await SSR.API.graphql(
-    graphqlOperation(getDiary, { diaryId: params.diaryid })
-  );
+  // const { data } = await SSR.API.graphql(
+  //   graphqlOperation(getDiary, { diaryId: params.diaryid })
+  // );
 
   // params.sessionData = sessionData;
-  if (data?.getDiary?.diaryName) {
-    params.data = data.getDiary.diaryName;
-  }
+  // if (data?.getDiary?.diaryName) {
+  //   params.data = data.getDiary.diaryName;
+  // }
 
   return (
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>

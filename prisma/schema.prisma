@@ -9,309 +9,322 @@ datasource db {
 
 /// ATURAN UNTUK PENULISAN ///
 
-// ----------------------- BEGIN PARTY REGION -------------------------- //
+model PartyData {
+  //primary index, versioning di table sendiri
+  dataId      String @id @map("data_id")
+  ownerId     String @map("owner_id") //data owner
+  dataTitle   String @map("data_title")
+  dataVersion Int    @map("data_version")
 
-model PartyIdentity {
-  /// perlu single id buat jadi path di frontend
-  id                                String                   @id
-  identityProvider                  String                   @map("identity_provider")
-  identityProvided                  String                   @map("identity_provided")
-  identityDetails                   Json                     @map("identity_details")
-  createdAt                         DateTime                 @default(now()) @map("created_at")
-  updatedAt                         DateTime                 @default(now()) @map("updated_at")
-  identityByProviderByProvidedIndex String                   @map("identity_index")
-  roleMapperId                      String?                  @default("no_roles") @map("role_mapper_id")
-  identityRole                      PartyIdentityRoleMapper? @relation(fields: [roleMapperId], references: [id], onDelete: SetDefault, onUpdate: Restrict)
+  //data definition
+  dataObjectDescription Json              @map("data_object_description")
+  rootSchemaId          String            @map("root_schema_id")
+  dataTags              String[]          @map("data_tags")
+  dataType              EnumPartyDataType @map("data_type")
 
-  provider Party @relation("PartyIdentity_identityProvider", fields: [identityProvider], references: [id])
-  provided Party @relation("PartyIdentity_identityProvided", fields: [identityProvided], references: [id])
+  //data permission
+  dataPermissionLevel EnumPermissionLevel @default(private) @map("data_permission_level")
 
-  diaries Diary[]
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
 
-  // commented sections
-  // identityTemplateId String?           @map("identity_template_id")
-  // identityTemplate   TemplateProvider? @relation(fields: [identityTemplateId], references: [id])
+  //relations
+  dataOwner Party @relation(fields: [ownerId], references: [id])
 
-  @@unique([identityProvider, identityProvided])
-  @@index([identityByProviderByProvidedIndex(ops: TextMinMaxOps)], type: Brin)
-  @@index([identityProvider(ops: TextMinMaxOps)], type: Brin)
-  @@index([identityDetails(ops: JsonbOps)], type: Gin)
-  @@map("party_identities")
+  @@index([createdAt(ops: TimestampTzMinMaxMultiOps)], type: Brin, name: "party_datas_created_index")
+  // @@id([ownerId, dataId], name: "party_data_id")
+  @@index([ownerId], type: Hash, name: "party_datas_owner_index")
+  // @@index([ownerId, dataPermissionLevel], type: Hash, name: "party_data_by_party_by_permission_index") // karena datanya bakalan berubah ubah
+  @@map("party_data")
 }
 
-model PartyIdentityRoleMapper {
-  id               String          @id
-  roleName         String          @map("role_name")
-  ownerId          String          @map("owner_id")
-  allowedPartyType EnumPartyType[] @map("allowed_party_type")
-  createdAt        DateTime        @default(now()) @map("created_at")
-  updatedAt        DateTime        @default(now()) @map("updated_at")
-  owner            Party           @relation(fields: [ownerId], references: [id], onUpdate: Restrict, onDelete: Cascade) //can't upodate ownerId, if role provider deleted then delete all role mapper here
-  listIdentities   PartyIdentity[]
+model DataMetaData {
+  ////no indexing since we won't query this table
+  dataId          String   @map("data_id")
+  dataVersion     Int      @map("data_version")
+  ownerName       String   @map("owner_name")
+  dataTitle       String   @map("data_title")
+  dataDescription String   @map("data_description")
+  datatags        String   @map("data_tags")
+  dataKeywords    String   @map("data_keywords")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
 
-  @@unique([roleName, ownerId])
-  @@map("party_identity_role_mapper")
+  @@id([dataId, dataVersion], name: "data_metadatas_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_metadatas_index")
+  @@map("data_metadatas")
+}
+
+model DataAttribution {
+  dataId             String   @map("data_id")
+  dataVersion        String   @map("data_version")
+  revision           String
+  canonicalHash      String   @map("canonical_hash")
+  authorName         String   @map("author_name")
+  authorOrganisation String   @map("author_organisation")
+  authorEmail        String   @map("author_email")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
+
+  @@id([dataId, dataVersion], name: "schema_attributions_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_attributions_index")
+  @@map("data_attributions")
+}
+
+model DataVersioning {
+  dataId                String   @map("data_id")
+  dataVersion           String   @map("data_version")
+  dataObjectDescription String   @map("data_object_description")
+  signatureHash         String   @map("signature_hash")
+  changeReason          String   @map("change_reason")
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy             String   @map("created_by")
+
+  @@id([dataId, dataVersion], name: "data_versionings_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_versionings_index")
+  @@map("data_versionings")
+}
+
+model DataAccessRequest {
+  id                String                @id
+  requestFrom       String                @map("request_from")
+  requestTo         String                @map("request_to")
+  requestType       EnumRequestType       @map("request_type")
+  accessRequestType EnumAccessRequestType @map("access_request_type")
+  requestStatus     EnumRequestStatus     @map("request_status")
+  dataId            String                @map("data_id")
+  accessType        String                @map("access_type")
+  accessExpired     DateTime?             @map("access_expired") @db.Timestamptz(3)
+  version           Int
+  createdAt         DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime              @default(now()) @map("updated_at") @db.Timestamptz(3)
+
+  requestHistories DataAccessRequestHistory[]
+
+  @@index([createdAt(ops: TimestampTzMinMaxMultiOps)], type: Brin, name: "data_access_request_created_index")
+  @@index([requestFrom(ops: TextMinMaxOps)], type: Brin, name: "data_access_request_from_index")
+  @@index([requestTo(ops: TextMinMaxOps)], type: Brin, name: "data_access_request_to_index")
+  @@index([accessExpired(ops: TimestampTzMinMaxMultiOps)], type: Brin, name: "data_access_request_expired_index")
+  @@map("data_access_requests")
+}
+
+model DataAccessRequestHistory {
+  requestVersion Int      @map("request_version")
+  requestId      String   @map("request_id")
+  currentData    Json     @map("current_data")
+  updateReasons  String[] @map("update_reasons")
+  createdBy      String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  dataAccessRequest DataAccessRequest @relation(fields: [requestId], references: [id])
+
+  @@id([requestId, requestVersion], name: "data_access_request_histories_id")
+  // @@index([requestId(ops: TextOps)], type: SpGist, name: "access_request_histories_by_request_index")
+  @@map("data_access_request_histories")
+}
+
+//TODO: data type perlu didefinisikan ulang
+enum EnumPartyDataType {
+  identity
+  identity_given
+  diary
+  diary_page
+  party_relationship
+}
+
+enum EnumPermissionLevel {
+  private
+  public
+  protected
 }
 
 model Party {
-  id              String   @id
-  partyName       String   @map("party_name")
-  partyBirthdate  DateTime @map("party_birthdate")
-  partyParentName String?  @map("party_parent_name")
-  partyAddress    String?  @map("party_address")
-  partyAttributes Json?    @map("partyAttributes")
-  isVerified      Boolean  @default(false) @map("is_party_verified")
-  isActive        Boolean  @default(true) @map("is_party_active")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @default(now()) @map("updated_at")
+  id         String   @id
+  partyName  String   @map("party_name")
+  // partyAttributes Json?    @map("partyAttributes")
+  isVerified Boolean  @default(false) @map("is_party_verified")
+  isActive   Boolean  @default(true) @map("is_party_active")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
 
   /// Enum
   partyType EnumPartyType @map("party_type")
 
-  /// Account section
-  accountProviderId String?          @default("no_account") @map("account_provider_id")
-  accountProvidedId String           @map("account_provided_id")
-  accountProvider   AccountProvider? @relation(fields: [accountProviderId], references: [id], onDelete: SetDefault, onUpdate: Restrict)
-
-  /// Self to self relations
-  partyIdProvider       PartyIdentity[] @relation("PartyIdentity_identityProvider")
-  partyIdProvided       PartyIdentity[] @relation("PartyIdentity_identityProvided")
-  partyRelationSelf     PartyRelation[] @relation("PartyRelation_self")
-  partyRelationRelative PartyRelation[] @relation("PartyRelation_relative")
-
-  // Other relations
-  roleOwned PartyIdentityRoleMapper[]
+  ///data section
+  partyDatas  PartyData[]
+  schemaOwned Schema[]
 
   // commented section
   // permissionGroups  String[]        @map("permission_groups")
   // @@unique([partyName, partyBirthdate, partyParentName])
+  accounts PartyAccount[]
 
-  @@unique([accountProviderId, accountProvidedId], name: "PartyAccount_id")
-  @@index([partyAttributes(ops: JsonbOps)], type: Gin)
+  // @@index([partyAttributes(ops: JsonbOps)], type: Gin, name: "parties_party_attributes_index") //belum perlu query party dari attributes harusnya
   @@map("parties")
 }
 
-model PartyRelation {
-  selfId         String                  @map("party_self_id")
-  relativeId     String                  @map("party_relative_id")
-  self           Party                   @relation("PartyRelation_self", fields: [selfId], references: [id])
-  relative       Party                   @relation("PartyRelation_relative", fields: [relativeId], references: [id])
-  relationType   EnumPartyRelationType   @map("relation_type")
-  relationStatus EnumPartyRelationStatus @map("relation_status")
-  createdAt      DateTime                @default(now()) @map("created_at")
-  updatedAt      DateTime                @default(now()) @map("updated_at")
+model PartyAccount {
+  partyId           String   @map("party_id")
+  accountProviderId String   @map("account_provider_id")
+  accountId         String   @map("account_id")
+  isActive          Boolean  @default(true) @map("is_party_active")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
 
-  @@id([selfId, relativeId])
-  @@map("party_relations")
-}
+  accountProvider AccountProvider @relation(fields: [accountProviderId], references: [id])
+  party           Party           @relation(fields: [partyId], references: [id])
 
-enum EnumPartyRelationStatus {
-  requested
-  rejected
-  accepted
-  pending
-}
-
-enum EnumPartyRelationType {
-  parent
-  children
+  @@id([accountProviderId, accountId], name: "party_accounts_id")
+  @@map("party_accounts")
 }
 
 enum EnumPartyType {
   personal
   organisation
-  account_provider
 }
 
 // ----------------------- END PARTY REGION -------------------------- //
 
 // ----------------------- BEGIN ACCOUNT REGION -------------------------- //
-// model Account {
-//   accountProviderId String          @map("account_provider_id")
-//   accountProvidedId String          @map("account_provided_id")
-//   partyId           String?         @map("account_party_id")
-//   party             Party?          @relation(fields: [partyId], references: [id])
-//   accountAttributes Json            @map("account_attributes")
-//   createdAt         DateTime        @default(now()) @map("created_at")
-//   updatedAt         DateTime        @default(now()) @map("updated_at")
-//   accountProvider   AccountProvider @relation(fields: [accountProviderId], references: [id])
-
-//   @@id([accountProviderId, accountProvidedId], name: "Account_id")
-//   @@index([accountProviderId], type: Hash, name: "accounts_by_provider_index")
-//   @@index([accountAttributes(ops: JsonbOps)], type: Gin)
-//   @@map("accounts")
-// }
 
 model AccountProvider {
   id                 String   @id
   providerName       String   @map("provider_name")
   providerAttributes Json     @map("provider_attributes")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @default(now()) @map("updated_at")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
   isActive           Boolean  @default(false) @map("is_account_provider_active")
 
-  accountsProvided Party[]
+  partyAccounts PartyAccount[]
 
   @@map("account_providers")
 }
 
 // ----------------------- END ACCOUNT REGION -------------------------- //
 
-// ----------------------- BEGIN DIARY REGION -------------------------- //
-model Diary {
-  id        String @id
-  diaryName String @map("diary_name")
-
-  diaryTag   String[] @map("diary_tag")
-  metadata   Json?
-  // approvers  String[]
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @default(now()) @map("updated_at")
-  isArchived Boolean  @map("is_archived")
-
-  diaryOwnerId String        @default("anonymous") @map("diary_owner_id")
-  diaryOwner   PartyIdentity @relation(fields: [diaryOwnerId], references: [id], onUpdate: Restrict, onDelete: SetDefault)
-
-  pages Page[]
-
-  @@unique([diaryName, diaryOwnerId])
-  @@index([diaryOwnerId], type: Hash) //gak pake brin karena diaryOwnerId bisa jadi berubah di tengah tengah
-  @@index([diaryTag(ops: ArrayOps)], type: Gin)
-  @@map("diaries")
+// ----------------------- BEGIN SCHEMA REGION -------------------------- //
+enum EnumSchemaType {
+  ui
+  data
+  json
 }
 
-// ----------------------- END DIARY REGION -------------------------- //
+model Schema {
+  id                      String
+  schemaType              EnumSchemaType      @map("schema_type")
+  schemaDataTypeId        String              @map("schema_data_type_id")
+  schemaDataTypeName      String              @map("schema_data_type_name")
+  ownerId                 String              @map("owner_id")
+  schemaPermissionLevel   EnumPermissionLevel @default(private) @map("schema_permission_level")
+  schemaTitle             String              @map("schema_title")
+  schemaObjectDescription Json                @map("schema_object_description")
+  schemaVersion           Int                 @map("schema_version")
+  createdAt               DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime            @default(now()) @map("updated_at") @db.Timestamptz(3)
+  owner                   Party?              @relation(fields: [ownerId], references: [id])
 
-// ----------------------- BEGIN PAGE REGION -------------------------- //
-enum EnumPageAccessType {
-  editor
-  viewer
-  banned
+  @@id([id, schemaType], name: "schemas_id")
+  @@index([ownerId], type: Hash, name: "schemas_owner_index")
+  // @@index([id, schemaType], type: Hash, name: "schema_main_index")
+  @@map("schemas")
 }
 
-enum EnumPageStatus {
-  incomplete
-  complete
-  inactive
-  deleted
-  abandoned
+model SchemaMetaData {
+  ////no indexing since we won't query this table
+  schemaId          String         @map("schema_id")
+  schemaType        EnumSchemaType @map("schema_type")
+  schemaVersion     Int            @map("schema_version")
+  ownerName         String         @map("owner_name")
+  schemaTitle       String         @map("schema_title")
+  schemaDescription String         @map("schema_description")
+  schemaTags        String         @map("schema_tags")
+  schemaKeywords    String         @map("schema_keywords")
+  schemaPurpose     String         @map("schema_purpose")
+  schemaUse         String         @map("schema_use")
+  schemaMisuse      String         @map("schema_misuse")
+  createdAt         DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime       @default(now()) @map("updated_at") @db.Timestamptz(3)
+
+  @@id([schemaId, schemaType, schemaVersion], name: "schema_metadatas_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_metadatas_index")
+  @@map("schema_metadatas")
 }
 
-model Page {
-  id        String
-  pageTitle String   @map("page_title")
-  diaryId   String   @map("diary_id")
-  diary     Diary    @relation(fields: [diaryId], references: [id], onDelete: Cascade, onUpdate: Restrict)
-  pageTags  String[] @map("page_tag")
+model SchemaAttribution {
+  schemaId           String         @map("schema_id")
+  schemaType         EnumSchemaType @map("schema_type")
+  schemaVersion      String         @map("schema_version")
+  schemaUriId        String         @map("schema_uri_id")
+  originalNamespace  String         @map("original_namespace")
+  originalPublisher  String         @map("original_publisher")
+  revision           String
+  buildId            String         @map("build_id")
+  majorVersionId     String         @map("major_version_id")
+  canonicalHash      String         @map("canonical_hash")
+  authorName         String         @map("author_name")
+  authorOrganisation String         @map("author_organisation")
+  authorEmail        String         @map("author_email")
+  createdAt          DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime       @default(now()) @map("updated_at") @db.Timestamptz(3)
 
-  pageStatus EnumPageStatus
-  // pageOwnerId String         @map("page_owner_id")
-  // pageOwner   Party          @relation(fields: [pageOwnerId], references: [id])
-
-  // pageAccesses   PageAccess[]
-  version        Int      @default(autoincrement()) @map("page_version")
-  pageContent    Json?    @map("page_content")
-  pageTemplateId String?  @map("page_template_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @default(now()) @map("updated_at")
-
-  ///hash indexes
-  // pagesByDiaryByCreationDateIndex String @map("pages_by_diary_by_creationdate")
-  // pagesByDiaryByTitleIndex        String @map("pages_by_diary_by_title")
-
-  @@id([id, version], name: "Page_id")
-  @@index([pageTags(ops: ArrayOps)], type: Gin)
-  @@index([pageContent(ops: JsonbOps)], type: Gin)
-  @@index([diaryId(ops: TextMinMaxOps)], type: Brin)
-  // @@index([pagesByDiaryByCreationDateIndex], type: Hash, name: "pages_by_diary_by_creationdate")
-  // @@index([pagesByDiaryByTitleIndex], type: Hash, name: "pages_by_diary_by_title")
-  @@map("pages")
+  @@id([schemaId, schemaType, schemaVersion], name: "schema_attributions_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_attributions_index")
+  @@map("schema_attributions")
 }
 
-// ----------------------- END PAGE REGION -------------------------- //
+model SchemaVersioning {
+  schemaId      String         @map("schema_id")
+  schemaType    EnumSchemaType @map("schema_type")
+  schemaVersion String         @map("schema_version")
+  schemaObject  String         @map("schema_object_definition")
+  signatureHash String         @map("signature_hash")
+  changeReason  String         @map("change_reason")
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy     String         @map("created_by")
 
-// ----------------------- BEGIN TEMPLATE REGION -------------------------- //
-model TemplateProvider {
-  id                          String           @id
-  templateName                String           @map("template_name")
-  metadata                    Json?
-  templateType                EnumTemplateType @map("template_type")
-  // templateOwnerId             String           @map("template_owner_id")
-  // templateOwner               Party            @relation(fields: [templateOwnerId], references: [id])
-  templateAttribute           Json             @map("template_attribute")
-  createdAt                   DateTime         @default(now()) @map("created_at")
-  updatedAt                   DateTime         @default(now()) @map("updated_at")
-  templatesByOwnerByNameindex String           @map("templates_by_owner_by_name")
-  templatesByOwnerByTypeIndex String           @map("templates_by_owner_by_type")
-
-  @@index([templatesByOwnerByNameindex], type: Hash, name: "templates_by_owner_by_name")
-  @@index([templatesByOwnerByTypeIndex], type: Hash, name: "templates_by_owner_by_type")
-  @@map("templates")
+  @@id([schemaId, schemaType, schemaVersion], name: "schema_versionings_id")
+  // @@index([schemaId, schemaType, schemaVersion], type: Hash, name: "schema_versionings_index")
+  @@map("schema_versionings")
 }
 
-enum EnumTemplateType {
-  page_template
-  identity_template
+model SchemaAccessRequest {
+  id                String                @id
+  requestFrom       String                @map("request_from")
+  requestTo         String                @map("request_to")
+  requestType       EnumRequestType       @map("request_type")
+  accessRequestType EnumAccessRequestType @map("access_request_type")
+  requestStatus     EnumRequestStatus     @map("request_status")
+  schemaId          String                @map("schema_id")
+  schemaType        EnumSchemaType        @map("schema_type")
+  accessType        String                @map("access_type")
+  accessExpired     DateTime?             @map("access_expired") @db.Timestamptz(3)
+  version           Int
+  createdAt         DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime              @default(now()) @map("updated_at") @db.Timestamptz(3)
+
+  requestHistories SchemaAccessRequestHistory[]
+
+  @@index([createdAt(ops: TimestampTzMinMaxMultiOps)], type: Brin, name: "schema_access_request_created_index")
+  @@index([requestFrom(ops: TextMinMaxOps)], type: Brin, name: "schema_access_request_from_index")
+  @@index([requestTo(ops: TextMinMaxOps)], type: Brin, name: "schema_access_request_to_index")
+  @@index([accessExpired(ops: TimestampTzMinMaxMultiOps)], type: Brin, name: "schema_access_request_expired_index")
+  @@map("schema_access_requests")
 }
 
-// ----------------------- END TEMPLATE REGION -------------------------- //
+model SchemaAccessRequestHistory {
+  requestVersion Int      @map("request_version")
+  requestId      String   @map("request_id")
+  currentData    Json     @map("current_data")
+  updateReasons  String[] @map("update_reasons")
+  createdBy      String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
 
-// ----------------------- BEGIN VERSION HISTORY REGION -------------------------- //
+  schemaAccessRequest SchemaAccessRequest @relation(fields: [requestId], references: [id])
+  dataAccessRequestId String?
 
-model AttestationTable {
-  tableName     String         @map("table_name")
-  tableId       String         @map("table_id")
-  previousData  Json?          @map("page_previous_data")
-  currentData   Json           @map("page_current_data")
-  changeType    EnumChangeType @map("change_type")
-  contributors  String[]
-  changeReasons String?        @map("page_change_reason")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @default(now()) @map("updated_at")
-  isPublished   Boolean        @default(false) @map("is_history_published")
-
-  @@id([tableName, tableId], name: "AttestationTable_id")
-  @@index([previousData(ops: JsonbOps)], type: Gin)
-  @@index([currentData(ops: JsonbOps)], type: Gin)
-  @@index([contributors(ops: ArrayOps)], type: Gin)
-  @@map("attestations")
-}
-
-enum EnumChangeType {
-  create_draft
-  create_final
-  update
-  delete
-  revert
-  deactivate
-  abandon
-  reactivate
-}
-
-// ----------------------- END VERSION HISTORY REGION -------------------------- //
-
-// ----------------------- BEGIN REQUEST REGION -------------------------- //
-
-model AccessRequestTable {
-  tableName       String                @map("table_name")
-  tableId         String                @map("table_id")
-  requestType     EnumAccessRequestType @map("request_type")
-  requestData     Json                  @map("request_data")
-  requestMetadata Json?                 @map("request_metadata")
-  requestTags     String[]              @map("request_tags")
-  requestTo       String                @map("request_to")
-  requestFrom     String                @map("request_from")
-  createdAt       DateTime              @default(now()) @map("created_at")
-  updatedAt       DateTime              @default(now()) @map("updated_at")
-  requestStatus   EnumRequestStatus     @map("request_status")
-
-  // requestToParty   Party @relation("AccessRequestTable_requestIn", fields: [requestTo], references: [id])
-  // requestFromParty Party @relation("AccessRequestTable_requestOut", fields: [requestFrom], references: [id])
-
-  @@id([tableId, tableName], name: "AccessRequestTable_id")
-  @@index([requestData(ops: JsonbOps)], type: Gin)
-  @@index([requestMetadata(ops: JsonbOps)], type: Gin)
-  @@map("access_requests")
+  @@id([requestId, requestVersion], name: "schema_access_request_histories_id")
+  // @@index([requestId(ops: TextOps)], type: SpGist, name: "access_request_histories_by_request_index")
+  @@map("schema_access_request_histories")
 }
 
 enum EnumRequestStatus {
@@ -322,52 +335,15 @@ enum EnumRequestStatus {
   cancelled
 }
 
+enum EnumRequestType {
+  grant_permission
+  deny_permission
+}
+
 enum EnumAccessRequestType {
-  create
-  update
-  delete
+  viewer
+  commenter
+  editor
 }
 
-// ----------------------- END REQUEST REGION -------------------------- //
-
-// ----------------------- BEGIN MANY-TO-MANY REGION -------------------------- //
-
-///belum perlu relations karena belum perlu template,
-model TemplateProviderContributor {
-  templateId    String   @map("template_id")
-  contributorId String   @map("contributor_id")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @default(now()) @map("updated_at")
-
-  @@id([templateId, contributorId], name: "TemplateProviderContributor_id")
-  @@map("template_provider_contributors")
-}
-
-// model DiaryOwnerApprover {
-//   diaryId       String   @map("diary_id")
-//   approverId    String   @map("approver_id")
-//   approverParty Party    @relation(fields: [approverId], references: [id])
-//   diary         Diary    @relation(fields: [diaryId], references: [id])
-//   createdAt     DateTime @default(now()) @map("created_at")
-//   updatedAt     DateTime @default(now()) @map("updated_at")
-
-//   @@id([diaryId, approverId], name: "DiaryOwnerApprover_id")
-//   @@map("diary_owner_approvers")
-// }
-
-// model PageAccess {
-//   pageId      String             @map("page_id")
-//   pageVersion Int                @map("page_version")
-//   pageOwnerId String             @map("page_owner_id")
-//   page        Page               @relation(fields: [pageId, pageVersion], references: [id, version])
-//   owner       Party              @relation(fields: [pageOwnerId], references: [id])
-//   accessType  EnumPageAccessType @map("page_access_type")
-//   isPublic    Boolean            @default(false) @map("is_page_public")
-//   createdAt   DateTime           @default(now()) @map("created_at")
-//   updatedAt   DateTime           @default(now()) @map("updated_at")
-
-//   @@id([pageId, pageOwnerId, pageVersion], name: "PageAccess_id")
-//   @@map("page_accesses")
-// }
-
-// ----------------------- END MANY-TO-MANY REGION -------------------------- //
+// ----------------------- END SCHEMA REGION -------------------------- //

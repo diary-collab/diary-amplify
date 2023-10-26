@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
 // import { withContentlayer } from 'next-contentlayer';
-import './env.mjs';
+const { withAmplify } = require('@aws-amplify/adapter-nextjs/with-amplify');
+const config = require('./src/amplifyconfiguration.json');
+const env = require('./env.js');
 
 const nextConfig = {
+  env: env,
   eslint: {
     dirs: ['src'],
   },
@@ -12,6 +16,7 @@ const nextConfig = {
 
   experimental: {
     appDir: true,
+    serverActions: true,
     serverComponentsExternalPackages: ['@prisma/client'],
   },
 
@@ -60,4 +65,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = withAmplify(nextConfig, config);

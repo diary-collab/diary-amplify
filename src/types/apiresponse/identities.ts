@@ -26,7 +26,8 @@ export interface IGetIdentityByID {
   id: string;
   createdAt: string;
   updatedAt: string;
-  identityDetails: object;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  identityDetails: any;
   provider: {
     partyName: string;
     isVerified: boolean;
