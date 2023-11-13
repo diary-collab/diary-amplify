@@ -4,7 +4,7 @@ import { IdentityItem } from '@src/components/identity-item';
 // import PageLoading from '@src/components/PageLoadingSkeleton';
 // import clsxm from '@src/lib/clsxm';
 
-export default function DiaryLoading() {
+export default function SelfLoading() {
   return (
     <>
       <aside className='border-border -ml-8 hidden w-[250px] flex-col border-r pr-2 md:flex'>

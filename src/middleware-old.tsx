@@ -1,15 +1,14 @@
+'use server';
 import awsExports from '@src/aws-exports';
 // import awsmobile from '@src/aws-exports';
 // import { withSSRContext } from 'aws-amplify';
 import { decodeProtectedHeader, importJWK, JWK, jwtVerify } from 'jose';
 import { NextRequest } from 'next/server';
+// import { cookies } from 'next/headers'
+import // getWithSSRContextMiddleware,
+'./contexts/amplifycontext/amplifyssrmiddleware';
 
 import logger from '@src/lib/logger';
-
-// import {
-//   getWithSSRContextMiddleware,
-//   serializeMultiple,
-// } from './contexts/amplifycontext/amplifyssrmiddleware';
 
 // const amplifyconfig = {
 //   ...awsmobile,
@@ -22,9 +21,9 @@ const poolId = awsExports.aws_user_pools_id;
 // const clientId = awsExports.aws_user_pools_web_client_id;
 
 async function getToken() {
-  // const SSR = withSSRContext({ req });
+  // const SSR = getWithSSRContextMiddleware(cookies);
 
-  // SSR.configure(amplifyconfig);
+  // // SSR.configure(amplifyconfig);
   // let result;
 
   // try {
@@ -84,7 +83,10 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith('/login') ||
     req.nextUrl.pathname.startsWith('/register');
 
+  // const allCookies = req.cookies.getAll();
+
   const token = await getToken();
+  // const token = 'await getToken(allCookies)';
   // logger('token: ', token);
 
   if (!token) {
@@ -141,11 +143,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/editor/:path*',
-    '/login',
-    '/register',
-    '/identities/:path*',
-  ],
+  matcher: '/((?!api|static|.*\\..*|_next).*)',
 };

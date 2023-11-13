@@ -15,12 +15,16 @@ export const dashboardConfig: DashboardConfig = {
   ],
   mainNavAuth: [
     {
-      title: 'Account',
-      href: '/user',
+      title: 'My Self',
+      href: '/self',
     },
     {
-      title: 'Identities',
-      href: '/identities',
+      title: 'My Diaries',
+      href: '/diarie',
+    },
+    {
+      title: 'My Activities',
+      href: '/activities',
     },
     {
       title: 'Documentation',
@@ -131,14 +135,25 @@ export const dashboardConfig: DashboardConfig = {
       catdesc: 'Manage your account here',
       items: [
         {
-          title: 'Your accounts',
-          href: '/user',
+          title: 'Your Self',
+          href: '/self',
+          icon: 'yourself',
+        },
+        {
+          title: 'Your Relations',
+          href: '/self/relationship',
+          icon: 'relationship',
+          disabled: true,
+        },
+        {
+          title: 'Your Account',
+          href: '/self/account',
           icon: 'user',
         },
         {
-          title: 'Account relationships',
-          href: '/user/relationships',
-          icon: 'users',
+          title: 'Your Identities',
+          href: '/self/identities',
+          icon: 'user',
           disabled: true,
         },
       ],

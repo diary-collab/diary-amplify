@@ -27,9 +27,13 @@ export default async function IndexLayout({ children }: IndexPageProps) {
         templateTitle='Dashboard'
         description='Access your diaries here in your dashboard'
       /> */}
-      <div className='flex min-w-full flex-col items-center justify-between'>
-        <header className='bg-background z-40 min-w-full shadow-md'>
-          <div className='mx-8 flex h-20 items-center justify-between py-6 md:mx-10 lg:mx-12'>
+      <div className='min-w-screen flex max-h-screen min-h-screen flex-col items-center justify-center'>
+        <header
+          className={clsxm(
+            'bg-background sticky top-0 z-0 min-w-full border-b'
+          )}
+        >
+          <div className='mx-8 mt-4 flex h-12 items-center justify-between py-4 md:mx-10 lg:mx-12'>
             <MainNav
               items={
                 sessionData && sessionData.attributes
@@ -57,7 +61,7 @@ export default async function IndexLayout({ children }: IndexPageProps) {
           </div>
         </header>
         <main className='flex-1'>{children}</main>
-        <SiteFooter className='border-t' />
+        <SiteFooter className='w-full border-t' />
       </div>
     </>
   );

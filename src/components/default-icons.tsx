@@ -1,9 +1,10 @@
 import {
-  type Icon as LucideIcon,
+  type XIcon as LucideIcon,
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
   BellDot,
+  BookHeart,
   BookLock,
   Check,
   ChevronLeft,
@@ -14,6 +15,7 @@ import {
   FileLock2,
   Files,
   FileText,
+  Fingerprint,
   FolderSearch,
   Footprints,
   Frown,
@@ -35,12 +37,13 @@ import {
   User,
   UserCheck,
   Users,
+  // UserSquare,
   UserX,
   VenetianMask,
   X,
 } from 'lucide-react';
 
-export type Icon = LucideIcon;
+export type XIcon = typeof LucideIcon;
 
 export const Icons = {
   logo: BookLock,
@@ -52,7 +55,9 @@ export const Icons = {
   post: FileText,
   folderSearch: FolderSearch,
   page: File,
+  yourself: Fingerprint,
   media: Image,
+  relationship: BookHeart,
   settings: Settings,
   billing: CreditCard,
   ellipsis: MoreVertical,

@@ -14,7 +14,7 @@ import Banner from '@src/components/default-banner';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { IdentityItem } from '@src/components/identity-item';
 // import { IdentityItem } from '@src/components/identity-item';
-import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identities-nav';
+import { DefaultSideNav } from '@src/components/layout/navigation/sidenav/default-side-nav';
 import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
 import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 import ButtonLink from '@src/components/links/button-link';
@@ -131,7 +131,7 @@ export default function IdentityDetailPage({
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               //@ts-ignore
               // prettier-ignore
-              <IdentitiesNav items={dashboardConfig.identitiesIdNav}/>
+              <DefaultSideNav items={dashboardConfig.identitiesIdNav}/>
             }
           </div>
         </aside>

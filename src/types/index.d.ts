@@ -1,5 +1,6 @@
 // import { User } from "@prisma/client"
 // import type { Icon } from "lucide-react"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Icons } from '@src/components/default-icons';
 
@@ -55,6 +56,8 @@ export type FormFields = {
   placeholder: string;
   titlekey: string;
   helpertext?: string | null;
+  options?: string[];
+  validation?: any;
 };
 
 export type DocsConfig = {

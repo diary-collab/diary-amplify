@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-export function useAccount() {
+export function useSchemaRequestTo(schemaid: string) {
   const fetcher = () =>
     fetch('/api/middleware', {
       method: 'POST',
@@ -8,7 +8,7 @@ export function useAccount() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        path: '/accounts/checkAccount',
+        path: `/schema-accesses/requests/${schemaid}/to`,
         method: 'get',
       }),
     }).then((res) => res.json());
@@ -22,9 +22,9 @@ export function useAccount() {
   );
 
   return {
-    data,
-    isLoading,
-    error,
-    isValidating,
+    dataSchemaAccessTo: data,
+    isLoadingSchemaRequestTo: isLoading,
+    errorSchemaRequestTo: error,
+    isValidatingSchemaRequestTo: isValidating,
   };
 }
