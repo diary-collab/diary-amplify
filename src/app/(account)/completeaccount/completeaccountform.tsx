@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { completeAccountRequest } from '@src/lib/fetcher/account-fetcher';
+import { completeAccountRequestClient } from '@src/lib/fetcher/client/account-fetcher-client';
 
 // import logger from '@src/lib/logger';
 import Button from '@src/components/buttons/default-button';
@@ -69,25 +69,26 @@ export default function CompleteAccountForm({
       partyName,
       partyParentName,
       partyAddress,
+      email,
     } = data;
     const luxonDate = DateTime.fromISO(partyBirthdate.toISOString()).toFormat(
       'yyyy-MM-dd'
     );
 
     const requestData = {
-      partyAttributes: accountAttributes,
       partyName,
       partyBirthdate: luxonDate,
       partyType,
       partyParentName,
       partyAddress,
+      partyEmail: email,
     };
 
     try {
-      await completeAccountRequest(requestData);
+      await completeAccountRequestClient(requestData);
 
       router.refresh();
-      router.push('/identities');
+      // router.push('/self');
 
       return toast({
         duration: 3000,

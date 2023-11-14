@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { getIdentitiesById } from '@src/lib/fetcher/identity-fetcher';
+import { getIdentitiesById } from '@src/lib/fetcher/client/identity-fetcher-client';
 import { useAccount } from '@src/hooks/use-account';
 
 import { DashboardShell } from '@src/components/dashboard-shell';

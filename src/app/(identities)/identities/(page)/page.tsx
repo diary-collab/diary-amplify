@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { identitiesByParty } from '@src/lib/fetcher/identity-fetcher';
+import { identitiesByParty } from '@src/lib/fetcher/client/identity-fetcher-client';
 import logger from '@src/lib/logger';
 import { useAccount } from '@src/hooks/use-account';
 

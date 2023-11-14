@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 
-import { getAccountRequest } from '@src/lib/fetcher/account-fetcher';
+import { getAccountRequestServer } from '@src/lib/fetcher/server/account-fetcher-server';
 import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
 import { provideSessionAttributes } from '@src/hooks/use-auth';
 
 // import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-top-nav';
@@ -14,13 +15,21 @@ import { LayoutProps } from '@src/types/props';
 
 export default async function SelfLayout({ children, params }: LayoutProps) {
   const sessionData = await provideSessionAttributes();
-  const accountdata = await getAccountRequest();
-  logger('triggered layout function');
-  logger(sessionData);
-  logger(accountdata);
+  const accountdata = await getAccountRequestServer();
+
+  // logger(accountdata);
 
   if (!sessionData || !sessionData.attributes) {
     redirect('/login');
+  }
+
+  if (accountdata && !accountdata.success && accountdata.status === 404) {
+    logger('harusnya redirect ke complete account');
+    redirect('/completeaccount');
+  }
+
+  if (!accountdata || !accountdata.success) {
+    // redirect('/completeaccount');
   }
 
   params.sessionData = sessionData;

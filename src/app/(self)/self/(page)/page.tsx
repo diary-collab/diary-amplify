@@ -41,12 +41,6 @@ export default function SelfPage({
 
   //mounted, so we can show page loader before everything ready
   useEffect(() => {
-    if (
-      !params.accountData ||
-      (!params.accountData.success && params.accountData.status === 404)
-    ) {
-      // router.push('/completeaccount');
-    }
     if (!params.sessionData) {
       router.refresh();
     }

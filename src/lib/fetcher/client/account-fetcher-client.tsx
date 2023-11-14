@@ -1,16 +1,18 @@
-import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
+
+// import { provideSessionJwt } from '@src/hooks/use-auth';
 
 import { env } from '@/env.mjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function completeAccountRequest(body: any) {
+export async function completeAccountRequestClient(body: any) {
   const response = await fetch(`/api/middleware`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      path: '/parties',
+      path: '/accounts',
       method: 'post',
       body: body,
     }),
@@ -23,7 +25,7 @@ export async function completeAccountRequest(body: any) {
   return response.json();
 }
 
-export async function getAccountRequest() {
+export async function getAccountRequestClient() {
   const response = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/middleware`, {
     method: 'POST',
     headers: {
@@ -35,18 +37,18 @@ export async function getAccountRequest() {
     }),
   });
 
-  // const testbody = await response.text();
+  const testbody = await response.text();
 
   if (!response.ok) {
-    logger({
-      success: false,
-      status: response.status,
-      message: `${env.NEXT_PUBLIC_APP_URL}/api/middleware`,
-    });
+    // logger({
+    //   success: false,
+    //   status: response.status,
+    //   message: testbody,
+    // });
     return {
       success: false,
       status: response.status,
-      message: response.statusText,
+      message: testbody,
     };
     // throw new Error(`Request failed with status ${response.status}`);
   }
