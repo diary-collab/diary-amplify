@@ -2,6 +2,7 @@ import { isValidApiMethod, isValidUrlPath } from '@utils/url-utils';
 import { cookies } from 'next/headers';
 import * as z from 'zod';
 
+import logger from '@src/lib/logger';
 // import logger from '@src/lib/logger';
 import { provideSessionJwt } from '@src/hooks/use-auth';
 
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
 
     const { path, method, body, jwt } = requestbody;
 
-    // logger('masuk body = ' + JSON.stringify(jwt));
+    logger('masuk body = ' + JSON.stringify(requestbody));
 
     //if path is not a valid path, return error
     if (!isValidUrlPath(path)) {

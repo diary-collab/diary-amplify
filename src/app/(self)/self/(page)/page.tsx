@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { dashboardConfig } from '@src/config/dashboard';
@@ -16,7 +17,7 @@ import { UserAvatar } from '@src/components/user-avatar';
 
 import IdentityLoading from './loading';
 
-import { MiddlewareReturn, SessionData } from '@src/types/use-session';
+import { SessionData } from '@src/types/use-session';
 
 // import { useTheme } from 'next-themes';
 
@@ -30,7 +31,7 @@ export default function SelfPage({
 }: {
   params: {
     sessionData: SessionData;
-    accountData: MiddlewareReturn | null;
+    partyData: any | null;
   };
 }) {
   const router = useRouter();
@@ -85,8 +86,8 @@ export default function SelfPage({
             ) : (
               <div className='mt-8 flex max-w-[650px] flex-col justify-center'>
                 <DashboardHeader
-                  heading='Account'
-                  text='See and manage your account here'
+                  heading='Yourself Identity'
+                  text='See and manage yourself information here'
                   small={true}
                 >
                   {/* <PostCreateButton disabled={true} className='cursor-not-allowed' /> */}
@@ -96,7 +97,7 @@ export default function SelfPage({
                   <div className='flex flex-row items-start justify-start gap-4'>
                     <UserAvatar
                       user={{
-                        name: params.sessionData?.attributes?.name || null,
+                        name: params.partyData?.partyName || null,
                         image: null,
                       }}
                       className='border-muted h-10 w-10 border-2'
@@ -107,14 +108,13 @@ export default function SelfPage({
                         href={`/diary/${'diaryId'}`}
                         className='font-semibold hover:underline'
                       >
-                        {params.sessionData?.attributes?.name}
+                        {params.partyData?.partyName}
                       </Link>
                       <div>
-                        {params.accountData?.body?.createdAt && (
+                        {params.partyData?.createdAt && (
                           <p className='text-muted-foreground text-sm'>
                             {`Identity created at: ${formatDate(
-                              params.accountData.body?.createdAt.toString() ||
-                                ''
+                              params.partyData?.createdAt.toString() || ''
                             )}`}
                           </p>
                         )}
@@ -127,11 +127,10 @@ export default function SelfPage({
                   <div className='flex flex-col items-start justify-start gap-2'>
                     <div>
                       <Typography variant='h2' color='theme'>
-                        Login details
+                        Identity details
                       </Typography>
                       <Typography variant='b3' color='theme'>
-                        You can login to your account with either email or
-                        username
+                        This is your primary identity in Project Diary
                       </Typography>
                     </div>
 

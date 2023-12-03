@@ -62,7 +62,7 @@ export default function DiaryPage({
       return;
     }
 
-    if (!data || !data.isSuccess) {
+    if (!data || !data.success) {
       //kalau data gak ada partyid, show banner
       setShowBanner(true);
       setPartyId(null);

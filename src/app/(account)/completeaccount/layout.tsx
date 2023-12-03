@@ -25,7 +25,7 @@ export default async function AuthLayout({ children, params }: LayoutProps) {
     redirect('/login');
   }
 
-  if (accountdata && accountdata.isSuccess) {
+  if (accountdata && accountdata.success) {
     // logger('harusnya redirect ke complete account');
     redirect('/self');
   }

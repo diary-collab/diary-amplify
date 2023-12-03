@@ -9,3 +9,11 @@ export interface LayoutProps {
     data: any;
   };
 }
+
+export interface LayoutPartyAccountProps {
+  children: React.ReactNode;
+  params: {
+    sessionData: SessionData | null;
+    partyData?: any;
+  };
+}

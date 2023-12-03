@@ -81,7 +81,7 @@ export default function IdentityPage({
       return;
     }
 
-    if (!data || !data.isSuccess) {
+    if (!data || !data.success) {
       //kalau data gak ada partyid, show banner
       setShowBanner(true);
       return;

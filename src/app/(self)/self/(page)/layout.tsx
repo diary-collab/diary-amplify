@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { getAccountRequestServer } from '@src/lib/fetcher/server/account-fetcher-server';
+import { commonGetServerFetcher } from '@src/lib/fetcher/server/common-server-fetcher';
 import logger from '@src/lib/logger';
 // import logger from '@src/lib/logger';
 import { provideSessionAttributes } from '@src/hooks/use-auth';
@@ -11,13 +12,16 @@ import { SettingTopNav } from '@src/components/layout/navigation/topnav/setting-
 import { UserAccountNav } from '@src/components/layout/navigation/topnav/user-account-nav';
 
 // import { SiteFooter } from '@src/components/layout/site-footer';
-import { LayoutProps } from '@src/types/props';
+import { LayoutPartyAccountProps } from '@src/types/props';
 
-export default async function SelfLayout({ children, params }: LayoutProps) {
+export default async function SelfLayout({
+  children,
+  params,
+}: LayoutPartyAccountProps) {
   const sessionData = await provideSessionAttributes();
   const accountdata = await getAccountRequestServer();
 
-  // logger(accountdata);
+  logger('gak ada accountdata, ', JSON.stringify(accountdata));
 
   if (!sessionData || !sessionData.attributes) {
     redirect('/login');
@@ -32,8 +36,16 @@ export default async function SelfLayout({ children, params }: LayoutProps) {
     // redirect('/completeaccount');
   }
 
+  const partydata = await commonGetServerFetcher(
+    `/parties/${accountdata.data.partyId}`
+  );
+
+  if (!partydata || !partydata.success) {
+    logger('gak ada partydata, ', JSON.stringify(partydata));
+  }
+
   params.sessionData = sessionData;
-  params.accountData = accountdata;
+  params.partyData = partydata;
 
   return (
     <div className='min-w-screen flex min-h-screen flex-col items-center justify-between'>
