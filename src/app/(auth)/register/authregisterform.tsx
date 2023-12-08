@@ -51,7 +51,7 @@ export default function RegisterForm({
 
       // get the data from the api
       const data = await fetch(
-        `https://869mw200fg.execute-api.ap-southeast-3.amazonaws.com/dev/auth/checkUser?username=${unamequery}`
+        `https://4ucus4rajl.execute-api.ap-southeast-3.amazonaws.com/dev/auth/checkUser?username=${unamequery}`
       );
       // convert the data to json
       const isOk = await data.ok;
@@ -120,6 +120,8 @@ export default function RegisterForm({
       fullname: data.fullname,
       username: data.username,
       nickname: data.username,
+      birthdate: '1970/01/01',
+      gender: 'unknown',
     };
 
     const registerResult = await register(registerdata);

@@ -1,45 +1,42 @@
 import awsExports from '@src/aws-exports';
-// import awsmobile from '@src/aws-exports';
-// import { withSSRContext } from 'aws-amplify';
 import { decodeProtectedHeader, importJWK, JWK, jwtVerify } from 'jose';
 import { NextRequest } from 'next/server';
 
 import logger from '@src/lib/logger';
 
-// import {
-//   getWithSSRContextMiddleware,
-//   serializeMultiple,
-// } from './contexts/amplifycontext/amplifyssrmiddleware';
-
-// const amplifyconfig = {
-//   ...awsmobile,
-//   ssr: true, // important to set authorization cookies on client
-// };
-
 // Cognito data
 const region = awsExports.aws_cognito_region;
 const poolId = awsExports.aws_user_pools_id;
-// const clientId = awsExports.aws_user_pools_web_client_id;
+const clientId = awsExports.aws_user_pools_web_client_id;
 
-async function getToken() {
-  // const SSR = withSSRContext({ req });
+function getToken(request: NextRequest) {
+  const lastauthusercookieskey = `CognitoIdentityServiceProvider.${clientId}.LastAuthUser`;
+  const lastauthusercookies =
+    request.cookies.get(lastauthusercookieskey) || null;
 
-  // SSR.configure(amplifyconfig);
-  // let result;
+  if (!lastauthusercookies || !lastauthusercookies.value) {
+    return false;
+  }
 
-  // try {
-  //   result = await SSR.Auth.currentAuthenticatedUser();
-  //   // logger(result.signInUserSession.accessToken.jwtToken);
-  // } catch (error) {
-  //   return null;
-  // }
+  const accesstokencookieskey = `CognitoIdentityServiceProvider.${clientId}.accessToken`;
+  const refreshtokencookieskey = `CognitoIdentityServiceProvider.${clientId}.refreshToken`;
 
-  return false;
-  // if (!result || !result.signInUserSession.accessToken.jwtToken) {
-  //   return null;
-  // }
+  const accesstokencookies = request.cookies.get(accesstokencookieskey) || null;
+  const refreshtokencookies =
+    request.cookies.get(refreshtokencookieskey) || null;
 
-  // return result.signInUserSession.accessToken.jwtToken;
+  if (!accesstokencookies || !accesstokencookies.value) {
+    return false;
+  }
+
+  if (!refreshtokencookies || !refreshtokencookies.value) {
+    return false;
+  }
+
+  return {
+    accesstoken: accesstokencookies.value,
+    refreshtoken: refreshtokencookies.value,
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,14 +44,12 @@ async function getJwtVerified(jwk: JWK, token: any) {
   const jwtImport = await importJWK(jwk);
 
   // Verify the users JWT
-  await jwtVerify(token, jwtImport)
-    .then(() => {
-      return true;
-    })
-    .catch((error) => {
-      logger('failed to authenticate: ', error);
-      return error;
-    });
+  try {
+    await jwtVerify(token, jwtImport);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 async function getIsAuth(token: string) {
@@ -73,9 +68,7 @@ async function getIsAuth(token: string) {
     return false;
   }
 
-  const jwtverified = await getJwtVerified(jwk, token);
-  logger('jwtverified: ' + jwtverified);
-  return false;
+  return await getJwtVerified(jwk, token);
 }
 
 export async function middleware(req: NextRequest) {
@@ -84,8 +77,8 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith('/login') ||
     req.nextUrl.pathname.startsWith('/register');
 
-  const token = await getToken();
-  // logger('token: ', token);
+  const token = await getToken(req);
+  // logger(token);
 
   if (!token) {
     let from = req.nextUrl.pathname;
@@ -109,7 +102,8 @@ export async function middleware(req: NextRequest) {
     // );
   }
 
-  const isAuth = await getIsAuth('token');
+  const isAuth = await getIsAuth(token.accesstoken);
+  logger(token.accesstoken);
 
   if (isAuthPage) {
     if (isAuth) {
@@ -141,11 +135,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/editor/:path*',
-    '/login',
-    '/register',
-    '/identities/:path*',
-  ],
+  matcher: '/((?!api|static|.*\\..*|_next).*)',
 };

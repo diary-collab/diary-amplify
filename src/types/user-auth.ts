@@ -114,6 +114,8 @@ export type RegisterNewUserRequest = {
   fullname: string;
   username: string;
   nickname: string;
+  gender: string;
+  birthdate: string;
 };
 
 export type VerifyUserRequest = {

@@ -8,7 +8,7 @@ export function useAccount() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        path: '/parties/checkparties',
+        path: '/accounts/checkAccount',
         method: 'get',
       }),
     }).then((res) => res.json());

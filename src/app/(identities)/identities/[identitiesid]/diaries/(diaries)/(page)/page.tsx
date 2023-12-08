@@ -11,11 +11,11 @@ import { DashboardShell } from '@src/components/dashboard-shell';
 import Banner from '@src/components/default-banner';
 import { EmptyPlaceholder } from '@src/components/empty-placeholder';
 import { IdentityItem } from '@src/components/identity-item';
-import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identities-nav';
+import { DefaultSideNav } from '@src/components/layout/navigation/sidenav/default-side-nav';
 import { PostCreateButton } from '@src/components/post-create-button';
 
 // import { IdentityItem } from '@src/components/identity-item';
-// import { IdentitiesNav } from '@src/components/layout/navigation/sidenav/identities-nav';
+// import { DefaultSideNav } from '@src/components/layout/navigation/sidenav/identities-nav';
 // import { PostCreateButton } from '@src/components/post-create-button';
 import IdentityLoading from './loading';
 
@@ -62,7 +62,7 @@ export default function DiaryPage({
       return;
     }
 
-    if (!data || !data.isSuccess) {
+    if (!data || !data.success) {
       //kalau data gak ada partyid, show banner
       setShowBanner(true);
       setPartyId(null);
@@ -85,7 +85,7 @@ export default function DiaryPage({
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             // prettier-ignore
-            <IdentitiesNav items={dashboardConfig.diariesNav}/>
+            <DefaultSideNav items={dashboardConfig.diariesNav}/>
           }
         </div>
       </aside>

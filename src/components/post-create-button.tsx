@@ -82,7 +82,7 @@ export function PostCreateButton({
       ) : (
         <Icons.add className='mr-2 h-4 w-4' />
       )}
-      New page
+      New
     </button>
   );
 }

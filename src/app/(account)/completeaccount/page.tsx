@@ -1,12 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 // import logger from '@src/lib/logger';
-import { useAccount } from '@src/hooks/use-account';
-
+// import { useAccount } from '@src/hooks/use-account';
 import TextButton from '@src/components/buttons/text-button';
 import { Icons } from '@src/components/default-icons';
 import UnstyledLink from '@src/components/links/unstyled-link';
@@ -28,29 +27,29 @@ export default function CompleteAccountPage({
 
   // const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const { data, isLoading, error } = useAccount();
+  // const { data, isLoading, error } = useAccount();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && !error && data && data.code >= 200 && data.code <= 299) {
-      router.push('/identities');
-    } else if (
-      !isLoading &&
-      data &&
-      data.message &&
-      data.message.includes('TokenExpiredError')
-    ) {
-      router.refresh();
-    } else {
-      return;
-    }
-  }, [isLoading, error, data, router]);
+  // useEffect(() => {
+  //   if (!isLoading && !error && data && data.code >= 200 && data.code <= 299) {
+  //     router.push('/identities');
+  //   } else if (
+  //     !isLoading &&
+  //     data &&
+  //     data.message &&
+  //     data.message.includes('TokenExpiredError')
+  //   ) {
+  //     router.refresh();
+  //   } else {
+  //     return;
+  //   }
+  // }, [isLoading, error, data, router]);
 
   if (!mounted) {
     return <CompleteAccountLoading />;
@@ -60,7 +59,7 @@ export default function CompleteAccountPage({
     <div className='bg-background relative flex min-h-max min-w-full flex-row items-center justify-center text-center md:min-h-screen'>
       {/* <section> */}
       <div className='container my-8 flex min-h-max w-screen flex-col items-center justify-center md:my-0'>
-        <UnstyledLink href='/identities' className='hidden md:block'>
+        <UnstyledLink href='/self/account' className='hidden md:block'>
           <TextButton
             disabled={loading}
             variant={theme === 'dark' ? 'dark' : 'light'}

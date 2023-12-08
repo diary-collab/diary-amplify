@@ -44,8 +44,12 @@ robots.txt
 sitemap.xml
 sitemap-*.xml
 
-#amplify-do-not-edit-begin
+
+# amplify
 amplify/
+amplifyconfiguration*
+
+#amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs

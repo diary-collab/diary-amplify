@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { EnumPartyType } from '@prisma/client';
+import { EnumPartyGender, EnumPartyType } from '@prisma/client';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 // import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { completeAccountRequest } from '@src/lib/fetcher/account-fetcher';
+import { completeAccountRequestClient } from '@src/lib/fetcher/client/account-fetcher-client';
 
 // import logger from '@src/lib/logger';
 import Button from '@src/components/buttons/default-button';
@@ -69,25 +69,26 @@ export default function CompleteAccountForm({
       partyName,
       partyParentName,
       partyAddress,
+      email,
     } = data;
     const luxonDate = DateTime.fromISO(partyBirthdate.toISOString()).toFormat(
       'yyyy-MM-dd'
     );
 
     const requestData = {
-      partyAttributes: accountAttributes,
       partyName,
       partyBirthdate: luxonDate,
       partyType,
       partyParentName,
       partyAddress,
+      partyEmail: email,
     };
 
     try {
-      await completeAccountRequest(requestData);
+      await completeAccountRequestClient(requestData);
 
       router.refresh();
-      router.push('/identities');
+      // router.push('/self');
 
       return toast({
         duration: 3000,
@@ -161,6 +162,30 @@ export default function CompleteAccountForm({
             accountType === 'personal' ? 'Full name' : 'Organisation name'
           }
           helperText='This field is auto populate but you can change it'
+        />
+        <SearchableSelectInput
+          key='key_partyGender'
+          id='partyGender'
+          label='Gender'
+          placeholder='Tell us your gender'
+          isMulti={false}
+          disabled={loading}
+          options={[
+            {
+              value: EnumPartyGender.male,
+              label: 'Male',
+            },
+            {
+              label: 'Female',
+              value: EnumPartyGender.female,
+            },
+            {
+              label: 'Prefer not tell',
+              value: EnumPartyGender.prefer_not_tell,
+            },
+          ]}
+          customSetData={setAccountType}
+          validation={{ required: 'This Input must be filled' }}
         />
         <DatePicker
           key='key_partyBirthdate'

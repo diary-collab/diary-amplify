@@ -33,10 +33,9 @@ export default async function IdentitiesLayout({
             }}
           />
         </div>
-      </header>
-      <div className='container grid min-w-full flex-1 gap-12 md:grid-cols-[200px_1fr]'>
         {children}
-      </div>
+      </header>
+
       {/* <SiteFooter className='bg-background border-border invisible sticky bottom-0 z-40 w-full border-t md:visible' /> */}
     </div>
   );

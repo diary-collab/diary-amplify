@@ -2,7 +2,6 @@
 
 import EditorJS from '@editorjs/editorjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Page } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -10,17 +9,17 @@ import { useForm } from 'react-hook-form';
 import TextareaAutosize from 'react-textarea-autosize';
 import * as z from 'zod';
 
-import '@/styles/editor.css';
+import '@src/styles/editor.css';
 
 import { clsxm } from '@src/lib/utils';
-import { postPatchSchema } from '@src/lib/validations/post';
+import { Post, postPatchSchema } from '@src/lib/validations/post';
 
 import { Icons } from '@src/components/default-icons';
 import { buttonVariants } from '@src/components/ui/default-ui-button';
 import { toast } from '@src/components/ui/use-toast';
 
 interface EditorProps {
-  post: Pick<Page, 'id' | 'pageTitle' | 'pageContent' | 'version'>;
+  post: Pick<Post, 'id' | 'pageTitle' | 'pageContent' | 'version'>;
 }
 
 type FormData = z.infer<typeof postPatchSchema>;
@@ -36,26 +35,12 @@ export function Editor({ post }: EditorProps) {
 
   const initializeEditor = React.useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const [Header] = (await import('@editorjs/header')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const Embed = (await import('@editorjs/embed')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const Table = (await import('@editorjs/table')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const List = (await import('@editorjs/list')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const Code = (await import('@editorjs/code')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const LinkTool = (await import('@editorjs/link')).default;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const InlineCode = (await import('@editorjs/inline-code')).default;
 
     const body = postPatchSchema.parse(post);

@@ -1,6 +1,7 @@
 import { getWithSSRContext } from '@src/contexts/amplifycontext/amplifyssr';
 
 // import logger from '@src/lib/logger';
+// import logger from '@src/lib/logger';
 import { SessionData } from '@src/types/use-session';
 
 export async function provideSessionAttributes() {
@@ -31,8 +32,9 @@ export async function provideSessionJwt() {
 
   try {
     result = await SSR.Auth.currentAuthenticatedUser();
-    // logger(result.signInUserSession.accessToken.jwtToken);
+    // logger(result);
   } catch (error) {
+    // logger('provide session error: ' + error);
     return null;
   }
 

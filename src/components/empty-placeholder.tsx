@@ -36,7 +36,7 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   className,
   ...props
 }: EmptyPlaceholderIconProps) {
-  const Icon = Icons[name];
+  const Icon = Icons[name || 'arrowRight'];
 
   if (!Icon) {
     return null;
@@ -44,7 +44,11 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
 
   return (
     <div className='bg-muted flex h-20 w-20 items-center justify-center rounded-full'>
-      <Icon className={clsxm('h-10 w-10', className)} {...props} />
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <Icon className={clsxm('h-10 w-10', className)} {...props} />
+      }
     </div>
   );
 };

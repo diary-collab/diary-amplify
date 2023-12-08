@@ -18,11 +18,11 @@ import Typography from '@src/components/typography/default-typography';
 
 import { CustomSidebarNavItem, SidebarNavItem } from '@src/types';
 
-interface IdentitiesNavProps {
+interface DefaultSideNavProps {
   items: CustomSidebarNavItem[];
 }
 
-export function IdentitiesNav({ items }: IdentitiesNavProps) {
+export function DefaultSideNav({ items }: DefaultSideNavProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -92,7 +92,12 @@ export function DashboardSideNavItems({ items }: DashboardNavItemsProps) {
         const href = replaceWildcards(item, params);
         return (
           item.href && (
-            <Link key={index} href={item.disabled ? '#' : href}>
+            <Link
+              key={index}
+              href={item.disabled ? '#' : href}
+              passHref
+              shallow
+            >
               <span
                 className={clsxm(
                   'hover:bg-accent hover:text-accent-foreground group flex items-center rounded-md px-3 py-2 text-sm font-medium',
