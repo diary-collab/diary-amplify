@@ -2,18 +2,13 @@
 'use client';
 
 import { dashboardConfig } from '@src/config/dashboard';
-import { formatDate } from '@utils/date-utils';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import logger from '@src/lib/logger';
 
-import { DashboardHeader } from '@src/components/dashboard-header';
 import { IdentityItem } from '@src/components/identity-item';
 import { DefaultSideNav } from '@src/components/layout/navigation/sidenav/default-side-nav';
-import Typography from '@src/components/typography/default-typography';
-import { UserAvatar } from '@src/components/user-avatar';
 
 import IdentityLoading from './loading';
 
@@ -85,73 +80,7 @@ export default function SelfPage({
               </>
             ) : (
               <div className='mt-8 flex max-w-[650px] flex-col justify-center'>
-                <DashboardHeader
-                  heading='Yourself Identity'
-                  text='See and manage yourself information here'
-                  small={true}
-                >
-                  {/* <PostCreateButton disabled={true} className='cursor-not-allowed' /> */}
-                </DashboardHeader>
-
-                <div className='text-foreground bg-background container mb-5 mt-7 flex flex-col justify-center rounded-lg py-10'>
-                  <div className='flex flex-row items-start justify-start gap-4'>
-                    <UserAvatar
-                      user={{
-                        name: params.partyData?.partyName || null,
-                        image: null,
-                      }}
-                      className='border-muted h-10 w-10 border-2'
-                    />
-
-                    <div className='grid'>
-                      <Link
-                        href={`/diary/${'diaryId'}`}
-                        className='font-semibold hover:underline'
-                      >
-                        {params.partyData?.partyName}
-                      </Link>
-                      <div>
-                        {params.partyData?.createdAt && (
-                          <p className='text-muted-foreground text-sm'>
-                            {`Identity created at: ${formatDate(
-                              params.partyData?.createdAt.toString() || ''
-                            )}`}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {/* --------------------- divider --------------------- */}
-                  <div className='my-4 border-t border-gray-300'></div>
-                  {/* --------------------- divider --------------------- */}
-                  <div className='flex flex-col items-start justify-start gap-2'>
-                    <div>
-                      <Typography variant='h2' color='theme'>
-                        Identity details
-                      </Typography>
-                      <Typography variant='b3' color='theme'>
-                        This is your primary identity in Project Diary
-                      </Typography>
-                    </div>
-
-                    <div>
-                      <Typography variant='s2' color='theme'>
-                        Your email is:
-                      </Typography>
-                      <Typography variant='b3' color='theme'>
-                        {params.sessionData?.attributes?.email}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography variant='s2' color='theme'>
-                        Your username is:
-                      </Typography>
-                      <Typography variant='b3' color='theme'>
-                        {params.sessionData?.attributes?.nickname}
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
+                identities
               </div>
             )}
           </div>

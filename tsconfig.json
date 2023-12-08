@@ -36,5 +36,6 @@
     // ".contentlayer/generated"
   ],
   "exclude": ["node_modules"],
-  "moduleResolution": ["node_modules", ".next", "node"]
+  "moduleResolution": ["node_modules", ".next", "node"],
+  "typeRoots": ["./node_modules/@types", "./types"]
 }

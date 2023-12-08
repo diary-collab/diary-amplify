@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-imports */
 // import { Post, User } from '@prisma/client';
 // import { notFound, redirect } from 'next/navigation';
 
@@ -22,12 +24,14 @@ import { PartyDataEditor } from '@src/components/party-data-editor';
 //   });
 // }
 
-interface EditorPageProps {
+interface FirstEditorPageProps {
   params: { postId: string };
 }
 
 // eslint-disable-next-line unused-imports/no-unused-vars
-export default async function EditorPage({ params }: EditorPageProps) {
+export default async function FirstEditorPage({
+  params,
+}: FirstEditorPageProps) {
   logger('params');
   // const user = await getCurrentUser();
 
@@ -36,12 +40,6 @@ export default async function EditorPage({ params }: EditorPageProps) {
   // }
 
   // const post = await getPostForUser(params.postId, user.id);
-
-  const post = false;
-
-  if (!post) {
-    notFound();
-  }
 
   return (
     <PartyDataEditor

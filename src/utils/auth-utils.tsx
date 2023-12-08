@@ -31,11 +31,13 @@ export async function signInWithEmailAndPassword(
 export async function register(
   data: RegisterNewUserRequest
 ): Promise<AuthRequestResult> {
-  const username = data.username;
+  const username = data.username ?? 'azzam123';
   const nickname = data.nickname;
   const password = data.password;
   const email = data.email;
   const name = data.fullname;
+  const birthdate = data.birthdate;
+  const gender = data.gender;
 
   try {
     const { user } = await Auth.signUp({
@@ -45,6 +47,8 @@ export async function register(
         email, // optional
         nickname,
         name, // optional - E.164 number convention
+        birthdate,
+        gender,
       },
       autoSignIn: {
         // optional - enables auto sign in after user is confirmed

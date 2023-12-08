@@ -9,12 +9,20 @@ datasource db {
 
 /// ATURAN UNTUK PENULISAN ///
 
+enum EnumVersionType {
+  published
+  draft
+  updated
+  deleted
+}
+
 model PartyData {
   //primary index, versioning di table sendiri
-  dataId      String @id @map("data_id")
-  ownerId     String @map("owner_id") //data owner
-  dataTitle   String @map("data_title")
-  dataVersion Int    @map("data_version")
+  dataId          String          @id @map("data_id")
+  ownerId         String          @map("owner_id") //data owner
+  dataTitle       String          @map("data_title")
+  dataVersion     Int             @map("data_version")
+  dataVersionType EnumVersionType @map("data_version_type")
 
   //data definition
   dataObjectPath String            @map("data_object_path")
@@ -139,18 +147,25 @@ enum EnumPermissionLevel {
   protected
 }
 
+enum EnumPartyGender {
+  male
+  female
+  prefer_not_tell
+}
+
 model Party {
-  id              String   @id
-  partyName       String   @map("party_name")
-  partyEmail      String   @map("party_email")
-  partyBirthdate  DateTime @map("party_birthdate")
-  partyParentName String   @map("party_parent_name")
-  partyAddress    String   @map("party_address")
+  id              String           @id
+  partyName       String           @map("party_name")
+  partyEmail      String           @map("party_email")
+  partyBirthdate  DateTime         @map("party_birthdate")
+  partyParentName String?          @map("party_parent_name")
+  partyAddress    String?          @map("party_address")
+  partyGender     EnumPartyGender? @map("party_gender")
   // partyAttributes Json?    @map("partyAttributes")
-  isVerified      Boolean  @default(false) @map("is_party_verified")
-  isActive        Boolean  @default(true) @map("is_party_active")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt       DateTime @default(now()) @map("updated_at") @db.Timestamptz(3)
+  isVerified      Boolean          @default(false) @map("is_party_verified")
+  isActive        Boolean          @default(true) @map("is_party_active")
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime         @default(now()) @map("updated_at") @db.Timestamptz(3)
 
   /// Enum
   partyType EnumPartyType @map("party_type")

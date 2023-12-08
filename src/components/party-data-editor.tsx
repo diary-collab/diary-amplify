@@ -2,6 +2,7 @@
 
 import EditorJS from '@editorjs/editorjs';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { PartyData } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -11,20 +12,21 @@ import * as z from 'zod';
 
 import '@src/styles/editor.css';
 
-import { clsxm } from '@src/lib/utils';
-import { Post, postPatchSchema } from '@src/lib/validations/post';
+import clsxm from '@src/lib/clsxm';
+import { postPatchSchema } from '@src/lib/validations/post';
 
-import { Icons } from '@src/components/default-icons';
-import { buttonVariants } from '@src/components/ui/default-ui-button';
-import { toast } from '@src/components/ui/use-toast';
+import { Icons } from './default-icons';
+import { buttonVariants } from './ui/default-ui-button';
+import { toast } from './ui/use-toast';
 
-interface EditorProps {
-  post: Pick<Post, 'id' | 'pageTitle' | 'pageContent' | 'version'>;
+interface PartyDataEditorProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  partyData: PartyData | any;
 }
 
 type FormData = z.infer<typeof postPatchSchema>;
 
-export function Editor({ post }: EditorProps) {
+export function PartyDataEditor({ partyData }: PartyDataEditorProps) {
   const { register, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
   });
@@ -35,7 +37,7 @@ export function Editor({ post }: EditorProps) {
 
   const initializeEditor = React.useCallback(async () => {
     const EditorJS = (await import('@editorjs/editorjs')).default;
-    const [Header] = (await import('@editorjs/header')).default;
+    const Header = (await import('@editorjs/header')).default;
     const Embed = (await import('@editorjs/embed')).default;
     const Table = (await import('@editorjs/table')).default;
     const List = (await import('@editorjs/list')).default;
@@ -43,7 +45,7 @@ export function Editor({ post }: EditorProps) {
     const LinkTool = (await import('@editorjs/link')).default;
     const InlineCode = (await import('@editorjs/inline-code')).default;
 
-    const body = postPatchSchema.parse(post);
+    const body = postPatchSchema.parse(partyData);
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -65,7 +67,7 @@ export function Editor({ post }: EditorProps) {
         },
       });
     }
-  }, [post]);
+  }, [partyData]);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -89,7 +91,7 @@ export function Editor({ post }: EditorProps) {
 
     const blocks = await ref.current?.save();
 
-    const response = await fetch(`/api/posts/${post.id}`, {
+    const response = await fetch(`/api/posts/${partyData.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +129,7 @@ export function Editor({ post }: EditorProps) {
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-10'>
             <Link
-              href='/identities'
+              href='/timeline'
               className={clsxm(buttonVariants({ variant: 'ghost' }))}
             >
               <>
@@ -136,7 +138,7 @@ export function Editor({ post }: EditorProps) {
               </>
             </Link>
             <p className='text-muted-foreground text-sm'>
-              {post.version ? 'Published' : 'Draft'}
+              {partyData.published ? 'Published' : 'Draft'}
             </p>
           </div>
           <button type='submit' className={clsxm(buttonVariants())}>
@@ -150,7 +152,7 @@ export function Editor({ post }: EditorProps) {
           <TextareaAutosize
             autoFocus
             id='title'
-            defaultValue={post.pageTitle}
+            defaultValue={partyData.title}
             placeholder='Post title'
             className='w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none'
             {...register('title')}

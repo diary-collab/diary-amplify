@@ -6,3 +6,13 @@ export const postPatchSchema = z.object({
   // TODO: Type this properly from editorjs block types?
   content: z.any().optional(),
 });
+
+export type Post = {
+  id?: string;
+  title?: string;
+  content?: string;
+  published?: string;
+  pageTitle?: string;
+  pageContent?: string;
+  version?: string;
+};

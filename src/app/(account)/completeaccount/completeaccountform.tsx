@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { EnumPartyType } from '@prisma/client';
+import { EnumPartyGender, EnumPartyType } from '@prisma/client';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -162,6 +162,30 @@ export default function CompleteAccountForm({
             accountType === 'personal' ? 'Full name' : 'Organisation name'
           }
           helperText='This field is auto populate but you can change it'
+        />
+        <SearchableSelectInput
+          key='key_partyGender'
+          id='partyGender'
+          label='Gender'
+          placeholder='Tell us your gender'
+          isMulti={false}
+          disabled={loading}
+          options={[
+            {
+              value: EnumPartyGender.male,
+              label: 'Male',
+            },
+            {
+              label: 'Female',
+              value: EnumPartyGender.female,
+            },
+            {
+              label: 'Prefer not tell',
+              value: EnumPartyGender.prefer_not_tell,
+            },
+          ]}
+          customSetData={setAccountType}
+          validation={{ required: 'This Input must be filled' }}
         />
         <DatePicker
           key='key_partyBirthdate'
